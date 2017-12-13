@@ -3,6 +3,11 @@
 <article>
     <h1>Sign up</h1>
     <form action="/app/auth/signup.php" method="post">
+        <?php if (isset($_SESSION['errors']['user'])): ?>
+            <div class="alert alert-danger">
+              <?php echo $_SESSION['errors']['user']; ?>
+            </div>
+        <?php endif; ?>
         <div class="form-group">
             <label for="username">Username</label>
             <input class="form-control" type="text" name="username" required>
