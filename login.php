@@ -1,0 +1,5 @@
+<?php require(__DIR__.'/views/header.php'); ?>
+
+<h2>This is the login page.</h2>
+
+<?php require(__DIR__.'/views/footer.php'); ?>
