@@ -2,7 +2,7 @@
 
     declare(strict_types=1);
 
-    require(__DIR__.'/../autoload.php');
+    require __DIR__.'/../autoload.php';
 
     // This is the script that logs in users
 
@@ -30,6 +30,7 @@
                     'id' => $user['id'],
                     'username' => $user['username'],
                 ];
+                unset($_SESSION['errors']['login']);
                 redirect('/');
             } else {
                 $_SESSION['errors']['login'] = 'The password was incorrect.';

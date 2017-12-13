@@ -11,7 +11,7 @@
       <li class="nav-item">
           <a class="nav-link <?php if ($_SERVER['PHP_SELF'] === '/about.php') {
               echo 'active';
-          } ?>" href="/about.php">About</a>
+          } ?>" href="/signup.php">Sign up</a>
       </li><!-- /nav-item -->
 
       <li class="nav-item">
