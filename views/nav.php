@@ -9,9 +9,15 @@
       </li><!-- /nav-item -->
 
       <li class="nav-item">
+          <?php if (isset($_SESSION['user'])): ?>
+          <a class="nav-link <?php if ($_SERVER['PHP_SELF'] === '/account.php') {
+              echo 'active';
+          } ?>" href="/account.php">Account</a>
+      <?php else: ?>
           <a class="nav-link <?php if ($_SERVER['PHP_SELF'] === '/about.php') {
               echo 'active';
           } ?>" href="/signup.php">Sign up</a>
+      <?php endif; ?>
       </li><!-- /nav-item -->
 
       <li class="nav-item">
