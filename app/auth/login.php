@@ -25,7 +25,7 @@
             $_SESSION['errors']['login'] = 'The username or email does not exist.';
             redirect('/login.php');
         } else {
-            if ($_POST['password'] === $user['password']) {
+            if (password_verify($_POST['password'], $user['password'])) {
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'username' => $user['username'],
