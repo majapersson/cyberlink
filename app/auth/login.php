@@ -29,6 +29,7 @@
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'username' => $user['username'],
+                    'email' => $user['email'],
                 ];
                 unset($_SESSION['errors']['login']);
                 redirect('/');
