@@ -14,6 +14,9 @@ mb_internal_encoding('UTF-8');
 // Include the helper functions.
 require __DIR__.'/functions.php';
 
+// Include database queries
+require __DIR__.'/database/queries.php';
+
 // Fetch the global configuration array.
 $config = require __DIR__.'/config.php';
 
