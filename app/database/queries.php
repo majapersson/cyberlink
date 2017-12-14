@@ -118,3 +118,14 @@ function updateImage ($pdo, array $image, array $user) {
     $query-> bindParam(':id', $user['id'], PDO::PARAM_INT);
     $query-> execute();
 }
+
+function updatePassword ($pdo, string $newPassword, int $user_id) {
+    $query = $pdo-> prepare('UPDATE users SET password=:password WHERE id=:id');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+    $password = password_hash($newPassword, PASSWORD_DEFAULT);
+    $query-> bindParam(':password', $password, PDO::PARAM_STR);
+    $query-> bindParam(':id', $user_id, PDO::PARAM_INT);
+    $query-> execute();
+}
