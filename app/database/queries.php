@@ -95,3 +95,26 @@ function updateUser ($pdo, int $id, string $email, string $bio = null) {
     $user = $query->fetch(PDO::FETCH_ASSOC);
     return $user;
 }
+
+/*
+* Updates user avatar filepath in database and save image in avatar folder
+*
+* @param PDO $pdo
+* @param array $image
+* @param array $user
+*/
+
+function updateImage ($pdo, array $image, array $user) {
+    $file = pathinfo($image['name']);
+    $filename = $user['username'].'.'.$file['extension'];
+
+    move_uploaded_file($image['tmp_name'], __DIR__.'/../../avatars/'.$filename);
+
+    $query = $pdo-> prepare('UPDATE users SET image_url=:filename WHERE id=:id;');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+    $query-> bindParam(':filename', $filename, PDO::PARAM_STR);
+    $query-> bindParam(':id', $user['id'], PDO::PARAM_INT);
+    $query-> execute();
+}

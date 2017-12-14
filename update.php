@@ -6,6 +6,11 @@ unset($user['password']);
 if (isset($_POST['email'], $_POST['bio'])) {
     $user = updateUser($pdo, $user['id'], $_POST['email'], $_POST['bio']);
 }
+
+if (isset($_FILES['image'])) {
+    $image = $_FILES['image'];
+    updateImage($pdo, $image, $user);
+}
 ?>
 
 <form action="update.php" method="post" enctype="multipart/form-data">
@@ -21,7 +26,7 @@ if (isset($_POST['email'], $_POST['bio'])) {
 
     <?php if (isset($user['image_url'])): ?>
         <div class="form-group">
-            <img src="<?php echo __DIR__.'/images/'.$user['image_url']; ?>">
+            <img src="/avatars/<?php echo $user['image_url']; ?>">
         </div>
     <?php endif; ?>
 
