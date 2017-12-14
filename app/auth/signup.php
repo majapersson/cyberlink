@@ -14,22 +14,11 @@
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         // Check if username or email already exists in database
-        $query = $pdo-> prepare('SELECT * FROM users WHERE username=:username OR email=:email;');
+        getUser($pdo, null, $username, $email);
 
-        if(!$query) {
-            die(var_dump($pdo->errorInfo()));
-        }
-        $query-> bindParam(':username', $username, PDO::PARAM_STR);
-        $query-> bindParam(':email', $email, PDO::PARAM_STR);
-
-        $query-> execute();
-        $user = $query-> fetch(PDO::FETCH_ASSOC);
-
-        if ($user) {
-            $_SESSION['errors']['user'] = 'The user already exists.';
+        if (isset($_SESSION['errors']['user'])) {
             redirect('/signup.php');
         }
-
 
         // Insert info with hashed password into user database
         $query = $pdo-> prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');

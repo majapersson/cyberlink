@@ -9,16 +9,7 @@
     if (isset($_POST['username']) && isset($_POST['password'])) {
         $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
 
-        $query = $pdo-> prepare('SELECT * FROM users WHERE username=:username OR email=:username');
-
-        if(!$query) {
-            die(var_dump($pdo->errorInfo()));
-        }
-
-        $query-> bindParam(':username', $username, PDO::PARAM_STR);
-        $query-> execute();
-
-        $user = $query->fetch(PDO::FETCH_ASSOC);
+         $user = getUser($pdo, null, $username);
 
         // When user is fetched from database
         if (!isset($user['id'])) {
