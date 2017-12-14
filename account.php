@@ -7,17 +7,24 @@ unset($user['password']);
 ?>
 
 <article>
-  <h2>My Account</h2>
-  <h3>Username: <?php echo $user['username']; ?></h3>
-  <h3>Email: <?php echo $user['email']; ?></h3>
-  <?php if (isset($user['bio'])): ?>
-    <div class="border border-secondary rounded">
-      <p><?php echo $user['bio']; ?></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <h3><?php echo $user['username']; ?></h3>
+                <?php if (isset($user['bio'])): ?>
+                        <p><?php echo $user['bio']; ?></p>
+                <?php endif; ?>
+                <a href="update.php">
+                    <button type="button" name="button" class="btn btn-primary">Update profile</button>
+                </a>
+            </div>
+            <div class="col-4">
+                <?php if (isset($user['image_url'])): ?>
+                    <img src="/avatars/<?php echo $user['image_url'] ?>" width="200px">
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
-  <?php endif; ?>
-  <a href="update.php">
-  <button type="button" name="button" class="btn btn-primary">Update profile</button>
-  </a>
 
 </article>
 

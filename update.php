@@ -59,8 +59,8 @@ if (isset($_POST['newPassword'], $_POST['oldPassword'])) {
             <div class="alert alert-danger">
                 <?php echo $error; ?>
             </div>
-        <?php unset($error);
-            endif; ?>
+            <?php unset($error);
+        endif; ?>
         <div class="form-group">
             <label for="newPassword">New password</label>
             <input class="form-control" type="password" name="newPassword">
