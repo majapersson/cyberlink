@@ -7,6 +7,7 @@
     <div class="alert alert-danger">
       <?php echo $_SESSION['errors']['login']; ?>
     </div>
+    <?php unset($_SESSION['errors']['login']); ?>
   <?php endif; ?>
 
   <form action="app/auth/login.php" method="post">

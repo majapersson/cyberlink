@@ -7,6 +7,7 @@
             <div class="alert alert-danger">
               <?php echo $_SESSION['errors']['user']; ?>
             </div>
+            <?php unset($_SESSION['errors']['user']); ?>
         <?php endif; ?>
         <div class="form-group">
             <label for="username">Username</label>
