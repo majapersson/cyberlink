@@ -65,3 +65,33 @@ function getUser ($pdo, int $id = null, string $name = null, string $email = nul
         }
     }
 }
+
+/*
+* Updates user info in database
+*
+* @param PDO $pdo
+* @param int $id
+* @param string $email
+* @param string $bio
+*/
+
+function updateUser ($pdo, int $id, string $email, string $bio = null) {
+    $query = $pdo-> prepare('UPDATE users SET email=:email, bio=:bio WHERE id=:id;');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+    $query-> bindParam(':id', $id, PDO::PARAM_INT);
+    $query-> bindParam(':email', $email, PDO::PARAM_STR);
+    $query-> bindParam(':bio', $bio, PDO::PARAM_STR);
+    $query-> execute();
+
+    // Get updated info
+    $query = $pdo->prepare('SELECT * FROM users WHERE id=:id;');
+    if(!$query){
+        die(var_dump($pdo->errorInfo()));
+    }
+    $query-> bindParam(':id', $id, PDO::PARAM_INT);
+    $query-> execute();
+    $user = $query->fetch(PDO::FETCH_ASSOC);
+    return $user;
+}
