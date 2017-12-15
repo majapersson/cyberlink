@@ -31,7 +31,7 @@
 
         setUser($pdo, $username, $email, $passwordHash);
 
-        // // Get user info from database
+        // Get user info from database
         $query = $pdo-> prepare('SELECT * FROM users WHERE username=:username;');
 
         if(!$query) {

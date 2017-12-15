@@ -3,9 +3,11 @@
 * Gets all users from database
 *
 * @param PDO $pdo
+*
+* @return array $users
 */
 
-function getUsers($pdo) {
+function getUsers($pdo): array {
     $query = $pdo-> query('SELECT id, username, email, password FROM users;');
     $users = $query->fetchAll(PDO::FETCH_ASSOC);
     return $users;
@@ -17,6 +19,8 @@ function getUsers($pdo) {
 *
 * @param PDO $pdo
 * @param int $id
+*
+* @return array $user
 */
 
 function getUser ($pdo, int $id) {
@@ -61,6 +65,8 @@ function setUser ($pdo, string $username, string $email, string $password) {
 * @param int $id
 * @param string $email
 * @param string $bio
+*
+* @return array $user
 */
 
 function updateInfo ($pdo, int $id, string $email, string $bio = null) {
@@ -74,13 +80,8 @@ function updateInfo ($pdo, int $id, string $email, string $bio = null) {
     $query-> execute();
 
     // Get updated info
-    $query = $pdo->prepare('SELECT * FROM users WHERE id=:id;');
-    if(!$query){
-        die(var_dump($pdo->errorInfo()));
-    }
-    $query-> bindParam(':id', $id, PDO::PARAM_INT);
-    $query-> execute();
-    $user = $query->fetch(PDO::FETCH_ASSOC);
+    $user = getUser($pdo, $id);
+
     return $user;
 }
 
