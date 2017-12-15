@@ -1,21 +1,19 @@
 <?php
 
-    declare(strict_types=1);
+declare(strict_types=1);
 
-    require __DIR__.'/../autoload.php';
+require __DIR__.'/../autoload.php';
 
-    // This is the script that logs in users
+// This is the script that logs in users
 
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+if (isset($_POST['username']) && isset($_POST['password'])) {
+    $username = filter_var(trim($_POST['username']), FILTER_SANITIZE_STRING);
 
-         $user = getUser($pdo, null, $username);
+    $users = getUsers($pdo);
 
-        // When user is fetched from database
-        if (!isset($user['id'])) {
-            $_SESSION['errors']['login'] = 'The username or email does not exist.';
-            redirect('/login.php');
-        } else {
+    // Loop through user array and compare username and email to user input
+    forEach($users as $user) {
+        if ($username === $user['username'] || $username === $user['email']) {
             if (password_verify($_POST['password'], $user['password'])) {
                 $_SESSION['user'] = [
                     'id' => $user['id'],
@@ -30,3 +28,11 @@
             }
         }
     }
+
+    if (!isset($_SESSION['user'])) {
+        $_SESSION['errors']['login'] = 'The username or email does not exist.';
+        redirect('/login.php');
+    }
+} else {
+    redirect('/login.php');
+}

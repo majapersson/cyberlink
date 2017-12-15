@@ -13,8 +13,17 @@
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-        // Check if username or email already exists in database
-        getUser($pdo, null, $username, $email);
+        // Loop through user array and compare username and email to user input
+        $users = getUsers($pdo);
+
+        forEach($users as $user) {
+            if ($username === $user['username']) {
+                $_SESSION['errors']['user'][] = 'The username is already taken.';
+            }
+            if ($email === $user['email']) {
+                $_SESSION['errors']['user'][] = 'The email is already registered.';
+            }
+        }
 
         if (isset($_SESSION['errors']['user'])) {
             redirect('/signup.php');

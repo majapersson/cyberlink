@@ -1,10 +1,22 @@
 <?php
-/*
+/**
+* Gets all users from database
+*
+* @param PDO $pdo
+*/
+
+function getUsers($pdo) {
+    $query = $pdo-> query('SELECT id, username, email, password FROM users;');
+    $users = $query->fetchAll(PDO::FETCH_ASSOC);
+    return $users;
+}
+
+
+/**
 * Checks database for user depending on with parameters are set
 *
 * Gets user array based in id if $id is set
 * Gets user from username OR email if only $name is set
-* Gets user
 *
 * @param PDO $pdo
 * @param int $id
@@ -66,7 +78,7 @@ function getUser ($pdo, int $id = null, string $name = null, string $email = nul
     }
 }
 
-/*
+/**
 * Updates user info in database
 *
 * @param PDO $pdo
@@ -75,7 +87,7 @@ function getUser ($pdo, int $id = null, string $name = null, string $email = nul
 * @param string $bio
 */
 
-function updateUser ($pdo, int $id, string $email, string $bio = null) {
+function updateInfo ($pdo, int $id, string $email, string $bio = null) {
     $query = $pdo-> prepare('UPDATE users SET email=:email, bio=:bio WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -96,7 +108,7 @@ function updateUser ($pdo, int $id, string $email, string $bio = null) {
     return $user;
 }
 
-/*
+/**
 * Updates user avatar filepath in database and save image in avatar folder
 *
 * @param PDO $pdo
@@ -118,6 +130,14 @@ function updateImage ($pdo, array $image, array $user) {
     $query-> bindParam(':id', $user['id'], PDO::PARAM_INT);
     $query-> execute();
 }
+
+/**
+* Updates user password in database
+*
+* @param PDO $pdo
+* @param string $newPassword
+* @param int $user_id
+*/
 
 function updatePassword ($pdo, string $newPassword, int $user_id) {
     $query = $pdo-> prepare('UPDATE users SET password=:password WHERE id=:id');

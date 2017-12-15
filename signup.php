@@ -4,9 +4,11 @@
     <h1>Sign up</h1>
     <form action="/app/auth/signup.php" method="post">
         <?php if (isset($_SESSION['errors']['user'])): ?>
-            <div class="alert alert-danger">
-              <?php echo $_SESSION['errors']['user']; ?>
-            </div>
+            <?php foreach($_SESSION['errors']['user'] as $error): ?>
+                <div class="alert alert-danger">
+                    <?php echo $error; ?>
+                </div>
+            <?php endforeach; ?>
             <?php unset($_SESSION['errors']['user']); ?>
         <?php endif; ?>
         <div class="form-group">

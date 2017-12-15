@@ -3,7 +3,7 @@ require __DIR__.'/views/header.php';
 $user = getUser($pdo, $_SESSION['user']['id']);
 
 if (isset($_POST['email'], $_POST['bio'])) {
-    $user = updateUser($pdo, $user['id'], $_POST['email'], $_POST['bio']);
+    $user = updateInfo($pdo, $user['id'], $_POST['email'], $_POST['bio']);
 }
 
 if (isset($_FILES['image'])) {
