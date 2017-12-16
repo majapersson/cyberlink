@@ -1,6 +1,6 @@
 <?php
 /**
-* Gets all users from database
+* Gets all users from users table
 *
 * @param PDO $pdo
 *
@@ -9,7 +9,7 @@
 
 function getUsers($pdo): array {
     $query = $pdo-> query('SELECT id, username, email, password FROM users;');
-    $users = $query->fetchAll(PDO::FETCH_ASSOC);
+    $users = $query-> fetchAll(PDO::FETCH_ASSOC);
     return $users;
 }
 
@@ -45,7 +45,7 @@ function getUser ($pdo, int $id) {
 */
 
 function setUser ($pdo, string $username, string $email, string $password) {
-    $query = $pdo-> prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
+    $query = $pdo-> prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password);');
 
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -117,7 +117,7 @@ function updateImage ($pdo, array $image, array $user) {
 */
 
 function updatePassword ($pdo, string $newPassword, int $user_id) {
-    $query = $pdo-> prepare('UPDATE users SET password=:password WHERE id=:id');
+    $query = $pdo-> prepare('UPDATE users SET password=:password WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
