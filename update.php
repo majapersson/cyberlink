@@ -3,7 +3,10 @@ require __DIR__.'/views/header.php';
 $user = getUser($pdo, $_SESSION['user']['id']);
 
 if (isset($_POST['email'], $_POST['bio'])) {
-    $user = updateInfo($pdo, $user['id'], $_POST['email'], $_POST['bio']);
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $bio = filter_var($_POST['bio'], FILTER_SANITIZE_STRING);
+
+    $user = updateInfo($pdo, $user['id'], $email, $bio);
 }
 
 if (isset($_FILES['image'])) {
@@ -23,7 +26,7 @@ if (isset($_POST['newPassword'], $_POST['oldPassword'])) {
 <form action="update.php" method="post" enctype="multipart/form-data">
     <?php if (isset($user['image_url'])): ?>
         <div class="form-group">
-            <img src="/avatars/<?php echo $user['image_url']; ?>">
+            <img src="/avatars/<?php echo $user['image_url']; ?>" width="200px">
         </div>
     <?php endif; ?>
 
@@ -48,7 +51,7 @@ if (isset($_POST['newPassword'], $_POST['oldPassword'])) {
 
     <div class="form-group">
         <label for="bio">Biography</label>
-        <textarea class="form-control" type="text" name="bio"><?php echo $user['bio']; ?></textarea>
+        <textarea class="form-control" rows="5" name="bio"><?php echo $user['bio']; ?></textarea>
     </div>
     <button class="btn btn-primary" type="submit">Update info</button>
 </form> <!-- /info form -->
