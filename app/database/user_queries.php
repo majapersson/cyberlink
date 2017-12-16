@@ -86,7 +86,7 @@ function updateInfo ($pdo, int $id, string $email, string $bio = null) {
 }
 
 /**
-* Updates user avatar filepath in database and save image in avatar folder
+* Updates user avatar filepath in database and saves image in avatar folder
 *
 * @param PDO $pdo
 * @param array $image
