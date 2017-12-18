@@ -36,8 +36,11 @@
         <textarea class="form-control" name="content" rows="8"><?php echo $post['content'] ?></textarea>
     </div>
 
-    <button class="btn btn-primary" type="submit">Submit</button>
-
+    <button class="btn btn-primary" type="submit">Update post</button>
+</form>
+<form action="/app/database/delete-post.php" method="post">
+    <input type="hidden" name="id" value="<?php echo $post['id'] ?>">
+    <button class="btn btn-danger" type="submit">Delete post</button>
 </form>
 
 <?php require __DIR__.'/views/footer.php'; ?>
