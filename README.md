@@ -22,6 +22,7 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [ ] As a user I'm able to reset my password with email.
 
 ### 2017-12-18
+- Started working on voting
 - Added functionality to edit and delete posts
 - Added ability to see other users profile
 
