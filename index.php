@@ -18,20 +18,23 @@ $posts = getPosts($pdo);
     <?php endif; ?>
 
     <?php foreach($posts as $post): ?>
-        <a href="<?php echo $post['url'] ?>"><h3><?php echo $post['title']; ?></h3></a>
+        <a href="<?php echo $post['url'] ?>">
+            <h3><?php echo $post['title']; ?></h3>
+        </a>
         <a href="account.php/?id=<?php echo $post['author_id'] ?>">
-            <h4><?php echo $post['username']; ?></h4></a>
-            <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
-            <p><?php echo $post['content'] ?></p>
+            <h4><?php echo $post['username']; ?></h4>
+        </a>
+        <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
+        <p><?php echo $post['content'] ?></p>
 
-            <?php if ((int) $post['author_id'] === $_SESSION['user']['id']): ?>
-                <form action="edit-post.php" method="post">
-                    <input type="hidden" name="post_id" value="<?php echo $post['id'] ?>">
-                    <button class="btn btn-primary" type="submit">Edit post</button>
-                </form>
-            <?php endif; ?>
-        <?php endforeach; ?>
+        <?php if (isset($_SESSION['user']['id']) && $post['author_id'] === $_SESSION['user']['id']): ?>
+            <form action="edit-post.php" method="post">
+                <input type="hidden" name="post_id" value="<?php echo $post['id'] ?>">
+                <button class="btn btn-primary" type="submit">Edit post</button>
+            </form>
+        <?php endif; ?>
+    <?php endforeach; ?>
 
-    </section>
+</section>
 
-    <?php require __DIR__.'/views/footer.php'; ?>
+<?php require __DIR__.'/views/footer.php'; ?>

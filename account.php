@@ -1,7 +1,7 @@
 <?php
 require __DIR__.'/views/header.php';
 if (isset($_GET['id'])){
-    $id = (int) filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
+    $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
     $user = getUser($pdo, $id);
 } else {
     $user = getUser($pdo, $_SESSION['user']['id']);
