@@ -8,7 +8,7 @@
 */
 
 function getPosts($pdo) {
-    $query = $pdo-> query('SELECT posts.*, users.username FROM posts JOIN users ON posts.author_id=users.id ORDER BY timestamp desc;');
+    $query = $pdo-> query('SELECT posts.*, users.username, votes.score FROM posts JOIN users ON posts.author_id=users.id JOIN votes ON posts.id=votes.post_id ORDER BY timestamp desc;');
     $posts = $query->fetchAll(PDO::FETCH_ASSOC);
     return $posts;
 }
@@ -23,7 +23,7 @@ function getPosts($pdo) {
 */
 
 function getPost($pdo, $post_id) {
-    $query = $pdo-> query('SELECT * from posts WHERE id=:id;');
+    $query = $pdo-> query('SELECT posts.*, votes.score from posts JOIN votes ON posts.id=votes.post_id WHERE id=:id;');
     if(!$query) {
         die(var_dump($pod->errorInfo()));
     }
@@ -96,6 +96,24 @@ function deletePost($pdo, $post_id) {
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
     }
+    $query-> bindParam(':id', $post_id, PDO::PARAM_INT);
+    $query-> execute();
+}
+
+/**
+*
+*/
+
+function updateScore($pdo, $post_id, $direction) {
+    $post = getPost($pdo, $post_id);
+    $post['score'] += $direction;
+
+    $query = $pdo-> prepare('UPDATE votes SET score=:score WHERE post_id=:id;');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+
+    $query-> bindParam(':score', $post['score'], PDO::PARAM_INT);
     $query-> bindParam(':id', $post_id, PDO::PARAM_INT);
     $query-> execute();
 }
