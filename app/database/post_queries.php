@@ -83,3 +83,19 @@ function updatePost($pdo, $post_id, $title, $url, $content = null) {
     $query-> bindParam(':post_id', $post_id, PDO::PARAM_INT);
     $query-> execute();
 }
+
+/**
+* Deletes post from database
+*
+* @param PDO $pdo
+* @param int $post_id
+*/
+
+function deletePost($pdo, $post_id) {
+    $query = $pdo-> prepare('DELETE FROM posts WHERE id=:id;');
+    if(!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+    $query-> bindParam(':id', $post_id, PDO::PARAM_INT);
+    $query-> execute();
+}
