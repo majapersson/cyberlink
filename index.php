@@ -13,11 +13,14 @@ $posts = getPosts($pdo);
 </article>
 <section>
     <h2>Posts</h2>
+    <?php if (isset($_SESSION['user'])): ?>
     <a href="post.php"><button class="btn btn-primary" type="link" name="button">New post</button></a>
+  <?php endif; ?>
 
     <?php foreach($posts as $post): ?>
         <a href="<?php echo $post['url'] ?>"><h3><?php echo $post['title']; ?></h3></a>
-        <h4><?php echo $post['username']; ?></h4>
+        <a href="account.php/?id=<?php echo $post['author_id'] ?>">
+        <h4><?php echo $post['username']; ?></h4></a>
         <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
         <p><?php echo $post['content'] ?></p>
     <?php endforeach; ?>

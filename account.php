@@ -1,7 +1,11 @@
 <?php
 require __DIR__.'/views/header.php';
-
-$user = getUser($pdo, $_SESSION['user']['id']);
+if (isset($_GET['id'])){
+    $id = (int) filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
+    $user = getUser($pdo, $id);
+} else {
+    $user = getUser($pdo, $_SESSION['user']['id']);
+}
 unset($user['password']);
 
 ?>
@@ -12,11 +16,13 @@ unset($user['password']);
             <div class="col-8">
                 <h3><?php echo $user['username']; ?></h3>
                 <?php if (isset($user['bio'])): ?>
-                        <p><?php echo $user['bio']; ?></p>
+                    <p><?php echo $user['bio']; ?></p>
                 <?php endif; ?>
-                <a href="update.php">
-                    <button type="button" name="button" class="btn btn-primary">Update profile</button>
-                </a>
+                <?php if (!isset($id) || isset($_SESSION['user']['id']) && $id === $_SESSION['user']['id']): ?>
+                    <a href="/update.php">
+                        <button type="button" name="button" class="btn btn-primary">Update profile</button>
+                    </a>
+                <?php endif; ?>
             </div>
             <div class="col-4">
                 <?php if (isset($user['image_url'])): ?>
