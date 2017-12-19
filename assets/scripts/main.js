@@ -19,3 +19,12 @@ icons.forEach((icon) => {
     window.location = `/../../app/auth/vote.php?id=${icon.dataset.id}&dir=${icon.dataset.dir}`;
   })
 })
+
+const comButtons = document.querySelectorAll('button[name="comment"]');
+comButtons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    button.classList.add('d-none');
+    button.nextElementSibling.classList.add('d-block');
+    button.nextElementSibling.classList.remove('d-none');
+  })
+})

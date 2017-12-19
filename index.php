@@ -15,7 +15,6 @@ $posts = getPosts($pdo);
 ?>
 
 <article>
-    <h1><?php echo $config['title']; ?></h1>
     <?php if (isset($user)): ?>
         <h2>Welcome <?php echo $user['username']; ?></h2>
     <?php endif; ?>
@@ -56,7 +55,9 @@ $posts = getPosts($pdo);
                     <?php elseif ($user_vote['direction'] === '1' || $user_vote === 1): ?>
                         <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-dir=-1></i>
                     <?php endif; ?>
+                    <!-- End vote icons -->
 
+                    <!-- Actual post -->
                     <?php echo $post['score'];  ?>
                     <a href="<?php echo $post['url'] ?>">
                         <h3><?php echo $post['title']; ?></h3>
@@ -67,12 +68,34 @@ $posts = getPosts($pdo);
                     <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
                     <p><?php echo $post['content'] ?></p>
 
+                    <!-- Edit button -->
                     <?php if (isset($user['id']) && $post['author_id'] === $user['id']): ?>
                         <form action="edit-post.php" method="post">
                             <input type="hidden" name="post_id" value="<?php echo $post['id'] ?>">
                             <button class="btn btn-primary" type="submit">Edit post</button>
                         </form>
                     <?php endif; ?>
+                    <?php $comments = getComments($pdo, $post['id']);
+                    if (isset($comments)):
+                        foreach($comments as $comment): ?>
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
+                                <small><?php echo date('Y-m-d H:i', $comment['timestamp']); ?></small>
+                                <p><?php echo $comment['content']; ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach;
+                    endif; ?>
+                    <!-- Comment button -->
+                    <?php if (isset($user['id'])): ?>
+                    <button class="btn btn-primary" type="button" name="comment">Comment</button>
+                    <form class="d-none" action="/app/auth/comment.php" method="post">
+                        <input type="text" name="post_id" value="<?php echo $post['id'] ?>" hidden>
+                        <textarea class="form-control" name="comment" rows="5" cols="40"></textarea>
+                        <button class="btn btn-primary" type="submit">Comment</button>
+                    </form>
+                <?php endif; ?>
                 </div>
             </article>
         <?php endforeach; ?>
