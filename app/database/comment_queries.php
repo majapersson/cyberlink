@@ -1,4 +1,25 @@
 <?php
+
+/**
+ * Gets comments for specific post
+ *
+ * @param PDO $pdo
+ * @param int $post_id
+ *
+ * @return array
+ */
+
+function getComments($pdo, $post_id) {
+    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id ORDER BY timestamp;');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+
+    $query-> bindParam(':post_id', $post_id, PDO::PARAM_INT);
+    $query-> execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 /**
  * Saves new comment to comment table
  *
@@ -23,24 +44,4 @@ function setComment($pdo, $post_id, $user_id, $content) {
     $query-> bindParam(':content', $content, PDO::PARAM_STR);
     $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
     $query-> execute();
-}
-
-/**
- * Gets comments for specific post
- *
- * @param PDO $pdo
- * @param int $post_id
- *
- * @return array
- */
-
-function getComments($pdo, $post_id) {
-    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id;');
-    if (!$query) {
-        die(var_dump($pdo->errorInfo()));
-    }
-
-    $query-> bindParam(':post_id', $post_id, PDO::PARAM_INT);
-    $query-> execute();
-    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
