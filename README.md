@@ -12,7 +12,7 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [x] As a user I should be able to create new links with a title and description.
 - [x] As a user I should be able to edit my links.
 - [x] As a user I should be able to delete my links.
-- [ ] As a user I should be able to up and down vote links.
+- [x] As a user I should be able to up and down vote links.
 
 ## Extras
 - [ ] As a user I should be able to comment on a link.
@@ -20,6 +20,9 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [ ] As a user I'm able to delete my comments.
 - [ ] As a user I'm able to reply to comments.
 - [ ] As a user I'm able to reset my password with email.
+
+### 2017-12-19
+- Finalized user voting functionality
 
 ### 2017-12-18
 - Started working on voting
