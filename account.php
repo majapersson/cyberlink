@@ -11,20 +11,21 @@ unset($user['password']);
 ?>
 
 <article>
-    <div class="container">
-        <div class="row">
+    <div class="container card">
+        <div class="row card-body">
             <div class="col-8">
                 <h3><?php echo $user['username']; ?></h3>
                 <?php if (isset($user['bio'])): ?>
                     <p><?php echo $user['bio']; ?></p>
                 <?php endif; ?>
+                <h3>Posts by <?php echo $user['username'] ?></h3>
                 <?php if (!isset($id) || isset($_SESSION['user']['id']) && $id === $_SESSION['user']['id']): ?>
                     <a href="/update.php">
                         <button type="button" name="button" class="btn btn-primary">Update profile</button>
                     </a>
                 <?php endif; ?>
             </div>
-            <div class="col-4">
+            <div class="col-4 text-center">
                 <?php if (isset($user['image_url'])): ?>
                     <img src="/avatars/<?php echo $user['image_url'] ?>" width="200px">
                 <?php endif; ?>
