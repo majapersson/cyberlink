@@ -34,6 +34,27 @@ function getPost($pdo, $post_id) {
 }
 
 /**
+ * Gets posts from specific user
+ *
+ * @param PDO $pdo
+ * @param int $user_id
+ *
+ * @return array $user_posts
+ */
+
+ function getUserPosts($pdo, $user_id) {
+     $query = $pdo-> prepare('SELECT * FROM posts WHERE author_id=:user_id;');
+     if (!$query) {
+         die(var_dump($pdo->errorInfo()));
+     }
+
+     $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
+     $query-> execute();
+
+      return $user_posts = $query-> fetchAll(PDO::FETCH_ASSOC);
+ }
+
+/**
  * Inserts new post in database
  *
  * @param PDO $pdo

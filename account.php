@@ -18,7 +18,22 @@ unset($user['password']);
                 <?php if (isset($user['bio'])): ?>
                     <p><?php echo $user['bio']; ?></p>
                 <?php endif; ?>
-                <h3>Posts by <?php echo $user['username'] ?></h3>
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Posts by <?php echo $user['username'] ?></h3>
+                        <?php $posts = getUserPosts($pdo, $user['id']);
+                        foreach ($posts as $post): ?>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4><a href="<?php echo $post['url'] ?>">
+                                    <?php echo $post['title'] ?></h4></a>
+                                    <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
+                                <p><?php echo $post['content'] ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
+                </div>
                 <?php if (!isset($id) || isset($_SESSION['user']['id']) && $id === $_SESSION['user']['id']): ?>
                     <a href="/update.php">
                         <button type="button" name="button" class="btn btn-primary">Update profile</button>
