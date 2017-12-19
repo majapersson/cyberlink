@@ -15,13 +15,15 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [x] As a user I should be able to up and down vote links.
 
 ## Extras
-- [ ] As a user I should be able to comment on a link.
+- [x] As a user I should be able to comment on a link.
 - [ ] As a user I'm able to edit my comments.
-- [ ] As a user I'm able to delete my comments.
+- [x] As a user I'm able to delete my comments.
 - [ ] As a user I'm able to reply to comments.
 - [ ] As a user I'm able to reset my password with email.
 
 ### 2017-12-19
+- Started on comment editing and deleting
+- Added ability to comment
 - Finalized user voting functionality
 
 ### 2017-12-18
