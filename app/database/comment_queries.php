@@ -45,3 +45,21 @@ function setComment($pdo, $post_id, $user_id, $content) {
     $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
     $query-> execute();
 }
+
+/**
+ * Deletes comment from database
+ *
+ * @param PDO $pdo
+ * @param int $comment_id
+ *
+ * @return void
+ */
+
+ function deleteComment($pdo, $comment_id) {
+     $query = $pdo-> prepare('DELETE FROM comments WHERE id=:comment_id;');
+     if (!$query) {
+         die(var_dump($pdo->errorInfo()));
+     }
+     $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
+     $query-> execute();
+ }

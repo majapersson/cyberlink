@@ -1,9 +1,9 @@
 console.log('Hello World!');
 
-const danger = document.querySelector('.btn-danger');
+const post_delete = document.querySelector('.btn-danger');
 
-if (danger) {
-  danger.addEventListener('click', (event) => {
+if (post_delete) {
+  post_delete.addEventListener('click', (event) => {
     const reply = confirm('Are you sure?');
     if(!reply) {
       event.preventDefault();
@@ -20,11 +20,22 @@ icons.forEach((icon) => {
   })
 })
 
-const comButtons = document.querySelectorAll('button[name="comment"]');
-comButtons.forEach((button) => {
+const com_buttons = document.querySelectorAll('button[name="comment"]');
+com_buttons.forEach((button) => {
   button.addEventListener('click', (event) => {
     button.classList.add('d-none');
     button.nextElementSibling.classList.add('d-block');
     button.nextElementSibling.classList.remove('d-none');
+  })
+})
+
+const com_delete = document.querySelectorAll('.badge-danger');
+com_delete.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    const reply = confirm('Are you sure?');
+    if (reply) {
+      window.location = `/../../app/auth/comment.php/?id=${button.dataset.id}&del=1`;
+    }
   })
 })
