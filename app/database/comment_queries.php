@@ -21,6 +21,26 @@ function getComments($pdo, $post_id) {
 }
 
 /**
+ * Gets specific comment from database
+ *
+ * @param PDO $pdo
+ * @param int $id
+ *
+ * @return array
+ */
+
+ function getComment($pdo, $id) {
+     $query = $pdo-> prepare('SELECT * FROM comments WHERE id=:id;');
+     if (!$query) {
+         die(var_dump($pdo->errorInfo()));
+     }
+     $query-> bindParam(':id', $id, PDO::PARAM_INT);
+     $query-> execute();
+     return $query-> fetch(PDO::FETCH_ASSOC);
+
+ }
+
+/**
  * Saves new comment to comment table
  *
  * @param PDO $pdo
@@ -63,3 +83,27 @@ function setComment($pdo, $post_id, $user_id, $content) {
      $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
      $query-> execute();
  }
+
+ /**
+  * Updates existing comment
+  *
+  * @param PDO $pdo
+  * @param int $comment_id
+  * @param string $content
+  *
+  * @return void
+  */
+
+  function updateComment($pdo, $comment_id, $content) {
+      $timestamp = time();
+
+      $query = $pdo-> prepare('UPDATE comments SET content=:content, timestamp=:timestamp WHERE id=:comment_id;');
+      if (!$query) {
+          die(var_dump($pdo->errorInfo()));
+      }
+
+      $query-> bindParam(':content', $content, PDO::PARAM_STR);
+      $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
+      $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
+      $query-> execute();
+  }

@@ -4,15 +4,22 @@ $comments = getComments($pdo, $post['id']);
 
 if (isset($comments)):
     foreach($comments as $comment): ?>
-    <div class="card">
+    <div class="card m-2">
         <div class="card-body">
             <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
             <small><?php echo date('Y-m-d H:i', $comment['timestamp']); ?></small>
 
             <?php if (isset($user) && $comment['user_id'] === $user['id']): ?>
-                <a href="/" class="badge badge-primary" data-id=<?php echo $comment['id']; ?>>Edit</a>
-                <a href="/" class="badge badge-danger" data-id=<?php echo $comment['id']; ?>>Delete</a>
+                <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
+                <form action="/../app/auth/comment.php" method="post" class="d-inline">
+                    <input name="comment_id" value="<?php echo $comment['id'] ?>" hidden>
+                    <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+                </form>
             <?php endif; ?>
+            <form class="comment d-none" action="/../app/auth/comment.php" method="post">
+                <textarea class="form-control" name="comment" rows="4" cols="80"><?php echo $comment['content'] ?></textarea>
+                <button class="btn btn-primary" name="edit" type="submit">Save</button>
+            </form>
 
             <p><?php echo $comment['content']; ?></p>
         </div>

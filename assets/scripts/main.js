@@ -32,10 +32,20 @@ com_buttons.forEach((button) => {
 const com_delete = document.querySelectorAll('.badge-danger');
 com_delete.forEach((button) => {
   button.addEventListener('click', (event) => {
-    event.preventDefault();
     const reply = confirm('Are you sure?');
-    if (reply) {
-      window.location = `/../../app/auth/comment.php/?id=${button.dataset.id}&del=1`;
+    if (!reply) {
+      event.preventDefault();
     }
+  })
+})
+
+const com_edit = document.querySelectorAll('.badge-primary');
+com_edit.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const card_body = button.parentElement;
+    const com_form = card_body.querySelector('form.comment');
+    com_form.classList.toggle('d-block');
+    com_form.classList.toggle('d-none');
+    com_form.nextElementSibling.classList.toggle('d-none');
   })
 })
