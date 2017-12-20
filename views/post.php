@@ -35,9 +35,10 @@ elseif ($user_vote['vote'] === '1' || $user_vote === 1): ?>
 <a href="<?php echo $post['url'] ?>">
     <h3><?php echo $post['title']; ?></h3>
 </a>
-<a href="account.php/?id=<?php echo $post['author_id'] ?>">
-    <h4><?php echo $post['username']; ?></h4>
-</a>
+
+<h4>by
+    <a href="account.php/?id=<?php echo $post['author_id'] ?>"><?php echo $post['username']; ?></a>
+</h4>
 <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
 <p><?php echo $post['content'] ?></p>
 
