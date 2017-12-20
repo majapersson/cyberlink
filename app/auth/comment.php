@@ -20,3 +20,14 @@ if (isset($_POST['delete'])) {
         redirect('/');
     }
 }
+
+if (isset($_POST['edit'])) {
+    $comment_id = filter_var($_POST['comment_id'], FILTER_SANITIZE_NUMBER_INT);
+    $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
+
+    $comment = getComment($pdo, $comment_id);
+    if ($comment['user_id'] === $_SESSION['user']['id']) {
+        updateComment($pdo, $comment_id, $content);
+        redirect('/');
+    }
+}

@@ -17,7 +17,8 @@ if (isset($comments)):
                 </form>
             <?php endif; ?>
             <form class="comment d-none" action="/../app/auth/comment.php" method="post">
-                <textarea class="form-control" name="comment" rows="4" cols="80"><?php echo $comment['content'] ?></textarea>
+                <input name="comment_id" value="<?php echo $comment['id'] ?>" hidden>
+                <textarea class="form-control" name="content" rows="4" cols="80"><?php echo $comment['content'] ?></textarea>
                 <button class="btn btn-primary" name="edit" type="submit">Save</button>
             </form>
 
