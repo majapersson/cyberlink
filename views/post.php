@@ -9,16 +9,16 @@ if (isset($user)) {
     $user_vote = false;
 } ?>
 
-<?php if (!$user_vote || $user_vote['direction'] === '1'): ?>
+<?php if (!$user_vote || $user_vote['vote'] === '1'): ?>
     <i class="fas fa-caret-square-up"></i>
-<?php elseif ($user_vote['direction'] === '-1'|| $user_vote === 1): ?>
-    <i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-dir=1></i>
+<?php elseif ($user_vote['vote'] === '-1'|| $user_vote === 1): ?>
+    <i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
 <?php endif; ?>
 
-<?php if (!$user_vote || $user_vote['direction'] === '-1'): ?>
+<?php if (!$user_vote || $user_vote['vote'] === '-1'): ?>
     <i class="fas fa-caret-square-down"></i>
-<?php elseif ($user_vote['direction'] === '1' || $user_vote === 1): ?>
-    <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-dir=-1></i>
+<?php elseif ($user_vote['vote'] === '1' || $user_vote === 1): ?>
+    <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
 <?php endif; ?>
 <!-- End vote icons -->
 

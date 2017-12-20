@@ -8,7 +8,7 @@
  */
 
 function getPosts($pdo) {
-    $query = $pdo-> query('SELECT posts.*, users.username, votes.score FROM posts JOIN users ON posts.author_id=users.id JOIN votes ON posts.id=votes.post_id ORDER BY timestamp desc;');
+    $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.author_id=users.id GROUP BY posts.id ORDER BY timestamp desc;');
     $posts = $query->fetchAll(PDO::FETCH_ASSOC);
     return $posts;
 }
@@ -23,9 +23,9 @@ function getPosts($pdo) {
  */
 
 function getPost($pdo, $post_id) {
-    $query = $pdo-> query('SELECT posts.*, votes.score from posts JOIN votes ON posts.id=votes.post_id WHERE id=:id;');
+    $query = $pdo-> query('SELECT posts.*, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) FROM posts JOIN votes ON posts.id=votes.post_id GROUP BY posts.id;');
     if(!$query) {
-        die(var_dump($pod->errorInfo()));
+        die(var_dump($pdo->errorInfo()));
     }
     $query-> bindParam(':id', $post_id, PDO::PARAM_INT);
     $query-> execute();
@@ -132,14 +132,14 @@ function deletePost($pdo, $post_id) {
  *
  * @param PDO $pdo
  * @param int $post_id
- * @param int $direction
+ * @param int $vote
  *
  * @return void
  */
 
-function updateScore($pdo, $post_id, $direction) {
+function updateScore($pdo, $post_id, $vote) {
     $post = getPost($pdo, $post_id);
-    $post['score'] += $direction;
+    $post['score'] += $vote;
 
     $query = $pdo-> prepare('UPDATE votes SET score=:score WHERE post_id=:id;');
     if (!$query) {

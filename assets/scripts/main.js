@@ -16,7 +16,7 @@ icons.forEach((icon) => {
   icon.addEventListener('click', () => {
     icon.classList.toggle('far');
     icon.classList.toggle('fas');
-    window.location = `/../../app/auth/vote.php?id=${icon.dataset.id}&dir=${icon.dataset.dir}`;
+    window.location = `/../../app/auth/vote.php?id=${icon.dataset.id}&vote=${icon.dataset.vote}`;
   })
 })
 
