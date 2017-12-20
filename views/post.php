@@ -9,15 +9,23 @@ if (isset($user)) {
     $user_vote = false;
 } ?>
 
-<?php if (!$user_vote || $user_vote['vote'] === '1'): ?>
+<?php
+// If no one is logged in or user has already voted up
+if (!$user_vote || $user_vote['vote'] === '1'): ?>
     <i class="fas fa-caret-square-up"></i>
-<?php elseif ($user_vote['vote'] === '-1'|| $user_vote === 1): ?>
+<?php
+// If user hasn't voted or has voted down
+elseif ($user_vote['vote'] === '-1'|| $user_vote === 1): ?>
     <i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
 <?php endif; ?>
 
-<?php if (!$user_vote || $user_vote['vote'] === '-1'): ?>
+<?php
+// If no one is logged in or user has already voted down
+if (!$user_vote || $user_vote['vote'] === '-1'): ?>
     <i class="fas fa-caret-square-down"></i>
-<?php elseif ($user_vote['vote'] === '1' || $user_vote === 1): ?>
+<?php
+// If user hasn't voted or has voted down
+elseif ($user_vote['vote'] === '1' || $user_vote === 1): ?>
     <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
 <?php endif; ?>
 <!-- End vote icons -->

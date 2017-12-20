@@ -9,7 +9,9 @@ if (isset($comments)):
             <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
             <small><?php echo date('Y-m-d H:i', $comment['timestamp']); ?></small>
 
-            <?php if (isset($user) && $comment['user_id'] === $user['id']): ?>
+            <?php
+            // If logged in user is the same as author
+            if (isset($user) && $comment['user_id'] === $user['id']): ?>
                 <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
                 <form action="/../app/auth/comment.php" method="post" class="d-inline">
                     <input name="comment_id" value="<?php echo $comment['id'] ?>" hidden>
@@ -31,7 +33,9 @@ endif;
 ?>
 <!-- End comments -->
 
-<?php if (isset($user['id'])): ?>
+<?php
+// If user is logged in
+if (isset($user['id'])): ?>
     <button class="btn btn-primary" type="button" name="comment">Comment</button>
     <form class="d-none" action="/app/auth/comment.php" method="post">
         <input type="text" name="post_id" value="<?php echo $post['id'] ?>" hidden>

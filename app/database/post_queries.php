@@ -4,13 +4,12 @@
  *
  * @param PDO $pdo
  *
- * @return array $posts
+ * @return array
  */
 
 function getPosts($pdo) {
     $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.author_id=users.id GROUP BY posts.id ORDER BY timestamp desc;');
-    $posts = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $posts;
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -19,7 +18,7 @@ function getPosts($pdo) {
  * @param PDO $pdo
  * @param int $post_id
  *
- * @return array $post
+ * @return array
  */
 
 function getPost($pdo, $post_id) {
@@ -29,8 +28,7 @@ function getPost($pdo, $post_id) {
     }
     $query-> bindParam(':id', $post_id, PDO::PARAM_INT);
     $query-> execute();
-    $post = $query-> fetch(PDO::FETCH_ASSOC);
-    return $post;
+    return $query-> fetch(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -39,7 +37,7 @@ function getPost($pdo, $post_id) {
  * @param PDO $pdo
  * @param int $user_id
  *
- * @return array $user_posts
+ * @return array
  */
 
  function getUserPosts($pdo, $user_id) {
@@ -51,7 +49,7 @@ function getPost($pdo, $post_id) {
      $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
      $query-> execute();
 
-      return $user_posts = $query-> fetchAll(PDO::FETCH_ASSOC);
+      return $query-> fetchAll(PDO::FETCH_ASSOC);
  }
 
 /**

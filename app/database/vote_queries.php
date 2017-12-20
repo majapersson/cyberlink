@@ -6,7 +6,7 @@
  * @param int $post_id
  * @param int $user_id
  *
- * @return array $user_vote
+ * @return array
  */
 
 function checkVote($pdo, $post_id, $user_id) {
@@ -19,9 +19,7 @@ function checkVote($pdo, $post_id, $user_id) {
     $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query-> execute();
 
-    $user_vote = $query->fetch(PDO::FETCH_ASSOC);
-
-    return $user_vote;
+    return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 /**

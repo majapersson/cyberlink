@@ -4,13 +4,12 @@
  *
  * @param PDO $pdo
  *
- * @return array $users
+ * @return array
  */
 
 function getUsers($pdo): array {
     $query = $pdo-> query('SELECT id, username, email, password FROM users;');
-    $users = $query-> fetchAll(PDO::FETCH_ASSOC);
-    return $users;
+    return $query-> fetchAll(PDO::FETCH_ASSOC);
 }
 
 
@@ -31,8 +30,7 @@ function getUser ($pdo, int $id) {
     }
     $query-> bindParam(':id', $id, PDO::PARAM_INT);
     $query-> execute();
-    $user = $query->fetch(PDO::FETCH_ASSOC);
-    return $user;
+    return $query->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
