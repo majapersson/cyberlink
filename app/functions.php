@@ -29,7 +29,9 @@ if (!function_exists('redirect')) {
  */
 
 function printComments($pdo, $comments, $post) {
-    $user = $_SESSION['user'];
+    if (isset($_SESSION['user'])){
+        $user = $_SESSION['user'];
+    }
     foreach ($comments as $comment): ?>
         <div class="card m-2">
             <div class="card-body">
