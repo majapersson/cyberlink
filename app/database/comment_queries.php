@@ -51,10 +51,10 @@ function getComments($pdo, $post_id) {
  * @return void
  */
 
-function setComment($pdo, $post_id, $user_id, $content) {
+function setComment($pdo, $post_id = null, $user_id, $content, $reply_id = null) {
     $timestamp = time();
 
-    $query = $pdo-> prepare('INSERT INTO comments (post_id, user_id, content, timestamp) VALUES (:post_id, :user_id, :content, :timestamp);');
+    $query = $pdo-> prepare('INSERT INTO comments (post_id, user_id, content, timestamp, reply_id) VALUES (:post_id, :user_id, :content, :timestamp, :reply_id);');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
@@ -63,6 +63,7 @@ function setComment($pdo, $post_id, $user_id, $content) {
     $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query-> bindParam(':content', $content, PDO::PARAM_STR);
     $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
+    $query-> bindParam(':reply_id', $reply_id, PDO::PARAM_INT);
     $query-> execute();
 }
 
@@ -107,3 +108,22 @@ function setComment($pdo, $post_id, $user_id, $content) {
       $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
       $query-> execute();
   }
+
+  /**
+   * Gets replies to specific comment, if there are any
+   *
+   * @param PDO $pdo
+   * @param int $comment_id
+   *
+   * @return array
+   */
+
+   function getReplies($pdo, $id) {
+       $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE reply_id=:id;');
+       if (!$query) {
+           die(var_dump($pdo->errorInfo()));
+       }
+       $query-> bindParam(':id', $id, PDO::PARAM_INT);
+       $query-> execute();
+       return $query-> fetchAll(PDO::FETCH_ASSOC);
+   }

@@ -9,7 +9,6 @@ if (isset($_POST['post_id'], $_POST['comment'])) {
 
     setComment($pdo, $post_id, $_SESSION['user']['id'], $content);
 
-    redirect('/');
 }
 
 // Delete existing comment
@@ -18,7 +17,6 @@ if (isset($_POST['delete'])) {
     $comment = getComment($pdo, $comment_id);
     if ($comment['user_id'] === $_SESSION['user']['id']) {
         deleteComment($pdo, $comment_id);
-        redirect('/');
     }
 }
 
@@ -30,6 +28,15 @@ if (isset($_POST['edit'])) {
     $comment = getComment($pdo, $comment_id);
     if ($comment['user_id'] === $_SESSION['user']['id']) {
         updateComment($pdo, $comment_id, $content);
-        redirect('/');
     }
 }
+
+// Insert comment reply
+if (isset($_POST['reply_id'])) {
+    $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
+    $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
+
+    setComment($pdo, null, $_SESSION['user']['id'], $content, $reply_id);
+}
+
+redirect('/');

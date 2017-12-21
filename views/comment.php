@@ -18,6 +18,7 @@ if (isset($comments)):
                     <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
                 </form>
             <?php endif; ?>
+
             <form class="comment d-none" action="/../app/auth/comment.php" method="post">
                 <input name="comment_id" value="<?php echo $comment['id'] ?>" hidden>
                 <textarea class="form-control" name="content" rows="4" cols="80"><?php echo $comment['content'] ?></textarea>
@@ -25,6 +26,34 @@ if (isset($comments)):
             </form>
 
             <p><?php echo $comment['content']; ?></p>
+
+            <?php
+            // Reply stuff
+            if (isset($user)): ?>
+                <button class="btn badge badge-primary" name="reply">Reply</button>
+            <?php endif; ?>
+            <form class="reply d-none" action="/../app/auth/comment.php" method="post">
+                <input name="post_id" value="<?php echo $post['id'] ?>" hidden>
+                <input name="reply_id" value="<?php echo $comment['id'] ?>" hidden>
+                <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
+                <button class="btn btn-primary" type="submit">Reply</button>
+            </form>
+            <?php
+            // If there are replies
+            $replies = getReplies($pdo, $comment['id']);
+            if (isset($replies)):
+                foreach ($replies as $reply):
+            ?>
+            <div class="card m-2">
+                <div class="card-body">
+                    <a href="account.php/?id=<?php echo $reply['user_id']; ?>"><?php echo $reply['username']; ?></a>
+                    <small><?php echo date('Y-m-d H:i', $reply['timestamp']); ?></small>
+                    <p><?php echo $reply['content']; ?></p>
+                </div>
+            </div>
+            <?php
+                endforeach;
+            endif;?>
         </div>
     </div>
 <?php
