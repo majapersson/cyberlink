@@ -33,10 +33,12 @@ if (isset($_POST['edit'])) {
 
 // Insert comment reply
 if (isset($_POST['reply_id'])) {
+    $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
     $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
     $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
 
-    setComment($pdo, null, $_SESSION['user']['id'], $content, $reply_id);
+
+    setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);
 }
 
 redirect('/');

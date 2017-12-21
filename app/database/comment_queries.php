@@ -10,7 +10,7 @@
  */
 
 function getComments($pdo, $post_id) {
-    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id ORDER BY timestamp;');
+    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
@@ -51,7 +51,7 @@ function getComments($pdo, $post_id) {
  * @return void
  */
 
-function setComment($pdo, $post_id = null, $user_id, $content, $reply_id = null) {
+function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
     $timestamp = time();
 
     $query = $pdo-> prepare('INSERT INTO comments (post_id, user_id, content, timestamp, reply_id) VALUES (:post_id, :user_id, :content, :timestamp, :reply_id);');
