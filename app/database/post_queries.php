@@ -22,7 +22,7 @@ function getPosts($pdo) {
  */
 
 function getPost($pdo, $post_id) {
-    $query = $pdo-> query('SELECT posts.*, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) FROM posts JOIN votes ON posts.id=votes.post_id WHERE posts.id=:id GROUP BY posts.id;');
+    $query = $pdo-> query('SELECT posts.*, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id WHERE posts.id=:id GROUP BY posts.id;');
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
     }

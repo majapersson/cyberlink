@@ -96,15 +96,13 @@ function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
   */
 
   function updateComment($pdo, $comment_id, $content) {
-      $timestamp = time();
 
-      $query = $pdo-> prepare('UPDATE comments SET content=:content, timestamp=:timestamp WHERE id=:comment_id;');
+      $query = $pdo-> prepare('UPDATE comments SET content=:content WHERE id=:comment_id;');
       if (!$query) {
           die(var_dump($pdo->errorInfo()));
       }
 
       $query-> bindParam(':content', $content, PDO::PARAM_STR);
-      $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
       $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
       $query-> execute();
   }
