@@ -6,8 +6,6 @@
 * - Make parameters into arrays (opt)
 *
 * - Gör om comment forms till createElement?
-* - FETCH!!!!!
-* - reply comments
 */
 
 require __DIR__.'/views/header.php';

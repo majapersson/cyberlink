@@ -18,8 +18,11 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [x] As a user I should be able to comment on a link.
 - [x] As a user I'm able to edit my comments.
 - [x] As a user I'm able to delete my comments.
-- [ ] As a user I'm able to reply to comments.
+- [x] As a user I'm able to reply to comments.
 - [ ] As a user I'm able to reset my password with email.
+
+### 2017-12-21
+- Fixed voting with fetch to avoid page reload
 
 ### 2017-12-20
 - Fixed some structure and comments
