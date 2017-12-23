@@ -1,37 +1,10 @@
 <!--Vote icons -->
-<?php
-if (isset($user)) {
-    $user_vote = checkVote($pdo, $post['id'], $user['id']);
-    if (!$user_vote) {
-        $user_vote = 1;
-    }
-} else {
-    $user_vote = false;
-} ?>
-
-<?php
-// If no one is logged in or user has already voted up
-if (!$user_vote || $user_vote['vote'] === '1'): ?>
-    <i class="fas fa-caret-square-up"></i>
-<?php
-// If user hasn't voted or has voted down
-elseif ($user_vote['vote'] === '-1'|| $user_vote === 1): ?>
-    <i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
-<?php endif; ?>
-
-<?php
-// If no one is logged in or user has already voted down
-if (!$user_vote || $user_vote['vote'] === '-1'): ?>
-    <i class="fas fa-caret-square-down"></i>
-<?php
-// If user hasn't voted or has voted down
-elseif ($user_vote['vote'] === '1' || $user_vote === 1): ?>
-    <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
-<?php endif; ?>
+<i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
+<i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
 <!-- End vote icons -->
 
 <!-- Actual post -->
-<?php echo $post['score'];  ?>
+<span><?php echo $post['score'];  ?></span>
 <a href="<?php echo $post['url'] ?>">
     <h3><?php echo $post['title']; ?></h3>
 </a>
