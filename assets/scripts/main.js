@@ -104,24 +104,58 @@ com_delete.forEach((button) => {
   })
 })
 
-const com_edit = document.querySelectorAll('.badge-primary [name="edit"]');
-com_edit.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    const card_body = button.parentElement;
-    const com_form = card_body.querySelector('form.comment');
-    com_form.classList.toggle('d-block');
-    com_form.classList.toggle('d-none');
-    com_form.nextElementSibling.classList.toggle('d-none');
+// const com_edit = document.querySelectorAll('.badge-primary [name="edit"]');
+// com_edit.forEach((button) => {
+//   button.addEventListener('click', (event) => {
+//     const card_body = button.parentElement;
+//     const com_form = card_body.querySelector('form.comment');
+//     com_form.classList.toggle('d-block');
+//     com_form.classList.toggle('d-none');
+//     com_form.nextElementSibling.classList.toggle('d-none');
+//   })
+// })
+
+// const com_reply = document.querySelectorAll('[name="reply"]');
+// com_reply.forEach((button) => {
+//   button.addEventListener('click', (event) => {
+//     const card_body = button.parentElement;
+//     const com_form = card_body.querySelector('form.reply');
+//     com_form.classList.toggle('d-block');
+//     com_form.classList.toggle('d-none');
+//     com_form.previousElementSibling.classList.toggle('d-none');
+//   })
+// })
   })
 })
 
-const com_reply = document.querySelectorAll('[name="reply"]');
-com_reply.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    const card_body = button.parentElement;
-    const com_form = card_body.querySelector('form.reply');
-    com_form.classList.toggle('d-block');
-    com_form.classList.toggle('d-none');
-    com_form.previousElementSibling.classList.toggle('d-none');
+// Button toggles edit form
+const edit = document.querySelectorAll('[name="edit"]');
+edit.forEach(button => {
+  button.addEventListener('click', () => {
+    const id = button.parentElement.dataset.id;
+    fetch('/app/auth/fetch_comment.php', {
+        method: 'POST',
+        body: `id=${id}`,
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        credentials: 'include',
+      })
+      .then ((response) => {
+        return response.json();
+      })
+      .then((post) => {
+        const edit_form = `<form class="comment" action="/../app/auth/comment.php" method="post">
+        <input name="comment_id" value="${post.id}" hidden>
+        <textarea class="form-control" name="content" rows="4"  cols="80">${post.content}</textarea>
+        <button class="btn btn-primary" name="edit" type="submit">Save</button>
+        </form>`;
+        const form = document.createElement("div");
+        form.innerHTML = edit_form;
+        const reply = button.parentElement.querySelector('[name="reply"]');
+        button.parentElement.insertBefore(form, reply);
+        button.parentElement.querySelector('p').classList.add('d-none');
+        button.classList.add('d-none');
+      })
   })
 })
