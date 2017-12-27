@@ -15,12 +15,12 @@
 </a>
 
 <h4>by
-    <a href="account.php/?id=<?php echo $post['author_id'] ?>"><?php echo $post['username']; ?></a>
+    <a href="account.php/?id=<?php echo $post['user_id'] ?>"><?php echo $post['username']; ?></a>
 </h4>
 <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
 <p><?php echo $post['content'] ?></p>
 
-<?php if (isset($user['id']) && $post['author_id'] === $user['id']): ?>
+<?php if (isset($user['id']) && $post['user_id'] === $user['id']): ?>
     <form action="edit-post.php" method="post">
         <input type="hidden" name="post_id" value="<?php echo $post['id'] ?>">
         <button class="btn btn-primary" type="submit">Edit post</button>
