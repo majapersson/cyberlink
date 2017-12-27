@@ -14,12 +14,14 @@
             $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
         }
 
-        updatePost($pdo, $id, $title, $url, $content);
+        if ($_SESSION['user']['id'] === $post['user_id']) {
+            updatePost($pdo, $id, $title, $url, $content);
+        }
         redirect('/');
     }
 ?>
 
-<form action="edit-post.php" method="post">
+<form action="edit_post.php" method="post">
     <input type="hidden" name="id" value="<?php echo $post['id'] ?>">
     <div class="form-group">
         <label for="title">Title</label>
@@ -38,7 +40,7 @@
 
     <button class="btn btn-primary" type="submit">Update post</button>
 </form>
-<form action="/app/database/delete-post.php" method="post">
+<form action="/app/database/delete_post.php" method="post">
     <input type="hidden" name="id" value="<?php echo $post['id'] ?>">
     <button class="btn btn-danger" type="submit">Delete post</button>
 </form>
