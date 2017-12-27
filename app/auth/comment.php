@@ -7,8 +7,9 @@ if (isset($_POST['post_id'], $_POST['comment'])) {
     $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
     $content = filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
 
-    setComment($pdo, $post_id, $_SESSION['user']['id'], $content);
-
+    if (!empty($content)){
+        setComment($pdo, $post_id, $_SESSION['user']['id'], $content);
+    }
 }
 
 // Delete existing comment
@@ -37,8 +38,9 @@ if (isset($_POST['reply_id'])) {
     $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
     $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
 
-
-    setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);
+    if (!empty($content) && isset($post_id, $reply_id, $_SESSION['user'])) {
+        setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);
+    }
 }
 
 redirect('/');
