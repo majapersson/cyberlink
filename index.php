@@ -42,8 +42,6 @@ $posts = getPosts($pdo);
             <article class="card m-1">
                 <div class="card-body">
                     <?php require __DIR__.'/views/post.php'; ?>
-
-                    <?php require __DIR__.'/views/comment.php'; ?>
                 </div>
             </article>
         <?php endforeach; ?>
