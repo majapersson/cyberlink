@@ -6,7 +6,6 @@
 * - Make parameters into arrays (opt)
 *
 * - Send forms with fetch to avoid page reload
-* - Fix so that deleting one comment does not delete all child comments
 * - Fix database so that tables correlate
 * - Check variable names
 * - Double check user when editing stuff

@@ -35,7 +35,11 @@ function printComments($pdo, $comments, $post) {
     foreach ($comments as $comment): ?>
         <div class="card m-2">
             <div class="card-body" data-id=<?php echo $comment['id'] ?> id=<?php echo $comment['id'] ?>>
-                <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
+                <?php if ($comment['user_id'] !== '0'): ?>
+                    <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
+                <?php else: ?>
+                    [deleted]
+                <?php endif; ?>
                 <small><?php echo date('Y-m-d H:i', (int) $comment['timestamp']); ?></small>
 
                 <?php
