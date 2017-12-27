@@ -1,6 +1,11 @@
 <!--Vote icons -->
-<i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
-<i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
+<?php if (!isset($_SESSION['user'])): ?>
+    <i class="far fa-caret-square-up"></i>
+    <i class="far fa-caret-square-down"></i>
+<?php else: ?>
+    <i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
+    <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
+<?php endif; ?>
 <!-- End vote icons -->
 
 <!-- Actual post -->
