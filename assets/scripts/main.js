@@ -125,6 +125,53 @@ com_delete.forEach((button) => {
 //     com_form.previousElementSibling.classList.toggle('d-none');
 //   })
 // })
+
+
+// Button toggles reply form
+const reply = document.querySelectorAll('[name="reply"]');
+reply.forEach(button => {
+  button.addEventListener('click', () => {
+    const card = button.parentElement;
+    const id = card.dataset.id;
+    fetch('/app/auth/fetch_comment.php', {
+        method: 'POST',
+        body: `id=${id}`,
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+      })
+      .then ((response) => {
+        return response.json();
+      })
+      .then (post => {
+        const post_id = post.post_id;
+        const reply_form = `<form class="reply" action="/app/auth/comment.php" method="post">
+        <input name="reply_id" value="${id}" hidden>
+        <input name="post_id" value="${post_id}" hidden>
+        <textarea class="form-control" name="content" rows="4"  cols="80"></textarea>
+        <button class="btn btn-primary" name="reply" type="submit">Reply</button>
+        </form>`;
+        const div = document.createElement("div");
+        div.innerHTML = reply_form;
+        card.insertBefore(div, button);
+        button.classList.add('d-none');
+        // const submit = card.querySelector('[name="reply"]');
+        // const form = card.querySelector('.reply');
+        // submit.addEventListener('click', (event) => {
+        //   console.log(form);
+        //   const content = form.querySelector('textarea').value;
+        //   const formInput = `reply_id=${id}&post_id=${post_id}&content=${content}`;
+        //   fetch('/app/auth/comment.php', {
+        //       method: 'POST',
+        //       body: formInput,
+        //       headers: new Headers({
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //       }),
+        //       credentials: 'include',
+        //     })
+        //   form.innerHTML = '';
+        // })
+    })
   })
 })
 
@@ -139,7 +186,6 @@ edit.forEach(button => {
         headers: new Headers({
           'Content-Type': 'application/x-www-form-urlencoded'
         }),
-        credentials: 'include',
       })
       .then ((response) => {
         return response.json();
@@ -157,5 +203,5 @@ edit.forEach(button => {
         button.parentElement.querySelector('p').classList.add('d-none');
         button.classList.add('d-none');
       })
+    })
   })
-})

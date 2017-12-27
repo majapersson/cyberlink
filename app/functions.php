@@ -34,7 +34,7 @@ function printComments($pdo, $comments, $post) {
     }
     foreach ($comments as $comment): ?>
         <div class="card m-2">
-            <div class="card-body">
+            <div class="card-body" data-id=<?php echo $comment['id'] ?> id=<?php echo $comment['id'] ?>>
                 <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
                 <small><?php echo date('Y-m-d H:i', (int) $comment['timestamp']); ?></small>
 
@@ -48,11 +48,7 @@ function printComments($pdo, $comments, $post) {
                     </form>
                 <?php endif; ?>
 
-                <form class="comment d-none" action="/../app/auth/comment.php" method="post">
-                    <input name="comment_id" value="<?php echo $comment['id'] ?>" hidden>
-                    <textarea class="form-control" name="content" rows="4" cols="80"><?php echo $comment['content'] ?></textarea>
-                    <button class="btn btn-primary" name="edit" type="submit">Save</button>
-                </form>
+                <!-- Form class="comment" -->
 
                 <p><?php echo $comment['content']; ?></p>
 
@@ -61,12 +57,9 @@ function printComments($pdo, $comments, $post) {
                 if (isset($user)): ?>
                     <button class="btn badge badge-primary" name="reply">Reply</button>
                 <?php endif; ?>
-                <form class="reply d-none" action="/../app/auth/comment.php" method="post">
-                    <input name="post_id" value="<?php echo $post['id'] ?>" hidden>
-                    <input name="reply_id" value="<?php echo $comment['id'] ?>" hidden>
-                    <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
-                    <button class="btn btn-primary" type="submit">Reply</button>
-                </form>
+
+                <!-- Form class="reply" -->
+
                 <?php
                 // If there are replies
                 $replies = getReplies($pdo, $comment['id']);

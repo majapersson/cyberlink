@@ -41,6 +41,7 @@ if (isset($_POST['reply_id'])) {
     if (!empty($content) && isset($post_id, $reply_id, $_SESSION['user'])) {
         setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);
     }
+    redirect("/#$reply_id");
 }
 
 redirect('/');
