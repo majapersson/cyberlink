@@ -94,12 +94,22 @@ com_buttons.forEach((button) => {
   })
 })
 
-const com_delete = document.querySelectorAll('.badge-danger');
-com_delete.forEach((button) => {
+const comment_delete = document.querySelectorAll('.badge-danger');
+comment_delete.forEach((button) => {
   button.addEventListener('click', (event) => {
     const reply = confirm('Are you sure?');
-    if (!reply) {
-      event.preventDefault();
+    if (reply) {
+      const card = button.parentElement;
+      const id = card.dataset.id;
+      fetch('./app/auth/comment.php', {
+        method: 'POST',
+        body: `delete=true&comment_id=${id}`,
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        credentials: 'include',
+      })
+      card.parentElement.remove();
     }
   })
 })
