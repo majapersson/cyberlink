@@ -10,6 +10,15 @@ if (post_delete) {
     }
   })
 }
+// Post comment button
+const com_buttons = document.querySelectorAll('button[name="comment"]');
+com_buttons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    button.classList.add('d-none');
+    button.nextElementSibling.classList.add('d-block');
+    button.nextElementSibling.classList.remove('d-none');
+  })
+})
 
 // This makes it possible to vote without page reloading
 const icons = document.querySelectorAll('i');
@@ -84,16 +93,7 @@ icons.forEach(icon => {
   }
 })
 
-
-const com_buttons = document.querySelectorAll('button[name="comment"]');
-com_buttons.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    button.classList.add('d-none');
-    button.nextElementSibling.classList.add('d-block');
-    button.nextElementSibling.classList.remove('d-none');
-  })
-})
-
+// Delete comment
 const comment_delete = document.querySelectorAll('.badge-danger');
 comment_delete.forEach((button) => {
   button.addEventListener('click', (event) => {
@@ -114,27 +114,6 @@ comment_delete.forEach((button) => {
   })
 })
 
-// const com_edit = document.querySelectorAll('.badge-primary [name="edit"]');
-// com_edit.forEach((button) => {
-//   button.addEventListener('click', (event) => {
-//     const card_body = button.parentElement;
-//     const com_form = card_body.querySelector('form.comment');
-//     com_form.classList.toggle('d-block');
-//     com_form.classList.toggle('d-none');
-//     com_form.nextElementSibling.classList.toggle('d-none');
-//   })
-// })
-
-// const com_reply = document.querySelectorAll('[name="reply"]');
-// com_reply.forEach((button) => {
-//   button.addEventListener('click', (event) => {
-//     const card_body = button.parentElement;
-//     const com_form = card_body.querySelector('form.reply');
-//     com_form.classList.toggle('d-block');
-//     com_form.classList.toggle('d-none');
-//     com_form.previousElementSibling.classList.toggle('d-none');
-//   })
-// })
 
 
 // Button toggles reply form
