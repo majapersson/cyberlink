@@ -189,8 +189,8 @@ reply.forEach(button => {
 const edit = document.querySelectorAll('[name="edit"]');
 edit.forEach(button => {
   button.addEventListener('click', () => {
-    const id = button.parentElement.dataset.id;
     const card = button.parentElement;
+    const id = card.dataset.id;
     fetch('/app/auth/fetch_comment.php', {
         method: 'POST',
         body: `id=${id}`,
@@ -201,29 +201,29 @@ edit.forEach(button => {
       .then ((response) => {
         return response.json();
       })
-      .then((post) => {
-        const edit_form = `
-        <textarea class="form-control" name="content" rows="4"  cols="80">${post.content}</textarea>
+      .then((comment) => {
+        const edit_form = `<input type="hidden" name="comment_id" value="${comment.id}">
+        <textarea class="form-control" name="content" rows="4"  cols="80">${comment.content}</textarea>
         <button class="btn btn-primary" name="edit" type="button">Save</button>`;
         const form = document.createElement("form");
+        form.setAttribute('name', 'edit_comment');
         form.innerHTML = edit_form;
         const reply = card.querySelector('[name="reply"]');
         card.insertBefore(form, reply);
         card.querySelector('p').classList.add('d-none');
         button.classList.add('d-none');
+        return form;
       })
       // Submits comment changes and updates current comment
-      .then(() => {
-      const submit = card.querySelector('[type="button"]');
+      .then((form) => {
+      const submit = form.querySelector('button');
       submit.addEventListener('click', (event) => {
-        const content = card.querySelector('textarea').value;
-        const formInput = `comment_id=${id}&content=${content}&edit=true`;
+        const edit_form = document.forms.namedItem('edit_comment');
+        const formInput = new FormData(edit_form);
+        formInput.append('edit', 'true');
         fetch('/app/auth/comment.php', {
             method: 'POST',
             body: formInput,
-            headers: new Headers({
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }),
             credentials: 'include',
           })
           .then(response => {
