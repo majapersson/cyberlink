@@ -1,7 +1,7 @@
 console.log('Hello World!');
 
+// Post delete button
 const post_delete = document.querySelector('.btn-danger');
-
 if (post_delete) {
   post_delete.addEventListener('click', (event) => {
     const reply = confirm('Are you sure?');
@@ -114,52 +114,92 @@ comment_delete.forEach((button) => {
   })
 })
 
+// Formats timestamp to date string
+const toFormatDate = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+  const dateValues = [
+    date.getFullYear(),
+    date.getMonth()+1,
+    date.getDate(),
+    date.getHours()-1,
+    date.getMinutes(),
+  ];
+  return `${dateValues[0]}-${dateValues[1]}-${dateValues[2]} ${dateValues[3]}:${dateValues[4]}`;
+}
 
+// Prints new comment
+const printComment = ((comment, card) => {
+  const new_reply = document.createElement('div');
+  const timestamp = toFormatDate(comment.timestamp);
+  new_reply.classList.add('card');
+  new_reply.classList.add('m-2');
+  new_reply.innerHTML = `<div class="card-body">
+    <a href="account.php/?id=${comment.user_id}"> ${comment.username}</a>
+    <small>${timestamp}</small>
+    <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
+    <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+    <p>${comment.content}</p>
+    <button class="btn badge badge-primary" name="reply">Reply</button>
+  </div>`;
+  card.appendChild(new_reply);
+})
 
 // Button toggles reply form
-const reply = document.querySelectorAll('[name="reply"]');
+const reply = Array.prototype.slice.call(document.querySelectorAll('[name="reply"]'));
 reply.forEach(button => {
   button.addEventListener('click', () => {
     const card = button.parentElement;
     const id = card.dataset.id;
-    fetch('/app/auth/fetch_comment.php', {
+    fetch('/app/auth/comment.php', {
         method: 'POST',
         body: `id=${id}`,
         headers: new Headers({
           'Content-Type': 'application/x-www-form-urlencoded'
         }),
       })
-      .then ((response) => {
+      .then (response => {
         return response.json();
       })
       .then (post => {
         const post_id = post.post_id;
-        const reply_form = `<form class="reply" action="/app/auth/comment.php" method="post">
-        <input name="reply_id" value="${id}" hidden>
+        const reply_form = `<input name="reply_id" value="${id}" hidden>
         <input name="post_id" value="${post_id}" hidden>
         <textarea class="form-control" name="content" rows="4"  cols="80"></textarea>
-        <button class="btn btn-primary" name="reply" type="submit">Reply</button>
-        </form>`;
-        const div = document.createElement("div");
-        div.innerHTML = reply_form;
-        card.insertBefore(div, button);
+        <button class="btn btn-primary" name="reply" type="button">Reply</button>`;
+        const form = document.createElement("form");
+        form.setAttribute('name', 'reply_form');
+        form.innerHTML = reply_form;
+        card.insertBefore(form, button);
         button.classList.add('d-none');
-        // const submit = card.querySelector('[name="reply"]');
-        // const form = card.querySelector('.reply');
-        // submit.addEventListener('click', (event) => {
-        //   console.log(form);
-        //   const content = form.querySelector('textarea').value;
-        //   const formInput = `reply_id=${id}&post_id=${post_id}&content=${content}`;
-        //   fetch('/app/auth/comment.php', {
-        //       method: 'POST',
-        //       body: formInput,
-        //       headers: new Headers({
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //       }),
-        //       credentials: 'include',
-        //     })
-        //   form.innerHTML = '';
-        // })
+
+        // Submits reply and changes current comment
+        const submit = form.querySelector('button');
+        submit.addEventListener('click', (event) => {
+          const formInput = new FormData(form);
+          fetch('/app/auth/comment.php', {
+              method: 'POST',
+              body: formInput,
+              credentials: 'include',
+            })
+          form.innerHTML = '';
+          button.classList.remove('d-none');
+          fetch('/app/auth/comment.php', {
+              method: 'POST',
+              body: `reply_id=${post.id}`,
+              headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }),
+              credentials: 'include',
+            })
+            .then(response => {
+              return response.json();
+            })
+            .then(comments => {
+              comments.forEach(comment => {
+                printComment(comment, card);
+              })
+            })
+        })
     })
   })
 })
@@ -170,7 +210,7 @@ edit.forEach(button => {
   button.addEventListener('click', () => {
     const card = button.parentElement;
     const id = card.dataset.id;
-    fetch('/app/auth/fetch_comment.php', {
+    fetch('/app/auth/comment.php', {
         method: 'POST',
         body: `id=${id}`,
         headers: new Headers({
