@@ -9,7 +9,7 @@
  * @return array
  */
 
-function getComments($pdo, $post_id) {
+function getComments(PDO $pdo, int $post_id): array {
     $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -29,7 +29,7 @@ function getComments($pdo, $post_id) {
  * @return array
  */
 
- function getComment($pdo, $id) {
+ function getComment(PDO $pdo, int $id): array {
      $query = $pdo-> prepare('SELECT * FROM comments WHERE id=:id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
@@ -51,7 +51,7 @@ function getComments($pdo, $post_id) {
  * @return void
  */
 
-function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
+function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $reply_id = null) {
     $timestamp = time();
 
     $query = $pdo-> prepare('INSERT INTO comments (post_id, user_id, content, timestamp, reply_id) VALUES (:post_id, :user_id, :content, :timestamp, :reply_id);');
@@ -76,7 +76,7 @@ function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
  * @return void
  */
 
- function deleteComment($pdo, $comment_id) {
+ function deleteComment(PDO $pdo, int $comment_id) {
      $replies = getReplies($pdo, $comment_id);
      if (empty($replies)) {
          $query = $pdo-> prepare('DELETE FROM comments WHERE id=:comment_id;');
@@ -105,7 +105,7 @@ function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
   * @return void
   */
 
-  function updateComment($pdo, $comment_id, $content) {
+  function updateComment(PDO $pdo, int $comment_id, string $content) {
 
       $query = $pdo-> prepare('UPDATE comments SET content=:content WHERE id=:comment_id;');
       if (!$query) {
@@ -126,7 +126,7 @@ function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
    * @return array
    */
 
-   function getReplies($pdo, $id) {
+   function getReplies(PDO $pdo, int $id) {
        $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE reply_id=:id;');
        if (!$query) {
            die(var_dump($pdo->errorInfo()));

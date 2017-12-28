@@ -19,9 +19,9 @@ if (isset($_FILES['image'])) {
     }
 }
 
-if (isset($_POST['newPassword'], $_POST['oldPassword']) && $user['id'] === $_SESSION['user']['id']) {
-    if (password_verify($_POST['oldPassword'], $user['password'])) {
-        updatePassword($pdo, $_POST['newPassword'], $user['id']);
+if (isset($_POST['new_password'], $_POST['old_password']) && $user['id'] === $_SESSION['user']['id']) {
+    if (password_verify($_POST['old_password'], $user['password'])) {
+        updatePassword($pdo, $_POST['new_password'], $user['id']);
     } else {
         $error = 'The old password was incorrect.';
     }
@@ -70,11 +70,11 @@ if (isset($_POST['newPassword'], $_POST['oldPassword']) && $user['id'] === $_SES
         endif; ?>
         <div class="form-group">
             <label for="newPassword">New password</label>
-            <input class="form-control" type="password" name="newPassword">
+            <input class="form-control" type="password" name="new_password">
         </div>
         <div class="form-group">
             <label for="oldPassword">Old password</label>
-            <input class="form-control" type="password" name="oldPassword">
+            <input class="form-control" type="password" name="old_password">
         </div>
 
         <button class="btn btn-primary" type="submit">Update password</button>

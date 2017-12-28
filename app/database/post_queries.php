@@ -7,7 +7,7 @@
  * @return array
  */
 
-function getPosts($pdo) {
+function getPosts(PDO $pdo): array {
     $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id GROUP BY posts.id ORDER BY timestamp desc;');
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -21,7 +21,7 @@ function getPosts($pdo) {
  * @return array
  */
 
-function getPost($pdo, $post_id) {
+function getPost(PDO $pdo, int $post_id): array {
     $query = $pdo-> query('SELECT posts.*, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id WHERE posts.id=:id GROUP BY posts.id;');
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -40,7 +40,7 @@ function getPost($pdo, $post_id) {
  * @return array
  */
 
- function getUserPosts($pdo, $user_id) {
+ function getUserPosts(PDO $pdo, int $user_id): array {
      $query = $pdo-> prepare('SELECT * FROM posts WHERE user_id=:user_id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
@@ -63,7 +63,7 @@ function getPost($pdo, $post_id) {
  * @return void
  */
 
-function setPost($pdo, $title, $url, $content = null) {
+function setPost(PDO $pdo, string $title, string $url, string $content = null) {
     $timestamp = time();
 
     $query = $pdo-> prepare('INSERT INTO posts (user_id, title, url, timestamp, content) VALUES (:id, :title, :url, :timestamp, :content);');
@@ -91,7 +91,7 @@ function setPost($pdo, $title, $url, $content = null) {
  * @return void
  */
 
-function updatePost($pdo, $post_id, $title, $url, $content = null) {
+function updatePost(PDO $pdo, int $post_id, string $title, string $url, string $content = null) {
     $timestamp = time();
 
     $query = $pdo-> prepare('UPDATE posts SET title=:title, url=:url, timestamp=:timestamp, content=:content WHERE id=:post_id;');
@@ -116,7 +116,7 @@ function updatePost($pdo, $post_id, $title, $url, $content = null) {
  * @return void
  */
 
-function deletePost($pdo, $post_id) {
+function deletePost(PDO $pdo, int $post_id) {
     $query = $pdo-> prepare('DELETE FROM posts WHERE id=:id;');
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -135,7 +135,7 @@ function deletePost($pdo, $post_id) {
  * @return void
  */
 
-function updateScore($pdo, $post_id, $vote) {
+function updateScore(PDO $pdo, int $post_id, int $vote) {
     $post = getPost($pdo, $post_id);
     $post['score'] += $vote;
 

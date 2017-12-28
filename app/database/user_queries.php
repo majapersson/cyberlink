@@ -7,7 +7,7 @@
  * @return array
  */
 
-function getUsers($pdo): array {
+function getUsers(PDO $pdo): array {
     $query = $pdo-> query('SELECT id, username, email, password FROM users;');
     return $query-> fetchAll(PDO::FETCH_ASSOC);
 }
@@ -22,7 +22,7 @@ function getUsers($pdo): array {
  * @return array $user
  */
 
-function getUser ($pdo, int $id) {
+function getUser(PDO $pdo, int $id): array {
     // Get user from ID
     $query = $pdo->prepare('SELECT * FROM users WHERE id=:id;');
     if(!$query){
@@ -44,7 +44,7 @@ function getUser ($pdo, int $id) {
  * @return void
  */
 
-function setUser ($pdo, string $username, string $email, string $password) {
+function setUser(PDO $pdo, string $username, string $email, string $password) {
     $query = $pdo-> prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password);');
 
     if(!$query) {
@@ -69,7 +69,7 @@ function setUser ($pdo, string $username, string $email, string $password) {
  * @return array $user
  */
 
-function updateInfo ($pdo, int $id, string $email, string $bio = null) {
+function updateInfo (PDO $pdo, int $id, string $email, string $bio = null): array {
     $query = $pdo-> prepare('UPDATE users SET email=:email, bio=:bio WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -95,7 +95,7 @@ function updateInfo ($pdo, int $id, string $email, string $bio = null) {
  * @return void
  */
 
-function updateImage ($pdo, array $image, array $user) {
+function updateImage (PDO $pdo, array $image, array $user) {
     $file = pathinfo($image['name']);
     $filename = $user['username'].'.'.$file['extension'];
 
@@ -120,12 +120,12 @@ function updateImage ($pdo, array $image, array $user) {
  * @return void
  */
 
-function updatePassword ($pdo, string $newPassword, int $user_id) {
+function updatePassword (PDO $pdo, string $new_password, int $user_id) {
     $query = $pdo-> prepare('UPDATE users SET password=:password WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
-    $password = password_hash($newPassword, PASSWORD_DEFAULT);
+    $password = password_hash($new_password, PASSWORD_DEFAULT);
     $query-> bindParam(':password', $password, PDO::PARAM_STR);
     $query-> bindParam(':id', $user_id, PDO::PARAM_INT);
     $query-> execute();

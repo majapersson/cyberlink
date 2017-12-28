@@ -28,7 +28,7 @@ if (!function_exists('redirect')) {
  * @return void
  */
 
-function printComments($pdo, $comments, $post) {
+function printComments(PDO $pdo, array $comments, array $post) {
     if (isset($_SESSION['user'])){
         $user = $_SESSION['user'];
     }

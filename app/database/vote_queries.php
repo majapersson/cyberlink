@@ -9,7 +9,7 @@
  * @return array
  */
 
-function checkVote($pdo, $post_id, $user_id) {
+function checkVote(PDO $pdo, int $post_id, int $user_id): array {
     $query = $pdo-> prepare('SELECT * from votes WHERE post_id=:post_id AND user_id=:user_id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -33,7 +33,7 @@ function checkVote($pdo, $post_id, $user_id) {
  * @return void
  */
 
-function setVote($pdo, $post_id, $user_id, $vote) {
+function setVote(PDO $pdo, int $post_id, int $user_id, int $vote) {
     $query = $pdo-> prepare('INSERT INTO votes (post_id, user_id, vote) VALUES (:post_id, :user_id, :vote);');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -56,7 +56,7 @@ function setVote($pdo, $post_id, $user_id, $vote) {
  * @return void
  */
 
-function updateVote($pdo, $post_id, $user_id, $vote) {
+ function updateVote(PDO $pdo, int $post_id, int $user_id, int $vote) {
     $query = $pdo-> prepare('UPDATE votes SET vote=:vote WHERE post_id=:post_id AND user_id=:user_id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
