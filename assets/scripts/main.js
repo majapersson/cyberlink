@@ -109,7 +109,24 @@ comment_delete.forEach((button) => {
         }),
         credentials: 'include',
       })
-      card.parentElement.remove();
+      fetch('./app/auth/comment.php', {
+        method: 'POST',
+        body: `id=${id}`,
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        credentials: 'include',
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(comment => {
+        console.log(comment);
+        card.querySelector('p').textContent = comment.content;
+        const deleted = document.createTextNode('[deleted]');
+        card.insertBefore(deleted, card.querySelector('a'));
+        card.querySelector('a').remove();
+      })
     }
   })
 })
@@ -183,6 +200,7 @@ reply.forEach(button => {
             })
           form.innerHTML = '';
           button.classList.remove('d-none');
+          // FUNKAR INTE, HÄMTAR FLERA REPLIES //
           fetch('/app/auth/comment.php', {
               method: 'POST',
               body: `reply_id=${post.id}`,
