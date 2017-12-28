@@ -49,21 +49,17 @@ function printComments(PDO $pdo, array $comments, array $post) {
                     <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
                 <?php endif; ?>
 
-                <!-- Form class="comment" -->
-
                 <p><?php echo $comment['content']; ?></p>
 
                 <?php
-                // Reply stuff
-                if (isset($user)): ?>
+                // Reply button
+                if (isset($user) && $comment['user_id'] !== '0'): ?>
                     <button class="btn badge badge-primary" name="reply">Reply</button>
                 <?php endif; ?>
 
-                <!-- Form class="reply" -->
-
                 <?php
                 // If there are replies
-                $replies = getReplies($pdo, $comment['id']);
+                $replies = getReplies($pdo, (int) $comment['id']);
                 if (isset($replies)) {
                     printComments($pdo, $replies, $post);
                 } ?>
