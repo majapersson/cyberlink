@@ -190,6 +190,7 @@ const edit = document.querySelectorAll('[name="edit"]');
 edit.forEach(button => {
   button.addEventListener('click', () => {
     const id = button.parentElement.dataset.id;
+    const card = button.parentElement;
     fetch('/app/auth/fetch_comment.php', {
         method: 'POST',
         body: `id=${id}`,
@@ -201,17 +202,40 @@ edit.forEach(button => {
         return response.json();
       })
       .then((post) => {
-        const edit_form = `<form class="comment" action="/../app/auth/comment.php" method="post">
-        <input name="comment_id" value="${post.id}" hidden>
+        const edit_form = `
         <textarea class="form-control" name="content" rows="4"  cols="80">${post.content}</textarea>
-        <button class="btn btn-primary" name="edit" type="submit">Save</button>
-        </form>`;
-        const form = document.createElement("div");
+        <button class="btn btn-primary" name="edit" type="button">Save</button>`;
+        const form = document.createElement("form");
         form.innerHTML = edit_form;
-        const reply = button.parentElement.querySelector('[name="reply"]');
-        button.parentElement.insertBefore(form, reply);
-        button.parentElement.querySelector('p').classList.add('d-none');
+        const reply = card.querySelector('[name="reply"]');
+        card.insertBefore(form, reply);
+        card.querySelector('p').classList.add('d-none');
         button.classList.add('d-none');
+      })
+      // Submits comment changes and updates current comment
+      .then(() => {
+      const submit = card.querySelector('[type="button"]');
+      submit.addEventListener('click', (event) => {
+        const content = card.querySelector('textarea').value;
+        const formInput = `comment_id=${id}&content=${content}&edit=true`;
+        fetch('/app/auth/comment.php', {
+            method: 'POST',
+            body: formInput,
+            headers: new Headers({
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }),
+            credentials: 'include',
+          })
+          .then(response => {
+            return response.json();
+          })
+          .then(new_comment => {
+            card.querySelector('form').remove();
+            card.querySelector('p').textContent = new_comment.content;
+            card.querySelector('p').classList.remove('d-none');
+            button.classList.remove('d-none');
+          })
+        })
       })
     })
   })

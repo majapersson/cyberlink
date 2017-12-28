@@ -30,6 +30,7 @@ if (isset($_POST['edit'])) {
     if ($comment['user_id'] === $_SESSION['user']['id']) {
         updateComment($pdo, $comment_id, $content);
     }
+    echo json_encode(getComment($pdo, $comment_id));
 }
 
 // Insert comment reply
@@ -43,5 +44,3 @@ if (isset($_POST['reply_id'])) {
     }
     redirect("/#$reply_id");
 }
-
-redirect('/');
