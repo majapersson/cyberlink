@@ -6,10 +6,10 @@
 * - Make parameters into arrays (opt)
 *
 * - Send forms with fetch to avoid page reload
+* - Fix comment buttons on new comment
 * - Fix database so that tables correlate
-* - Check variable names
-* - Double check user when editing stuff
-* -
+* - Better styling
+*
 */
 
 require __DIR__.'/views/header.php';

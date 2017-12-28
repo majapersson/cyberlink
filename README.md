@@ -21,6 +21,10 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [x] As a user I'm able to reply to comments.
 - [ ] As a user I'm able to reset my password with email.
 
+### 2017-12-28
+- Replying to comments using fetch is almost functional
+- Editing and deleting of comments fixed with fetch
+
 ### 2017-12-21
 - Fixed voting with fetch to avoid page reload
 
