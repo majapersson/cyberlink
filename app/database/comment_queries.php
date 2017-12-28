@@ -77,12 +77,22 @@ function setComment($pdo, $post_id, $user_id, $content, $reply_id = null) {
  */
 
  function deleteComment($pdo, $comment_id) {
-     $query = $pdo-> prepare('UPDATE comments SET user_id=null, content="deleted" WHERE id=:comment_id;');
-     if (!$query) {
-         die(var_dump($pdo->errorInfo()));
+     $replies = getReplies($pdo, $comment_id);
+     if (empty($replies)) {
+         $query = $pdo-> prepare('DELETE FROM comments WHERE id=:comment_id;');
+         if (!$query) {
+             die(var_dump($pdo->errorInfo()));
+         }
+         $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
+         $query-> execute();
+     } else {
+         $query = $pdo-> prepare('UPDATE comments SET user_id=0, content="[deleted]" WHERE id=:comment_id;');
+         if (!$query) {
+             die(var_dump($pdo->errorInfo()));
+         }
+         $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
+         $query-> execute();
      }
-     $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
-     $query-> execute();
  }
 
  /**
