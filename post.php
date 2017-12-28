@@ -9,7 +9,9 @@
             $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
         }
 
-        setPost($pdo, $title, $url, $content);
+        if (isset($_SESSION['user'])) {
+            setPost($pdo, $title, $url, $content);
+        }
         redirect('/');
     }
 ?>

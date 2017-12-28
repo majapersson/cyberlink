@@ -6,16 +6,20 @@ if (isset($_POST['email'], $_POST['bio'])) {
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $bio = filter_var($_POST['bio'], FILTER_SANITIZE_STRING);
 
-    $user = updateInfo($pdo, $user['id'], $email, $bio);
+    if ($user['id'] === $_SESSION['user']['id']) {
+        $user = updateInfo($pdo, $user['id'], $email, $bio);
+    }
 }
 
 if (isset($_FILES['image'])) {
     $image = $_FILES['image'];
-    updateImage($pdo, $image, $user);
-    $user = getUser($pdo, $user['id']);
+    if ($user['id'] === $_SESSION['user']['id']) {
+        updateImage($pdo, $image, $user);
+        $user = getUser($pdo, $user['id']);
+    }
 }
 
-if (isset($_POST['newPassword'], $_POST['oldPassword'])) {
+if (isset($_POST['newPassword'], $_POST['oldPassword']) && $user['id'] === $_SESSION['user']['id']) {
     if (password_verify($_POST['oldPassword'], $user['password'])) {
         updatePassword($pdo, $_POST['newPassword'], $user['id']);
     } else {
