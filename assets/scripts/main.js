@@ -98,35 +98,8 @@ const comment_delete = document.querySelectorAll('.badge-danger');
 comment_delete.forEach((button) => {
   button.addEventListener('click', (event) => {
     const reply = confirm('Are you sure?');
-    if (reply) {
-      const card = button.parentElement;
-      const id = card.dataset.id;
-      fetch('./app/auth/comment.php', {
-        method: 'POST',
-        body: `delete=true&comment_id=${id}`,
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        credentials: 'include',
-      })
-      fetch('./app/auth/comment.php', {
-        method: 'POST',
-        body: `id=${id}`,
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        credentials: 'include',
-      })
-      .then(response => {
-        return response.json();
-      })
-      .then(comment => {
-        console.log(comment);
-        card.querySelector('p').textContent = comment.content;
-        const deleted = document.createTextNode('[deleted]');
-        card.insertBefore(deleted, card.querySelector('a'));
-        card.querySelector('a').remove();
-      })
+    if (!reply) {
+      event.preventDefault();
     }
   })
 })
@@ -162,7 +135,7 @@ const printComment = ((comment, card) => {
 })
 
 // Button toggles reply form
-const reply = Array.prototype.slice.call(document.querySelectorAll('[name="reply"]'));
+const reply = document.querySelectorAll('[name="reply"]');
 reply.forEach(button => {
   button.addEventListener('click', () => {
     const card = button.parentElement;

@@ -34,7 +34,7 @@ function printComments(PDO $pdo, array $comments, array $post) {
     }
     foreach ($comments as $comment): ?>
         <div class="card m-2">
-            <div class="card-body" data-id=<?php echo $comment['id'] ?> id=<?php echo $comment['id'] ?>>
+            <div class="card-body" data-id=<?php echo $comment['id'] ?>>
                 <?php if ($comment['user_id'] !== '0'): ?>
                     <a href="account.php/?id=<?php echo $comment['user_id']; ?>"><?php echo $comment['username']; ?></a>
                 <?php else: ?>

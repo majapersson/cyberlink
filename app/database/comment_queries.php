@@ -26,10 +26,10 @@ function getComments(PDO $pdo, int $post_id): array {
  * @param PDO $pdo
  * @param int $id
  *
- * @return array
+ * @return array/boolean
  */
 
- function getComment(PDO $pdo, int $id): array {
+ function getComment(PDO $pdo, int $id) {
      $query = $pdo-> prepare('SELECT * FROM comments WHERE id=:id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
@@ -124,7 +124,7 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
    * @param PDO $pdo
    * @param int $comment_id
    *
-   * @return array
+   * @return array/boolean
    */
 
    function getReplies(PDO $pdo, int $id) {
