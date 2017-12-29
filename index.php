@@ -38,7 +38,7 @@ $posts = getPosts($pdo);
 
         <!-- Start of posts -->
         <?php foreach($posts as $post): ?>
-            <article class="card m-1">
+            <article class="card m-1" id="<?php echo $post['id'] ?>">
                 <div class="card-body">
                     <?php require __DIR__.'/views/post.php'; ?>
                 </div>

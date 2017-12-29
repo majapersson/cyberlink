@@ -6,7 +6,10 @@ require __DIR__.'/../autoload.php';
 if (isset($_POST['id'])) {
     $comment_id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
 
-    echo json_encode(getComment($pdo, $comment_id));
+    $comment = getComment($pdo, $comment_id);
+
+    echo json_encode($comment);
+
 }
 
 // Get reply by id
@@ -30,10 +33,26 @@ if (isset($_POST['post_id'], $_POST['comment'])) {
 if (isset($_POST['delete'])) {
     $comment_id = filter_var($_POST['comment_id'], FILTER_SANITIZE_NUMBER_INT);
     $comment = getComment($pdo, $comment_id);
-    if ($comment['user_id'] === $_SESSION['user']['id']) {
+    checkDelete($pdo, $comment['id']);
+    redirect('/#'.$comment['post_id']);
+}
+
+// Check if parent comment should also be deleted
+function checkDelete($pdo, $comment_id) {
+    $comment = getComment($pdo, $comment_id);
+    // Check if comment parent is [deleted]
+    if (isset($comment['reply_id'])) {
+        $parent = getComment($pdo, $comment['reply_id']);
+    }
+    if ($comment['user_id'] === $_SESSION['user']['id'] || $comment['user_id'] === '0') {
         deleteComment($pdo, $comment_id);
     }
+    // If parent comment is [deleted], run the function again to remove it and check its parent
+    if ($parent['user_id'] === '0') {
+        checkDelete($pdo, $parent['id']);
+    }
 }
+
 
 // Update existing comment
 if (isset($_POST['edit'])) {
