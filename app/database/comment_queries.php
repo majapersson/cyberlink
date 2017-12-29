@@ -65,6 +65,16 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
     $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
     $query-> bindParam(':reply_id', $reply_id, PDO::PARAM_INT);
     $query-> execute();
+
+    $comment = [
+        'post_id' => $post_id,
+        'user_id' => $user_id,
+        'username' => getUser($pdo, $user_id)['username'],
+        'content' => $content,
+        'timestamp' => $timestamp,
+        'reply_id' => $reply_id,
+    ];
+    return $comment;
 }
 
 /**

@@ -7,13 +7,12 @@ if (isset($_POST['id'])) {
     $comment_id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
 
     $comment = getComment($pdo, $comment_id);
-
     echo json_encode($comment);
 
 }
 
 // Get reply by id
-if (isset($_POST['reply_id'])) {
+if (isset($_POST['reply_id']) && !isset($_POST['content'])) {
     $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
 
     echo json_encode(getReplies($pdo, $reply_id));
@@ -25,8 +24,22 @@ if (isset($_POST['post_id'], $_POST['comment'])) {
     $content = filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
 
     if (!empty($content)){
-        setComment($pdo, $post_id, $_SESSION['user']['id'], $content);
+        $comment = setComment($pdo, $post_id, $_SESSION['user']['id'], $content);
     }
+
+    echo json_encode($comment);
+}
+
+// Insert comment reply
+if (isset($_POST['reply_id'], $_POST['content'])) {
+    $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
+    $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
+    $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
+
+    if (!empty($content) && isset($post_id, $reply_id, $_SESSION['user'])) {
+        $reply = setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);
+    }
+    echo json_encode($reply);
 }
 
 // Delete existing comment
@@ -64,15 +77,4 @@ if (isset($_POST['edit'])) {
         updateComment($pdo, $comment_id, $content);
     }
     echo json_encode(getComment($pdo, $comment_id));
-}
-
-// Insert comment reply
-if (isset($_POST['reply_id'], $_POST['content'])) {
-    $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
-    $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
-    $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
-
-    if (!empty($content) && isset($post_id, $reply_id, $_SESSION['user'])) {
-        setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);
-    }
 }

@@ -108,11 +108,11 @@ comment_delete.forEach((button) => {
 const toFormatDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
   const dateValues = [
-    date.getFullYear(),
-    date.getMonth()+1,
-    date.getDate(),
-    date.getHours()-1,
-    date.getMinutes(),
+    date.getUTCFullYear(),
+    date.getUTCMonth()+1,
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
   ];
   return `${dateValues[0]}-${dateValues[1]}-${dateValues[2]} ${dateValues[3]}:${dateValues[4]}`;
 }
@@ -161,7 +161,9 @@ reply.forEach(button => {
         form.innerHTML = reply_form;
         card.insertBefore(form, button);
         button.classList.add('d-none');
-
+        return form;
+      })
+      .then (form => {
         // Submits reply and changes current comment
         const submit = form.querySelector('button');
         submit.addEventListener('click', (event) => {
@@ -171,24 +173,13 @@ reply.forEach(button => {
               body: formInput,
               credentials: 'include',
             })
-          form.innerHTML = '';
-          button.classList.remove('d-none');
-          // FUNKAR INTE, HÄMTAR FLERA REPLIES //
-          fetch('/app/auth/comment.php', {
-              method: 'POST',
-              body: `reply_id=${post.id}`,
-              headers: new Headers({
-                'Content-Type': 'application/x-www-form-urlencoded'
-              }),
-              credentials: 'include',
-            })
-            .then(response => {
+            .then (response => {
               return response.json();
             })
-            .then(comments => {
-              comments.forEach(comment => {
-                printComment(comment, card);
-              })
+            .then(comment => {
+              form.innerHTML = '';
+              button.classList.remove('d-none');
+              printComment(comment, card);
             })
         })
     })
@@ -228,8 +219,7 @@ edit.forEach(button => {
       .then((form) => {
       const submit = form.querySelector('button');
       submit.addEventListener('click', (event) => {
-        const edit_form = document.forms.namedItem('edit_comment');
-        const formInput = new FormData(edit_form);
+        const formInput = new FormData(form);
         formInput.append('edit', 'true');
         fetch('/app/auth/comment.php', {
             method: 'POST',
@@ -240,7 +230,7 @@ edit.forEach(button => {
             return response.json();
           })
           .then(new_comment => {
-            card.querySelector('form').remove();
+            form.remove();
             card.querySelector('p').textContent = new_comment.content;
             card.querySelector('p').classList.remove('d-none');
             button.classList.remove('d-none');
