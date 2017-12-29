@@ -78,6 +78,7 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
 
  function deleteComment(PDO $pdo, int $comment_id) {
      $replies = getReplies($pdo, $comment_id);
+     // If comment doen't have any replies, delete it completely
      if (empty($replies)) {
          $query = $pdo-> prepare('DELETE FROM comments WHERE id=:comment_id;');
          if (!$query) {
@@ -85,7 +86,7 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
          }
          $query-> bindParam(':comment_id', $comment_id, PDO::PARAM_INT);
          $query-> execute();
-     } else {
+     } else { // Else change content to [deleted]
          $query = $pdo-> prepare('UPDATE comments SET user_id=0, content="[deleted]" WHERE id=:comment_id;');
          if (!$query) {
              die(var_dump($pdo->errorInfo()));
