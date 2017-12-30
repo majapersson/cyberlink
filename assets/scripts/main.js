@@ -1,6 +1,6 @@
 console.log('Hello World!');
 
-// Post delete button
+// Delete post
 const post_delete = document.querySelector('.btn-danger');
 if (post_delete) {
   post_delete.addEventListener('click', (event) => {
@@ -10,88 +10,6 @@ if (post_delete) {
     }
   })
 }
-// Post comment button
-const com_buttons = document.querySelectorAll('button[name="comment"]');
-com_buttons.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    button.classList.add('d-none');
-    button.nextElementSibling.classList.add('d-block');
-    button.nextElementSibling.classList.remove('d-none');
-  })
-})
-
-// This makes it possible to vote without page reloading
-const icons = document.querySelectorAll('i');
-icons.forEach(icon => {
-  const id = icon.dataset.id;
-  const vote = icon.dataset.vote;
-  // Fetch current vote
-  fetch('./app/auth/fetch_vote.php', {
-    method: 'POST',
-    body: `id=${id}`,
-    headers: new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }),
-    credentials: 'include',
-  })
-  .then(response => {
-      return response.json();
-  })
-  .then(post => {
-    // If current vote is the same as in database
-    if (vote === post.vote) {
-      icon.classList.add('fas');
-      icon.classList.remove('far');
-    }
-  })
-  // If user has already voted
-  if (icon.classList.contains('far')) {
-    icon.addEventListener('click', (event) => {
-      const newVote = icon.dataset.vote;
-      fetch('./app/auth/fetch_vote.php',{
-        method: 'POST',
-        body: `id=${id}&vote=${newVote}`,
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        credentials: 'include',
-      })
-      .then(response => {
-        return response.json();
-      })
-      // Changes icons depending on the new vote
-      .then(post => {
-        if (newVote === post.vote) {
-          icon.classList.toggle('fas');
-          icon.classList.toggle('far');
-          if (newVote === '1') {
-            icon.nextElementSibling.classList.toggle('fas');
-            icon.nextElementSibling.classList.toggle('far');
-          } else if (newVote === '-1') {
-            icon.previousElementSibling.classList.toggle('fas');
-            icon.previousElementSibling.classList.toggle('far');
-          }
-        }
-      })
-      // Fetch new total vote
-      fetch('./app/auth/fetch_vote.php',{
-        method: 'POST',
-        body: `id=${id}&post=true`,
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        credentials: 'include',
-      })
-      .then(response => {
-        return response.json();
-      })
-      // Updates and prints out vote
-      .then(post => {
-        icon.parentElement.querySelector('span').innerHTML = post.score;
-      })
-    })
-  }
-})
 
 // Delete comment
 const comment_delete = document.querySelectorAll('.badge-danger');
@@ -101,6 +19,16 @@ comment_delete.forEach((button) => {
     if (!reply) {
       event.preventDefault();
     }
+  })
+})
+
+// Post comment button
+const com_buttons = document.querySelectorAll('button[name="comment"]');
+com_buttons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    button.classList.add('d-none');
+    button.nextElementSibling.classList.add('d-block');
+    button.nextElementSibling.classList.remove('d-none');
   })
 })
 
@@ -152,13 +80,13 @@ reply.forEach(button => {
       })
       .then (post => {
         const post_id = post.post_id;
-        const reply_form = `<input name="reply_id" value="${id}" hidden>
-        <input name="post_id" value="${post_id}" hidden>
-        <textarea class="form-control" name="content" rows="4"  cols="80"></textarea>
-        <button class="btn btn-primary" name="reply" type="button">Reply</button>`;
+        const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
+        <input type="hidden" name="reply_id" value="${id}">
+        <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
+        <button type="button" class="btn btn-primary">Reply</button>`
         const form = document.createElement("form");
         form.setAttribute('name', 'reply_form');
-        form.innerHTML = reply_form;
+        form.innerHTML = inner_form;
         card.insertBefore(form, button);
         button.classList.add('d-none');
         return form;
@@ -199,16 +127,15 @@ edit.forEach(button => {
           'Content-Type': 'application/x-www-form-urlencoded'
         }),
       })
-      .then ((response) => {
+      .then (response => {
         return response.json();
       })
-      .then((comment) => {
-        const edit_form = `<input type="hidden" name="comment_id" value="${comment.id}">
+      .then(comment => {
+        const inner_form = `<input type="hidden" name="comment_id" value="${comment.id}">
         <textarea class="form-control" name="content" rows="4"  cols="80">${comment.content}</textarea>
-        <button class="btn btn-primary" name="edit" type="button">Save</button>`;
+        <button class="btn btn-primary" type="button">Save</button>`;
         const form = document.createElement("form");
-        form.setAttribute('name', 'edit_comment');
-        form.innerHTML = edit_form;
+        form.innerHTML = inner_form;
         const reply = card.querySelector('[name="reply"]');
         card.insertBefore(form, reply);
         card.querySelector('p').classList.add('d-none');
