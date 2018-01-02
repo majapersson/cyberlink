@@ -22,16 +22,6 @@ comment_delete.forEach((button) => {
   })
 })
 
-// Post comment button
-const com_buttons = document.querySelectorAll('button[name="comment"]');
-com_buttons.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    button.classList.add('d-none');
-    button.nextElementSibling.classList.add('d-block');
-    button.nextElementSibling.classList.remove('d-none');
-  })
-})
-
 // Formats timestamp to date string
 const toFormatDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
@@ -62,6 +52,40 @@ const printComment = ((comment, card) => {
   card.appendChild(new_reply);
 })
 
+// Button toggles comment form
+const com_buttons = document.querySelectorAll('[name="comment"]');
+com_buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const card = button.parentElement;
+    const post_id = card.parentElement.getAttribute('id');
+    const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
+    <textarea class="form-control" name="content" rows="5" cols="80"></textarea>
+    <button type="button" class="btn btn-primary">Comment</button>`;
+    const form = document.createElement('form');
+    form.innerHTML = inner_form;
+    card.insertBefore(form, button);
+    button.classList.add('d-none');
+    // Submits form and prints out new comment
+    const submit = form.querySelector('button');
+    submit.addEventListener('click', () => {
+      const formInput = new FormData(form);
+      fetch('/app/auth/comment.php', {
+        method: 'POST',
+        body: formInput,
+        credentials: 'include',
+      })
+      .then (response => {
+        return response.json();
+      })
+      .then(comment => {
+        form.remove();
+        button.classList.remove('d-none');
+        printComment(comment, card);
+      })
+    })
+  })
+})
+
 // Button toggles reply form
 const reply = document.querySelectorAll('[name="reply"]');
 reply.forEach(button => {
@@ -85,7 +109,6 @@ reply.forEach(button => {
         <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
         <button type="button" class="btn btn-primary">Reply</button>`
         const form = document.createElement("form");
-        form.setAttribute('name', 'reply_form');
         form.innerHTML = inner_form;
         card.insertBefore(form, button);
         button.classList.add('d-none');
@@ -105,7 +128,7 @@ reply.forEach(button => {
               return response.json();
             })
             .then(comment => {
-              form.innerHTML = '';
+              form.remove();
               button.classList.remove('d-none');
               printComment(comment, card);
             })
