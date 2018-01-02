@@ -30,7 +30,7 @@ function getComments(PDO $pdo, int $post_id): array {
  */
 
  function getComment(PDO $pdo, int $id) {
-     $query = $pdo-> prepare('SELECT * FROM comments WHERE id=:id;');
+     $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE comments.id=:id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }
@@ -66,15 +66,9 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
     $query-> bindParam(':reply_id', $reply_id, PDO::PARAM_INT);
     $query-> execute();
 
-    $comment = [
-        'post_id' => $post_id,
-        'user_id' => $user_id,
-        'username' => getUser($pdo, $user_id)['username'],
-        'content' => $content,
-        'timestamp' => $timestamp,
-        'reply_id' => $reply_id,
-    ];
-    return $comment;
+    $comment_id = $pdo->lastInsertId();
+
+    return getComment($pdo, $comment_id);
 }
 
 /**

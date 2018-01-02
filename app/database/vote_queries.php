@@ -9,7 +9,7 @@
  * @return array
  */
 
-function checkVote(PDO $pdo, int $post_id, int $user_id): array {
+function checkVote(PDO $pdo, int $post_id, int $user_id) {
     $query = $pdo-> prepare('SELECT * from votes WHERE post_id=:post_id AND user_id=:user_id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
