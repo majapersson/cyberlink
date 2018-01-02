@@ -16,7 +16,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         if ($username === $user['username'] || $username === $user['email']) {
             if (password_verify($_POST['password'], $user['password'])) {
                 $_SESSION['user'] = [
-                    'id' => $user['id'],
+                    'id' => (string) $user['id'],
                     'username' => $user['username'],
                     'email' => $user['email'],
                 ];

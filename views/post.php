@@ -23,7 +23,7 @@
 
 <!-- Edit button -->
 <?php if (isset($user['id']) && $post['user_id'] === $user['id']): ?>
-    <form action="edit-post.php" method="post" class="d-inline">
+    <form action="edit_post.php" method="post" class="d-inline">
         <input type="hidden" name="post_id" value="<?php echo $post['id'] ?>">
         <button class="btn btn-primary" type="submit">Edit post</button>
     </form>
