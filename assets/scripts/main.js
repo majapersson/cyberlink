@@ -12,15 +12,17 @@ if (post_delete) {
 }
 
 // Delete comment
-const comment_delete = document.querySelectorAll('.badge-danger');
-comment_delete.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    const reply = confirm('Are you sure?');
-    if (!reply) {
-      event.preventDefault();
-    }
+const delete_listener = () => {
+  const comment_delete = document.querySelectorAll('.badge-danger');
+  comment_delete.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const reply = confirm('Are you sure?');
+      if (!reply) {
+        event.preventDefault();
+      }
+    })
   })
-})
+}
 
 // Formats timestamp to date string
 const toFormatDate = (timestamp) => {
@@ -41,15 +43,21 @@ const printComment = ((comment, card) => {
   const timestamp = toFormatDate(comment.timestamp);
   new_reply.classList.add('card');
   new_reply.classList.add('m-2');
-  new_reply.innerHTML = `<div class="card-body">
+  new_reply.innerHTML = `<div class="card-body" data-id=${comment.id}>
     <a href="account.php/?id=${comment.user_id}"> ${comment.username}</a>
     <small>${timestamp}</small>
     <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
-    <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+    <form class="d-inline" action="/app/auth/comment.php" method="post">
+        <input type="hidden" name="comment_id" value="${comment.id}">
+        <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+    </form>
     <p>${comment.content}</p>
     <button class="btn badge badge-primary" name="reply">Reply</button>
   </div>`;
   card.appendChild(new_reply);
+  reply_listener();
+  edit_listener();
+  delete_listener();
 })
 
 // Button toggles comment form
@@ -86,57 +94,60 @@ com_buttons.forEach(button => {
   })
 })
 
-// Button toggles reply form
-const reply = document.querySelectorAll('[name="reply"]');
-reply.forEach(button => {
-  button.addEventListener('click', () => {
-    const card = button.parentElement;
-    const id = card.dataset.id;
-    fetch('/app/auth/comment.php', {
-        method: 'POST',
-        body: `id=${id}`,
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-      })
-      .then (response => {
-        return response.json();
-      })
-      .then (post => {
-        const post_id = post.post_id;
-        const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
-        <input type="hidden" name="reply_id" value="${id}">
-        <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
-        <button type="button" class="btn btn-primary">Reply</button>`
-        const form = document.createElement("form");
-        form.innerHTML = inner_form;
-        card.insertBefore(form, button);
-        button.classList.add('d-none');
-        return form;
-      })
-      .then (form => {
-        // Submits reply and changes current comment
-        const submit = form.querySelector('button');
-        submit.addEventListener('click', (event) => {
-          const formInput = new FormData(form);
-          fetch('/app/auth/comment.php', {
-              method: 'POST',
-              body: formInput,
-              credentials: 'include',
-            })
-            .then (response => {
-              return response.json();
-            })
-            .then(comment => {
-              form.remove();
-              button.classList.remove('d-none');
-              printComment(comment, card);
-            })
+const reply_listener = () => {
+  // Button toggles reply form
+  const reply = document.querySelectorAll('[name="reply"]');
+  reply.forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.parentElement;
+      const id = card.dataset.id;
+      fetch('/app/auth/comment.php', {
+          method: 'POST',
+          body: `id=${id}`,
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }),
         })
+        .then (response => {
+          return response.json();
+        })
+        .then (post => {
+          const post_id = post.post_id;
+          const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
+          <input type="hidden" name="reply_id" value="${id}">
+          <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
+          <button type="button" class="btn btn-primary">Reply</button>`
+          const form = document.createElement("form");
+          form.innerHTML = inner_form;
+          card.insertBefore(form, button);
+          button.classList.add('d-none');
+          return form;
+        })
+        .then (form => {
+          // Submits reply and changes current comment
+          const submit = form.querySelector('button');
+          submit.addEventListener('click', (event) => {
+            const formInput = new FormData(form);
+            fetch('/app/auth/comment.php', {
+                method: 'POST',
+                body: formInput,
+                credentials: 'include',
+              })
+              .then (response => {
+                return response.json();
+              })
+              .then(comment => {
+                form.remove();
+                button.classList.remove('d-none');
+                printComment(comment, card);
+              })
+          })
+      })
     })
   })
-})
+}
 
+const edit_listener = () => {
 // Button toggles edit form
 const edit = document.querySelectorAll('[name="edit"]');
 edit.forEach(button => {
@@ -189,3 +200,8 @@ edit.forEach(button => {
       })
     })
   })
+  }
+
+  reply_listener();
+  edit_listener();
+  delete_listener();
