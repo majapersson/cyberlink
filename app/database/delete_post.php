@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/../autoload.php';
+require __DIR__.'/../auth/comment.php';
 
 if (isset($_POST['id'])) {
     $post_id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
@@ -8,6 +8,11 @@ if (isset($_POST['id'])) {
     $post = getPost($pdo, $post_id);
 
     if ($_SESSION['user']['id'] === $post['user_id']) {
+        $comments = getCommentTree($pdo, $post['id']);
+        foreach($comments as $comment) {
+            checkDelete($pdo, $comment['id']);
+        }
+        deleteVotes($pdo, $post_id);
         deletePost($pdo, $post_id);
     }
 
