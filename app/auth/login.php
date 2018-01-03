@@ -8,13 +8,14 @@ require __DIR__.'/../autoload.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = filter_var(trim($_POST['username']), FILTER_SANITIZE_STRING);
+    $password = filter_var(trim($_POST['password']), FILTER_SANITIZE_STRING);
 
     $users = getUsers($pdo);
 
     // Loop through user array and compare username and email to user input
-    forEach($users as $user) {
+    foreach ($users as $user) {
         if ($username === $user['username'] || $username === $user['email']) {
-            if (password_verify($_POST['password'], $user['password'])) {
+            if (password_verify($password, $user['password'])) {
                 $_SESSION['user'] = [
                     'id' => (string) $user['id'],
                     'username' => $user['username'],

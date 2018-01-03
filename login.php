@@ -24,6 +24,7 @@
     </div><!-- /form-group -->
 
     <button type="submit" class="btn btn-primary">Login</button>
+    <a href="reset_password.php"><small>Forgot your password?</small></a>
   </form>
 </article>
 
