@@ -19,7 +19,14 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [x] As a user I'm able to edit my comments.
 - [x] As a user I'm able to delete my comments.
 - [x] As a user I'm able to reply to comments.
-- [ ] As a user I'm able to reset my password with email.
+- [x] As a user I'm able to reset my password with email.
+
+### 2018-01-03
+- Added feature to reset password with email (probably only works on my own computer, though)
+
+### 2018-01-02
+- Commenting, replying and editing with fetch functional
+- Deleting a post now also deletes all of its comments and replies
 
 ### 2017-12-28
 - Replying to comments using fetch is almost functional
