@@ -6,7 +6,7 @@
     }
 
     if (isset($_POST['title'], $_POST['post_url'])) {
-        $id = (int) filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
+        $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
         $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
         $url = filter_var($_POST['post_url'], FILTER_SANITIZE_STRING);
 

@@ -43,11 +43,11 @@ icons.forEach(icon => {
           icon.classList.toggle('fas');
           icon.classList.toggle('far');
           if (newVote === '1') {
-            icon.nextElementSibling.classList.toggle('fas');
-            icon.nextElementSibling.classList.toggle('far');
+            icon.nextElementSibling.classList.remove('fas');
+            icon.nextElementSibling.classList.add('far');
           } else if (newVote === '-1') {
-            icon.previousElementSibling.classList.toggle('fas');
-            icon.previousElementSibling.classList.toggle('far');
+            icon.previousElementSibling.classList.remove('fas');
+            icon.previousElementSibling.classList.add('far');
           }
         }
       })

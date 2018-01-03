@@ -65,13 +65,14 @@ function getPost(PDO $pdo, int $post_id): array {
 
 function setPost(PDO $pdo, string $title, string $url, string $content = null) {
     $timestamp = time();
+    $user_id = (int) $_SESSION['user']['id'];
 
     $query = $pdo-> prepare('INSERT INTO posts (user_id, title, url, timestamp, content) VALUES (:user_id, :title, :url, :timestamp, :content);');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
 
-    $query-> bindParam(':user_id', $_SESSION['user']['id'], PDO::PARAM_INT);
+    $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query-> bindParam(':title', $title, PDO::PARAM_STR);
     $query-> bindParam(':url', $url, PDO::PARAM_STR);
     $query-> bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
@@ -79,7 +80,7 @@ function setPost(PDO $pdo, string $title, string $url, string $content = null) {
     $query-> execute();
 
     $post_id = $pdo->lastInsertId();
-    setVote($pdo, $post_id, $_SESSION['user']['id'], 0);
+    setVote($pdo, $post_id, $user_id, 0);
 }
 
 /**
