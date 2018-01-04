@@ -1,39 +1,35 @@
 <?php
-    require __DIR__.'/views/header.php';
+require __DIR__.'/views/header.php';
 
-    if (isset($_POST['title'], $_POST['post_url'])) {
-        $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
-        $url = filter_var($_POST['post_url'], FILTER_SANITIZE_STRING);
+if (isset($_GET['post'])) {
+    $post_id = filter_var($_GET['post'], FILTER_SANITIZE_NUMBER_INT);
+    $post = getPost($pdo, $post_id);
+} else {
+    redirect('/');
+}
 
-        if (isset($_POST['content'])) {
-            $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
-        }
-
-        if (isset($_SESSION['user'])) {
-            $post_id = setPost($pdo, $title, $url, $content);
-        }
-        redirect("/?post=$post_id");
-    }
 ?>
+<article>
+    <div class="card m-2">
+        <div class="card-body">
+            <?php require __DIR__.'/views/post.php' ?>
 
-<form action="post.php" method="post">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input class="form-control" type="text" name="title">
+            <!-- Comment button -->
+            <?php
+            if (isset($user['id'])): ?>
+                <button class="btn btn-primary d-block" type="button" name="comment">Comment</button>
+            <?php endif; ?>
+
+            <!-- Start comments -->
+            <?php
+            $comments = getComments($pdo, $post['id']);
+
+            if (isset($comments)):
+                printComments($pdo, $comments, $post);
+            endif;
+            ?>
+            <!-- End comments -->
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="post_url">URL</label>
-        <input class="form-control" type="text" name="post_url">
-    </div>
-
-    <div class="form-group">
-        <label for="content">Description</label>
-        <textarea class="form-control" name="content" rows="8"></textarea>
-    </div>
-
-    <button class="btn btn-primary" type="submit">Submit</button>
-
-</form>
-
-<?php require __DIR__.'/views/footer.php'; ?>
+</article>
+<?php require __DIR__.'/views/footer.php' ?>

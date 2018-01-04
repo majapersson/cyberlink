@@ -17,7 +17,16 @@ require __DIR__.'/views/header.php';
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 }
+
 $posts = getPosts($pdo);
+
+if (isset($_GET['post'])) {
+    $post_id = filter_var($_GET['post'], FILTER_SANITIZE_NUMBER_INT);
+    $post = getPost($pdo, $post_id);
+    $index = array_search($post_id, array_column($posts, 'id'));
+    array_splice($posts, $index);
+    array_unshift($posts, $post);
+}
 ?>
 
 <article>
@@ -32,7 +41,7 @@ $posts = getPosts($pdo);
 
             <h2>Posts</h2>
             <?php if (isset($user)): ?>
-                <a href="post.php" class="btn btn-primary">New post</a>
+                <a href="new_post.php" class="btn btn-primary">New post</a>
             <?php endif; ?>
         </div>
 
