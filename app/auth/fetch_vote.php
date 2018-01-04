@@ -13,7 +13,11 @@ if (isset($_SESSION['user'])) {
         if (!$user_vote) {
             setVote($pdo, $post_id, $user_id, $vote);
         } else {
-            updateVote($pdo, $post_id, $user_id, $vote);
+            if ($user_vote['vote'] === $vote){
+                updateVote($pdo, $post_id, $user_id, 0);
+            } else {
+                updateVote($pdo, $post_id, $user_id, $vote);
+            }
         }
 
         echo json_encode(checkVote($pdo, $post_id, $user_id));

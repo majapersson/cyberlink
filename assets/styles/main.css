@@ -1,3 +1,11 @@
 .fas {
-  pointer-events: none;
+  color: lightgrey;
+  font-size: 2em;
+}
+
+.fa-sort-up.clicked {
+  color: lightgreen;
+}
+.fa-sort-down.clicked {
+  color: tomato;
 }

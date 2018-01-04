@@ -18,12 +18,11 @@ icons.forEach(icon => {
   .then(post => {
     // If current vote is the same as in database
     if (vote === post.vote) {
-      icon.classList.add('fas');
-      icon.classList.remove('far');
+      icon.classList.add('clicked');
     }
   })
   // If user has already voted
-  if (icon.classList.contains('far')) {
+  // if (!icon.classList.contains('clicked')) {
     icon.addEventListener('click', (event) => {
       const newVote = icon.dataset.vote;
       fetch('./app/auth/fetch_vote.php',{
@@ -39,15 +38,13 @@ icons.forEach(icon => {
       })
       // Changes icons depending on the new vote
       .then(post => {
-        if (newVote === post.vote) {
-          icon.classList.toggle('fas');
-          icon.classList.toggle('far');
+        const span = icon.parentElement.querySelector('span');
+        if (newVote === post.vote || post.vote === '0') {
+          icon.classList.toggle('clicked');
           if (newVote === '1') {
-            icon.nextElementSibling.classList.remove('fas');
-            icon.nextElementSibling.classList.add('far');
+            span.nextElementSibling.classList.remove('clicked');
           } else if (newVote === '-1') {
-            icon.previousElementSibling.classList.remove('fas');
-            icon.previousElementSibling.classList.add('far');
+            span.previousElementSibling.classList.remove('clicked');
           }
         }
       })
@@ -68,5 +65,5 @@ icons.forEach(icon => {
         icon.parentElement.querySelector('span').innerHTML = post.score;
       })
     })
-  }
+  // }
 })

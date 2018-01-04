@@ -2,13 +2,13 @@
     <div class="col-1 d-flex flex-column align-items-center">
         <!--Vote icons -->
         <?php if (!isset($_SESSION['user'])): ?>
-            <i class="far fa-caret-square-up"></i>
+            <i class="fas fa-sort-up"></i>
             <span><?php echo $post['score'];  ?></span>
-            <i class="far fa-caret-square-down"></i>
+            <i class="fas fa-sort-down"></i>
         <?php else: ?>
-            <i class="far fa-caret-square-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
+            <i class="fas fa-sort-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
             <span><?php echo $post['score'];  ?></span>
-            <i class="far fa-caret-square-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
+            <i class="fas fa-sort-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
         <?php endif; ?>
         <!-- End vote icons -->
 
