@@ -99,7 +99,9 @@ function updateImage (PDO $pdo, array $image, array $user) {
     $file = pathinfo($image['name']);
     $filename = $user['username'].'.'.$file['extension'];
 
-    move_uploaded_file($image['tmp_name'], __DIR__.'/../../avatars/'.$filename);
+    $thumbnail = new Imagick($image['tmp_name']);
+    $thumbnail->thumbnailImage(300, 300, true);
+    $thumbnail->writeImage(__DIR__.'/../../avatars/'.$filename);
 
     $query = $pdo-> prepare('UPDATE users SET image_url=:filename WHERE id=:id;');
     if (!$query) {

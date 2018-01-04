@@ -42,7 +42,7 @@ unset($user['password']);
             </div>
             <div class="col-4 text-center">
                 <?php if (isset($user['image_url'])): ?>
-                    <img src="/avatars/<?php echo $user['image_url'] ?>" width="200px">
+                    <img src="/avatars/<?php echo $user['image_url'] ?>">
                 <?php endif; ?>
             </div>
         </div>
