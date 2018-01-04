@@ -2,9 +2,9 @@
     <div class="col-1 d-flex flex-column align-items-center">
         <!--Vote icons -->
         <?php if (!isset($_SESSION['user'])): ?>
-            <i class="fas fa-sort-up"></i>
+            <i class="fas fa-sort-up disabled"></i>
             <span><?php echo $post['score'];  ?></span>
-            <i class="fas fa-sort-down"></i>
+            <i class="fas fa-sort-down disabled"></i>
         <?php else: ?>
             <i class="fas fa-sort-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
             <span><?php echo $post['score'];  ?></span>

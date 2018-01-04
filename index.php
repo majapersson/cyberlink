@@ -33,10 +33,8 @@ if (isset($_GET['post'])) {
     <?php if (isset($user)): ?>
         <h2>Welcome <?php echo $user['username']; ?></h2>
     <?php endif; ?>
-    <p>This is the home page.</p>
 </article>
-<section class="card">
-    <div class="card-body d-flex flex-column">
+<section class="d-flex flex-column">
         <div class="row justify-content-between p-3">
 
             <h2>Posts</h2>
@@ -54,7 +52,6 @@ if (isset($_GET['post'])) {
             </article>
         <?php endforeach; ?>
         <!-- End of posts -->
-    </div>
 </section>
 
 <?php require __DIR__.'/views/footer.php'; ?>

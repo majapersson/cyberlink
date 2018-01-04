@@ -9,3 +9,7 @@
 .fa-sort-down.clicked {
   color: tomato;
 }
+.fas.disabled {
+  color: lightgrey;
+  pointer-events: none;
+}

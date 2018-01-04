@@ -11,13 +11,13 @@ if (isset($_GET['post'])) {
 ?>
 <article>
     <div class="card m-2">
-        <div class="card-body">
+        <div class="card-body" id=<?php echo $post_id ?>>
             <?php require __DIR__.'/views/post.php' ?>
 
             <!-- Comment button -->
             <?php
             if (isset($user['id'])): ?>
-                <button class="btn btn-primary d-block" type="button" name="comment">Comment</button>
+                <button class="btn btn-primary" type="button" name="comment">Comment</button>
             <?php endif; ?>
 
             <!-- Start comments -->

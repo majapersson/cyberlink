@@ -60,6 +60,25 @@ function getComments(PDO $pdo, int $post_id): array {
 
  }
 
+ /**
+  * Gets all comments by user
+  *
+  * @param PDO $pdo
+  * @param int $user_id
+  *
+  * @return array/boolean
+  */
+
+  function getUserComments(PDO $pdo, int $user_id) {
+      $query = $pdo->prepare('SELECT comments.*, posts.title, posts.user_id AS author, users.username FROM comments JOIN posts ON comments.post_id=posts.id JOIN users ON posts.user_id=users.id WHERE comments.user_id=:user_id ORDER BY comments.timestamp desc;');
+      if (!$query) {
+          die(var_dump($pdo->errorInfo()));
+      }
+      $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
+      $query-> execute();
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+  }
+
 /**
  * Saves new comment to comment table
  *

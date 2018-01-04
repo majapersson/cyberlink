@@ -28,13 +28,22 @@ const delete_listener = () => {
 const toFormatDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
   const dateValues = [
-    date.getUTCFullYear(),
+    date.getFullYear(),
     date.getUTCMonth()+1,
-    date.getUTCDate(),
+    date.getUTCDay(),
     date.getUTCHours(),
     date.getUTCMinutes(),
   ];
-  return `${dateValues[0]}-${dateValues[1]}-${dateValues[2]} ${dateValues[3]}:${dateValues[4]}`;
+
+  const formatValues = dateValues.map(value => {
+    if (value < 10) {
+       return '0' + value;
+    } else {
+      return `${value}`;
+    }
+  })
+
+  return `${formatValues[0]}-${formatValues[1]}-${formatValues[2]} ${formatValues[3]}:${formatValues[4]}`;
 }
 
 // Prints new comment
@@ -42,15 +51,21 @@ const printComment = ((comment, card, before=null) => {
   const new_reply = document.createElement('div');
   const timestamp = toFormatDate(comment.timestamp);
   new_reply.classList.add('card');
-  new_reply.classList.add('m-2');
-  new_reply.innerHTML = `<div class="card-body" data-id=${comment.id}>
-    <a href="account.php/?id=${comment.user_id}"> ${comment.username}</a>
-    <small>${timestamp}</small>
-    <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
-    <form class="d-inline" action="/app/auth/comment.php" method="post">
-    <input type="hidden" name="comment_id" value="${comment.id}">
-    <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
-    </form>
+  new_reply.classList.add('mt-2');
+  new_reply.innerHTML = `<div class="card-body p-2" data-id=${comment.id}>
+    <div class="row">
+      <div class="col-10">
+        <a href="account.php/?id=${comment.user_id}"> ${comment.username}</a>
+        <small>${timestamp}</small>
+      </div>
+      <div class="col-2 text-right">
+        <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
+        <form class="d-inline" action="/app/auth/comment.php" method="post">
+        <input type="hidden" name="comment_id" value="${comment.id}">
+        <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+        </form>
+      </div>
+    </div>
     <p>${comment.content}</p>
     <button class="btn badge badge-primary" name="reply">Reply</button>
   </div>`;
@@ -69,10 +84,10 @@ const com_buttons = document.querySelectorAll('[name="comment"]');
 com_buttons.forEach(button => {
   button.addEventListener('click', () => {
     const card = button.parentElement;
-    const post_id = card.parentElement.getAttribute('id');
-    const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
+    const post_id = card.getAttribute('id');
+    const inner_form = `<input type="hidden" name="post_id" value=${post_id}>
     <textarea class="form-control" name="content" rows="5" cols="80"></textarea>
-    <button type="button" class="btn btn-primary">Comment</button>`;
+    <button type="button" class="btn btn-primary mt-2">Comment</button>`;
     const form = document.createElement('form');
     form.innerHTML = inner_form;
     card.insertBefore(form, button);
@@ -121,7 +136,7 @@ const reply_listener = () => {
           const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
           <input type="hidden" name="reply_id" value="${id}">
           <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
-          <button type="button" class="btn btn-primary">Reply</button>`
+          <button type="button" class="btn btn-primary mt-2">Reply</button>`
           const form = document.createElement("form");
           form.innerHTML = inner_form;
           card.insertBefore(form, button);
@@ -157,7 +172,8 @@ const edit_listener = () => {
 const edit = document.querySelectorAll('[name="edit"]');
 edit.forEach(button => {
   button.addEventListener('click', () => {
-    const card = button.parentElement;
+    const card = button.parentElement.parentElement.parentElement;
+    console.log(card);
     const id = card.dataset.id;
     fetch('/app/auth/comment.php', {
         method: 'POST',
@@ -172,7 +188,7 @@ edit.forEach(button => {
       .then(comment => {
         const inner_form = `<input type="hidden" name="comment_id" value="${comment.id}">
         <textarea class="form-control" name="content" rows="4"  cols="80">${comment.content}</textarea>
-        <button class="btn btn-primary" type="button">Save</button>`;
+        <button class="btn btn-primary mt-2" type="button">Save</button>`;
         const form = document.createElement("form");
         form.innerHTML = inner_form;
         const reply = card.querySelector('[name="reply"]');
