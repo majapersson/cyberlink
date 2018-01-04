@@ -31,7 +31,7 @@ if (isset($_POST['new_password'], $_POST['old_password']) && $user['id'] === $_S
 <form action="update.php" method="post" enctype="multipart/form-data">
     <?php if (isset($user['image_url'])): ?>
         <div class="form-group">
-            <img src="/avatars/<?php echo $user['image_url']; ?>">
+            <img src="/assets/avatars/<?php echo $user['image_url']; ?>">
         </div>
     <?php endif; ?>
 

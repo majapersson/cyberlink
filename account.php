@@ -41,8 +41,8 @@ unset($user['password']);
                 <?php endif; ?>
             </div>
             <div class="col-4 text-center">
-                <?php if (isset($user['image_url'])): ?>
-                    <img src="/avatars/<?php echo $user['image_url'] ?>">
+                <?php if (isset($profile['image_url'])): ?>
+                    <img src="/assets/avatars/<?php echo $profile['image_url'] ?>">
                 <?php endif; ?>
             </div>
         </div>
