@@ -27,7 +27,7 @@
         <a href="/post.php?post=<?php echo $post['id'] ?>"><small class="d-block"><?php echo count(getCommentTree($pdo, $post['id'])) ?> comments</small></a>
         <?php endif; ?>
     </div>
-    <div class="col-2 text-center">
+    <div class="col-2 text-right">
         <!-- Edit button -->
         <?php if (isset($user['id']) && $post['user_id'] === $user['id']): ?>
             <form action="edit_post.php" method="post" class="d-inline">

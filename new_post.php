@@ -16,7 +16,7 @@
     }
 ?>
 
-<form action="post.php" method="post">
+<form action="new_post.php" method="post">
     <div class="form-group">
         <label for="title">Title</label>
         <input class="form-control" type="text" name="title">
