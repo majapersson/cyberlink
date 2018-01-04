@@ -38,7 +38,7 @@ const toFormatDate = (timestamp) => {
 }
 
 // Prints new comment
-const printComment = ((comment, card) => {
+const printComment = ((comment, card, before=null) => {
   const new_reply = document.createElement('div');
   const timestamp = toFormatDate(comment.timestamp);
   new_reply.classList.add('card');
@@ -48,13 +48,17 @@ const printComment = ((comment, card) => {
     <small>${timestamp}</small>
     <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
     <form class="d-inline" action="/app/auth/comment.php" method="post">
-        <input type="hidden" name="comment_id" value="${comment.id}">
-        <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+    <input type="hidden" name="comment_id" value="${comment.id}">
+    <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
     </form>
     <p>${comment.content}</p>
     <button class="btn badge badge-primary" name="reply">Reply</button>
   </div>`;
-  card.appendChild(new_reply);
+  if (!before) {
+    card.appendChild(new_reply);
+  } else {
+    card.insertBefore(new_reply, before);
+  }
   reply_listener();
   edit_listener();
   delete_listener();
@@ -88,7 +92,8 @@ com_buttons.forEach(button => {
       .then(comment => {
         form.remove();
         button.classList.remove('d-none');
-        printComment(comment, card);
+        const before = card.querySelector('.card');
+        printComment(comment, card, before);
       })
     })
   })

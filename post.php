@@ -10,9 +10,9 @@
         }
 
         if (isset($_SESSION['user'])) {
-            setPost($pdo, $title, $url, $content);
+            $post_id = setPost($pdo, $title, $url, $content);
         }
-        redirect('/');
+        redirect("/?post=$post_id");
     }
 ?>
 

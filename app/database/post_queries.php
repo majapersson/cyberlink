@@ -8,7 +8,7 @@
  */
 
 function getPosts(PDO $pdo): array {
-    $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id GROUP BY posts.id ORDER BY timestamp desc;');
+    $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id GROUP BY posts.id ORDER BY score desc;');
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -22,7 +22,7 @@ function getPosts(PDO $pdo): array {
  */
 
 function getPost(PDO $pdo, int $post_id): array {
-    $query = $pdo-> query('SELECT posts.*, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id WHERE posts.id=:id GROUP BY posts.id;');
+    $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id WHERE posts.id=:id GROUP BY posts.id;');
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
     }
@@ -81,6 +81,7 @@ function setPost(PDO $pdo, string $title, string $url, string $content = null) {
 
     $post_id = $pdo->lastInsertId();
     setVote($pdo, $post_id, $user_id, 0);
+    return $post_id;
 }
 
 /**

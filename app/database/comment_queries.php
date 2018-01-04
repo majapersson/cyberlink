@@ -10,7 +10,7 @@
  */
 
 function getComments(PDO $pdo, int $post_id): array {
-    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp;');
+    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp desc;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
