@@ -41,7 +41,7 @@ function getPost(PDO $pdo, int $post_id): array {
  */
 
  function getUserPosts(PDO $pdo, int $user_id): array {
-     $query = $pdo-> prepare('SELECT * FROM posts WHERE user_id=:user_id;');
+     $query = $pdo-> prepare('SELECT * FROM posts WHERE user_id=:user_id ORDER BY timestamp desc;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }

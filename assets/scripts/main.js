@@ -79,6 +79,34 @@ const printComment = ((comment, card, before=null) => {
   delete_listener();
 })
 
+const printUserComment = (comment, link, session_id) => {
+  const timestamp = toFormatDate(comment.timestamp);
+  const comment_card = document.createElement('div');
+  comment_card.classList.add('card','mb-2');
+  comment_card.innerHTML = `<div class="card-body" data-id=${comment.id}>
+    <div class="row">
+        <div class="col-8">
+            <!-- Comment post title -->
+            <a href="/post.php?post=${comment.post_id}#${comment.id}">${comment.title}</a> by <a href="/account.php?id=${comment.author}">${comment.username}</a>
+            <!-- Actual comment -->
+            <p>${comment.content}</p>
+            <small>Submitted on ${timestamp}</small>
+        </div>
+        <div class="col-4 text-right">
+        </div>
+      </div>
+    </div>`;
+  if (session_id === comment.user_id) {
+    comment_card.querySelector('.col-4').innerHTML += `<!-- Buttons -->
+      <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
+      <form class="d-inline" action="/app/auth/comment.php" method="post">
+          <input type="hidden" name="comment_id" value="<?php echo $comment['id'] ?>">
+          <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
+      </form>`;
+  }
+  link.parentElement.insertBefore(comment_card, link);
+}
+
 // Button toggles comment form
 const com_buttons = document.querySelectorAll('[name="comment"]');
 com_buttons.forEach(button => {
@@ -173,7 +201,6 @@ const edit = document.querySelectorAll('[name="edit"]');
 edit.forEach(button => {
   button.addEventListener('click', () => {
     const card = button.parentElement.parentElement.parentElement;
-    console.log(card);
     const id = card.dataset.id;
     fetch('/app/auth/comment.php', {
         method: 'POST',
@@ -221,6 +248,52 @@ edit.forEach(button => {
       })
     })
   })
+  }
+
+  const load_comment = document.querySelector('[name="load_comments"]');
+  if (load_comment) {
+    let page = 1;
+    load_comment.addEventListener('click', (event) => {
+      event.preventDefault();
+      const urlGet = new URLSearchParams(window.location.search);
+
+      let id;
+      fetch('/app/auth/comment.php', {
+        credentials: 'include',
+      })
+      .then (response => {
+        return response.json();
+      })
+      .then(session_id => {
+        if (urlGet.has('id')) {
+          id = urlGet.get('id');
+        }
+        else {
+          id = session_id;
+        }
+        fetch('/app/auth/comment.php', {
+          method: 'post',
+          body: `user_id=${id}&page=${page}`,
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+          })
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(comments => {
+          if (!comments.length) {
+            load_comment.remove();
+          }
+          comments.forEach(comment => {
+            printUserComment(comment, load_comment, session_id);
+          })
+          edit_listener();
+          delete_listener();
+        })
+        page++;
+      })
+    })
   }
 
   reply_listener();

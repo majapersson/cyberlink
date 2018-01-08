@@ -31,7 +31,7 @@ unset($profile['password']);
                         </div>
                     </div>
                     <article class="mb-3">
-                        <h3>Posts by <?php echo $profile['username'] ?></h3>
+                        <h4>Posts by <?php echo $profile['username'] ?></h4>
                         <?php $posts = getUserPosts($pdo, $profile['id']);
                         foreach ($posts as $post): ?>
 
@@ -41,7 +41,7 @@ unset($profile['password']);
                                     <div class="col-9">
                                         <!-- Actual post -->
                                         <a href="<?php echo $post['url'] ?>">
-                                            <h3><?php echo $post['title']; ?></h3>
+                                            <h5><?php echo $post['title']; ?></h5>
                                         </a>
                                         <p><?php echo $post['content'] ?></p>
                                         <small>Submitted on
@@ -50,7 +50,7 @@ unset($profile['password']);
                                         <a href="/post.php?post=<?php echo $post['id'] ?>"><small class="d-block"><?php echo count(getCommentTree($pdo, $post['id'])) ?> comments</small></a>
                                     </div> <!-- End col-9 -->
 
-                                    <div class="col-2 text-right">
+                                    <div class="col-3 text-right">
                                         <!-- Edit button -->
                                         <?php if (isset($user['id']) && $post['user_id'] === $user['id']): ?>
                                             <form action="edit_post.php" method="post" class="d-inline">
@@ -65,15 +65,15 @@ unset($profile['password']);
                     <?php endforeach; ?>
                 </article>
                 <article class="mb-3">
-                    <h3>Comments by <?php echo $profile['username'] ?></h3>
-                    <?php $comments = getUserComments($pdo, $profile['id']); ?>
+                    <h4>Comments by <?php echo $profile['username'] ?></h4>
+                    <?php $comments = getUserComments($pdo, $profile['id'], 0); ?>
                     <?php foreach ($comments as $comment): ?>
                         <div class="card mb-2">
                             <div class="card-body" data-id=<?php echo $comment['id'] ?>>
                                 <div class="row">
                                     <div class="col-8">
                                         <!-- Comment post title -->
-                                        <a href="/post.php?post=<?php echo $comment['post_id'] ?>#<?php echo $comment['id'] ?>"><?php echo $comment['title'] ?></a> by <a href="/account.php?id=<?php echo $comment['user_id'] ?>"><?php echo $comment['username'] ?></a>
+                                        <a href="/post.php?post=<?php echo $comment['post_id'] ?>#<?php echo $comment['id'] ?>"><?php echo $comment['title'] ?></a> by <a href="/account.php?id=<?php echo $comment['author'] ?>"><?php echo $comment['username'] ?></a>
                                         <!-- Actual comment -->
                                         <p><?php echo $comment['content'] ?></p>
                                         <small>Submitted on <?php echo date('Y-m-d H:i', $comment['timestamp']); ?></small>
@@ -94,6 +94,7 @@ unset($profile['password']);
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <a href="#" name="load_comments">Load more comments</a>
             </article>
         </div>
         <div class="col-4 text-center">

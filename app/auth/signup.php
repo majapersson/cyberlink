@@ -17,7 +17,7 @@
         $users = getUsers($pdo);
 
         forEach($users as $user) {
-            if ($username === $user['username']) {
+            if (mb_strtolower($username) === mb_strtolower($user['username'])) {
                 $_SESSION['errors']['user'][] = 'The username is already taken.';
             }
             if ($email === $user['email']) {
