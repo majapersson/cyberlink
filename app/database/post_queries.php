@@ -7,8 +7,11 @@
  * @return array
  */
 
-function getPosts(PDO $pdo): array {
-    $query = $pdo-> query('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id GROUP BY posts.id ORDER BY score desc;');
+function getPosts(PDO $pdo, int $page): array {
+    $offset = $page*5;
+    $query = $pdo-> prepare('SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id GROUP BY posts.id ORDER BY score desc LIMIT 5 OFFSET :offset;');
+    $query-> bindParam(':offset', $offset, PDO::PARAM_INT);
+    $query-> execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
