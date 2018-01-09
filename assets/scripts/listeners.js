@@ -215,3 +215,50 @@ if (load_comment) {
     })
   })
 }
+
+// Listener for loading posts link
+const load_posts = document.querySelector('[name="load_posts"]');
+if (load_posts) {
+  let page = 1;
+  load_posts.addEventListener('click', (event) => {
+    event.preventDefault();
+    const urlGet = new URLSearchParams(window.location.search);
+
+    let id;
+    fetch('/app/auth/comment.php', {
+      credentials: 'include',
+    })
+    .then (response => {
+      return response.json();
+    })
+    .then(session_id => {
+      if (urlGet.has('id')) {
+        id = urlGet.get('id');
+      }
+      else {
+        id = session_id;
+      }
+      fetch('/app/auth/fetch_posts.php', {
+        method: 'post',
+        body: `user_id=${id}&page=${page}`,
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        })
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(posts => {
+        if (!posts.length) {
+          load_posts.remove();
+        }
+        posts.forEach(post => {
+          printUserPost(post, load_posts, session_id);
+        })
+        edit_listener();
+        delete_listener();
+      })
+      page++;
+    })
+  })
+}

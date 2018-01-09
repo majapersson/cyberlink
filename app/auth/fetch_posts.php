@@ -7,6 +7,25 @@ if (!isset($_POST['page'])) {
     exit;
 }
 
+if (isset($_POST['post_id'])) {
+    $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
+    return json_encode(getPost($pdo, $post_id));
+    exit;
+}
+
+if (isset($_POST['user_id'])) {
+    $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+    $page = filter_var($_POST['page'], FILTER_SANITIZE_NUMBER_INT);
+
+    $posts = getUserPosts($pdo, $user_id, $page);
+    foreach ($posts as $index => $post) {
+        $comments = countComments($pdo, $post['id']);
+        $posts[$index]['comments'] = $comments;
+    }
+    echo json_encode($posts);
+    exit;
+}
+
 if (isset($_POST['page'])) {
     $page = filter_var($_POST['page'], FILTER_SANITIZE_NUMBER_INT);
 } else {

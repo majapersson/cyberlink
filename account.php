@@ -32,7 +32,7 @@ unset($profile['password']);
                     </div>
                     <article class="mb-3">
                         <h4>Posts by <?php echo $profile['username'] ?></h4>
-                        <?php $posts = getUserPosts($pdo, $profile['id']);
+                        <?php $posts = getUserPosts($pdo, $profile['id'], 0);
                         foreach ($posts as $post): ?>
 
                         <div class="card mt-2">
@@ -63,6 +63,7 @@ unset($profile['password']);
                             </div><!-- End card-body -->
                         </div><!-- End card -->
                     <?php endforeach; ?>
+                    <a href="#" name="load_posts">Load more posts</a>
                 </article>
                 <article class="mb-3">
                     <h4>Comments by <?php echo $profile['username'] ?></h4>

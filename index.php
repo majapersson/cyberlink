@@ -17,16 +17,6 @@ require __DIR__.'/views/header.php';
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 }
-
-$posts = getPosts($pdo);
-
-if (isset($_GET['post'])) {
-    $post_id = filter_var($_GET['post'], FILTER_SANITIZE_NUMBER_INT);
-    $post = getPost($pdo, $post_id);
-    $index = array_search($post_id, array_column($posts, 'id'));
-    array_splice($posts, $index);
-    array_unshift($posts, $post);
-}
 ?>
 
 <article>
@@ -54,4 +44,5 @@ if (isset($_GET['post'])) {
         <!-- End of posts -->
 </section>
 
+<script type="text/javascript" src="../assets/scripts/load_posts.js"></script>
 <?php require __DIR__.'/views/footer.php'; ?>

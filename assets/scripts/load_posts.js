@@ -7,7 +7,7 @@ const printPost = (post, session_id) => {
 
     // HTML
     const article = document.createElement('article');
-    article.classList.add('card', 'm-1');
+    article.classList.add('card', 'my-1');
     article.setAttribute('id', post.id);
     article.innerHTML += `<div class="card-body">
       <div class="row">
@@ -87,7 +87,7 @@ const loadPage = (page, post_body='', loop=false) => {
       return response.text();
     })
     .then (session_id => {
-        for(post of json.data) {
+        for(const post of json.data) {
           printPost(post, session_id);
         }
     })

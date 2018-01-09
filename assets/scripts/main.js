@@ -84,15 +84,46 @@ const printUserComment = (comment, link, session_id) => {
   link.parentElement.insertBefore(comment_card, link);
 }
 
-window.onload = () => {
-  const urlGet = new URLSearchParams(window.location.search);
-  if (urlGet.has('page')) {
-    loadPage(urlGet.get('page'), '', true);
-  } else if (urlGet.has('post')) {
-      const post_body = `post=${urlGet.get('post')}&`;
-      loadPage(0, post_body);
-  } else {
-    loadPage(0);
+const printUserPost = (post, link, session_id) => {
+  const timestamp = formatDate(post.timestamp);
+  const post_card = document.createElement('div');
+  post_card.classList.add('card','my-2');
+  post_card.innerHTML = `<div class="card-body">
+    <div class="row">
+      <div class="col-9">
+      <!-- Actual post -->
+        <a href="${post.url}"><h5>${post.title}</h5></a>
+        <p>${post.content}</p>
+        <small>Submitted on
+        <time>${timestamp}</time>
+        </small>
+        <a href="/post.php?post=${post.id}"><small class="d-block">${post.comments} comments</small></a>
+      </div>
+      <div class="col-3 text-right">
+      <!-- Edit button -->
+      </div>
+    </div>
+  </div>`;
+  if (session_id.toString() === post.user_id) {
+    post_card.querySelector('.col-3').innerHTML = `<form action="edit_post.php" method="post" class="d-inline">
+        <input type="hidden" name="post_id" value="${post.id}">
+        <button class="btn btn-primary" type="submit">Edit post</button>
+    </form>`;
+  }
+  link.parentElement.insertBefore(post_card, link);
+}
+
+if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
+  window.onload = () => {
+    const urlGet = new URLSearchParams(window.location.search);
+    if (urlGet.has('page')) {
+      loadPage(urlGet.get('page'), '', true);
+    } else if (urlGet.has('post')) {
+        const post_body = `post=${urlGet.get('post')}&`;
+        loadPage(0, post_body);
+    } else {
+      loadPage(0);
+    }
   }
 }
 

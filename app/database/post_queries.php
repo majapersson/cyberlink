@@ -43,13 +43,15 @@ function getPost(PDO $pdo, int $post_id): array {
  * @return array
  */
 
- function getUserPosts(PDO $pdo, int $user_id): array {
-     $query = $pdo-> prepare('SELECT * FROM posts WHERE user_id=:user_id ORDER BY timestamp desc;');
+ function getUserPosts(PDO $pdo, int $user_id, int $offset): array {
+     $offset = $offset*5;
+     $query = $pdo-> prepare('SELECT * FROM posts WHERE user_id=:user_id ORDER BY timestamp desc LIMIT 5 OFFSET :offset;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }
 
      $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
+     $query-> bindParam(':offset', $offset, PDO::PARAM_INT);
      $query-> execute();
 
       return $query-> fetchAll(PDO::FETCH_ASSOC);
