@@ -47,7 +47,7 @@ unset($profile['password']);
                                         <small>Submitted on
                                             <time><?php echo date('Y-m-d H:i', $post['timestamp']); ?></time>
                                         </small>
-                                        <a href="/post.php?post=<?php echo $post['id'] ?>"><small class="d-block"><?php echo count(getCommentTree($pdo, $post['id'])) ?> comments</small></a>
+                                        <a href="/post.php?post=<?php echo $post['id'] ?>"><small class="d-block"><?php echo countComments($pdo, $post['id']) ?> comments</small></a>
                                     </div> <!-- End col-9 -->
 
                                     <div class="col-3 text-right">

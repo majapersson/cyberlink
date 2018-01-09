@@ -21,23 +21,24 @@ function getComments(PDO $pdo, int $post_id): array {
 }
 
 /**
- * Gets entire comment tree for specific post
+ * Counts comments for specific post
  *
  * @param PDO $pdo
  * @param int $post_id
  *
- * @return array
+ * @return string
  */
 
- function getCommentTree(PDO $pdo, int $post_id): array {
-     $query = $pdo-> prepare('SELECT * FROM comments WHERE post_id=:post_id;');
+ function countComments(PDO $pdo, int $post_id): string {
+     $query = $pdo-> prepare('SELECT count(id) FROM comments WHERE post_id=:post_id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }
 
      $query-> bindParam(':post_id', $post_id, PDO::PARAM_INT);
      $query-> execute();
-     return $query->fetchAll(PDO::FETCH_ASSOC);
+     $count = $query->fetch(PDO::FETCH_ASSOC);
+     return $count['count(id)'];
  }
 
 /**

@@ -8,15 +8,20 @@ if (isset($_POST['id'])) {
 
     $comment = getComment($pdo, $comment_id);
     echo json_encode($comment);
+    exit;
+}
 
-} elseif (isset($_POST['user_id'], $_POST['page'])) {
+if (isset($_POST['user_id'], $_POST['page'])) {
     // Get user comments
     $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
     $page = filter_var($_POST['page'], FILTER_SANITIZE_NUMBER_INT);
 
     $comments = getUserComments($pdo, $user_id, $page);
     echo json_encode($comments);
-} elseif (!empty($_POST['post_id']) && isset($_POST['content'])) {
+    exit;
+}
+
+if (!empty($_POST['post_id']) && isset($_POST['content'])) {
     // Insert new comment in database
     $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
     $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
@@ -31,7 +36,10 @@ if (isset($_POST['id'])) {
     }
 
     echo json_encode($comment);
-} elseif (isset($_POST['comment_id'], $_POST['content'])) {
+    exit;
+}
+
+if (isset($_POST['comment_id'], $_POST['content'])) {
     // Update existing comment
     $comment_id = filter_var($_POST['comment_id'], FILTER_SANITIZE_NUMBER_INT);
     $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
@@ -41,14 +49,21 @@ if (isset($_POST['id'])) {
         updateComment($pdo, $comment_id, $content);
     }
     echo json_encode(getComment($pdo, $comment_id));
-} elseif (isset($_POST['delete'])) {
+    exit;
+}
+
+if (isset($_POST['delete'])) {
     // Delete existing comment
     $comment_id = filter_var($_POST['comment_id'], FILTER_SANITIZE_NUMBER_INT);
     $comment = getComment($pdo, $comment_id);
     checkDelete($pdo, $comment['id']);
-    redirect('/#'.$comment['post_id']);
-} elseif (isset($_SESSION['user'])) {
-    echo json_encode($_SESSION['user']['id']);
+    redirect('/post.php?post='.$comment['post_id']);
+    exit;
+}
+
+if (isset($_SESSION['user'])) {
+    echo $_SESSION['user']['id'];
+    exit;
 }
 
 // Check if parent comment should also be deleted

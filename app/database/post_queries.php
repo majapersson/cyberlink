@@ -52,6 +52,25 @@ function getPost(PDO $pdo, int $post_id): array {
       return $query-> fetchAll(PDO::FETCH_ASSOC);
  }
 
+ /**
+  * Counts total posts
+  *
+  * @param PDO $pdo
+  *
+  * @return string
+  */
+
+  function countPosts(PDO $pdo): string {
+      $query = $pdo-> query('SELECT count(id) FROM posts;');
+      if (!$query) {
+          die(var_dump($pdo->errorInfo()));
+      }
+
+      $query-> execute();
+      $count = $query->fetch(PDO::FETCH_ASSOC);
+      return $count['count(id)'];
+  }
+
 /**
  * Inserts new post in database
  *
