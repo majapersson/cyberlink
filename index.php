@@ -19,29 +19,13 @@ if (isset($_SESSION['user'])) {
 }
 ?>
 
-<article>
-    <?php if (isset($user)): ?>
-        <h2>Welcome <?php echo $user['username']; ?></h2>
-    <?php endif; ?>
+<article class="d-flex flex-row pb-5">
+        <?php if (isset($user)): ?>
+            <a href="new_post.php" class="btn btn-primary">New post</a>
+        <?php endif; ?>
+        <input class="form-control w-25 justify-end" type="text" name="search" placeholder="Search posts...">
 </article>
 <section class="d-flex flex-column">
-        <div class="row justify-content-between p-3">
-
-            <h2>Posts</h2>
-            <?php if (isset($user)): ?>
-                <a href="new_post.php" class="btn btn-primary">New post</a>
-            <?php endif; ?>
-        </div>
-
-        <!-- Start of posts -->
-        <?php foreach($posts as $post): ?>
-            <article class="card m-1" id="<?php echo $post['id'] ?>">
-                <div class="card-body">
-                    <?php require __DIR__.'/views/post.php'; ?>
-                </div>
-            </article>
-        <?php endforeach; ?>
-        <!-- End of posts -->
 </section>
 
 <script type="text/javascript" src="../assets/scripts/load_posts.js"></script>

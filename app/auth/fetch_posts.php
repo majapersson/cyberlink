@@ -2,6 +2,16 @@
 
 require __DIR__.'/../autoload.php';
 
+if (isset($_POST['search'])) {
+    $search = filter_var($_POST['search'], FILTER_SANITIZE_STRING);
+    $posts = searchPosts($pdo, $search);
+    foreach ($posts as $index => $post) {
+        $posts[$index]['comments'] = countComments($pdo, $post['id']);
+    }
+    echo json_encode($posts);
+    exit;
+}
+
 if (!isset($_POST['page'])) {
     echo countPosts($pdo);
     exit;

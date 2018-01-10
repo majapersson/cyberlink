@@ -262,3 +262,11 @@ if (load_posts) {
     })
   })
 }
+
+const search_bar = document.querySelector('[name="search"]');
+search_bar.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    const search_value = search_bar.value;
+    window.location.replace(`/search.php?search=${search_value}`);
+  }
+})

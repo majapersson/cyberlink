@@ -127,6 +127,39 @@ if (window.location.pathname === '/index.php' || window.location.pathname === '/
   }
 }
 
+if (window.location.pathname === '/search.php') {
+  const urlGet = new URLSearchParams(window.location.search);
+  if (urlGet.has('search')) {
+      const search = urlGet.get('search');
+      fetch('/../../app/auth/fetch_posts.php', {
+          method: 'POST',
+          body: `search=${search}`,
+          headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+          })
+      })
+      .then (response => {
+          return response.json();
+      })
+      .then (posts => {
+        fetch('/../../app/auth/comment.php', {
+          credentials: 'include',
+        })
+        .then (response => {
+          return response.json();
+        })
+        .then (session_id => {
+            posts.forEach(post => {
+                printPost(post, session_id);
+            })
+        })
+        .then (() => {
+          vote_function();
+        })
+      })
+  }
+}
+
 // Start listeners
 vote_function();
 reply_listener();

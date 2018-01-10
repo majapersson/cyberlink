@@ -10,7 +10,7 @@
  */
 
 function getComments(PDO $pdo, int $post_id): array {
-    $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp desc;');
+    $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp desc;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
@@ -174,7 +174,7 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
    */
 
    function getReplies(PDO $pdo, int $id) {
-       $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE reply_id=:id;');
+       $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url FROM comments JOIN users ON comments.user_id=users.id WHERE reply_id=:id;');
        if (!$query) {
            die(var_dump($pdo->errorInfo()));
        }

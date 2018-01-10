@@ -77,6 +77,31 @@ function getPost(PDO $pdo, int $post_id): array {
   }
 
 /**
+* Searches database for posts containing search parameter
+*
+* @param PDO $pdo
+* @param string $search
+*
+* @return array
+*/
+
+function searchPosts(PDO $pdo, string $search) {
+    $search = "%$search%";
+
+    $query = $pdo-> prepare("SELECT posts.*, users.username, (SELECT sum(vote) FROM votes WHERE posts.id=votes.post_id) AS score FROM posts JOIN votes ON posts.id=votes.post_id JOIN users ON posts.user_id=users.id WHERE posts.title LIKE :search OR posts.content LIKE :search GROUP BY posts.id;");
+
+
+    if(!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+
+    $query-> bindParam(':search', $search, PDO::PARAM_STR);
+    $query-> execute();
+
+    return $query-> fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
  * Inserts new post in database
  *
  * @param PDO $pdo
