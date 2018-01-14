@@ -103,6 +103,10 @@ function updateImage (PDO $pdo, array $image, array $user) {
     $thumbnail->thumbnailImage(300, 300, true);
     $thumbnail->writeImage(__DIR__.'/../../assets/avatars/'.$filename);
 
+    $thumbnail = new Imagick($image['tmp_name']);
+    $thumbnail->thumbnailImage(25, 25, true);
+    $thumbnail->writeImage(__DIR__.'/../../assets/avatars/thumbnails/'.$filename);
+
     $query = $pdo-> prepare('UPDATE users SET image_url=:filename WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));

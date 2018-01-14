@@ -2,7 +2,7 @@
 
 function vote_function () {
 // This makes it possible to vote without page reloading
-const icons = document.querySelectorAll('i');
+const icons = document.querySelectorAll('.vote');
 icons.forEach(icon => {
   const id = icon.dataset.id;
   const vote = icon.dataset.vote;
