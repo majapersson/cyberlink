@@ -16,7 +16,7 @@ if (isset($_POST['user_id'], $_POST['page'])) {
     $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
     $page = filter_var($_POST['page'], FILTER_SANITIZE_NUMBER_INT);
 
-    $comments = getUserComments($pdo, $user_id, $page);
+    $comments = getUserComments($pdo, $user_id, 5, $page);
     echo json_encode($comments);
     exit;
 }
@@ -64,20 +64,4 @@ if (isset($_POST['delete'])) {
 if (isset($_SESSION['user'])) {
     echo $_SESSION['user']['id'];
     exit;
-}
-
-// Check if parent comment should also be deleted
-function checkDelete($pdo, $comment_id) {
-    $comment = getComment($pdo, $comment_id);
-    // Check if comment parent is [deleted]
-    if (isset($comment['reply_id'])) {
-        $parent = getComment($pdo, $comment['reply_id']);
-    }
-    if ($comment['user_id'] === $_SESSION['user']['id'] || $comment['user_id'] === '0') {
-        deleteComment($pdo, $comment_id);
-    }
-    // If parent comment is [deleted], run the function again to remove it and check its parent
-    if ($parent['user_id'] === '0') {
-        checkDelete($pdo, $parent['id']);
-    }
 }

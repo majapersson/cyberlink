@@ -86,3 +86,22 @@ function deleteVotes(PDO $pdo, int $post_id) {
     $query-> bindParam(':post_id', $post_id, PDO::PARAM_INT);
     $query-> execute();
 }
+
+/**
+ * Delete all votes made by specific user
+ *
+ * @param PDO $pdo
+ * @param int $user_id
+ *
+ * @return void
+ */
+
+function deleteUserVotes(PDO $pdo, int $user_id) {
+    $query = $pdo-> prepare('DELETE FROM votes WHERE user_id=:user_id;');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+
+    $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $query-> execute();
+}

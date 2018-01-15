@@ -21,24 +21,23 @@ function getComments(PDO $pdo, int $post_id): array {
 }
 
 /**
- * Counts comments for specific post
+ * Return all comments for specific post
  *
  * @param PDO $pdo
  * @param int $post_id
  *
- * @return string
+ * @return array/boolean
  */
 
- function countComments(PDO $pdo, int $post_id): string {
-     $query = $pdo-> prepare('SELECT count(id) FROM comments WHERE post_id=:post_id;');
+ function getCommentTree(PDO $pdo, int $post_id) {
+     $query = $pdo-> prepare('SELECT * FROM comments WHERE post_id=:post_id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }
 
      $query-> bindParam(':post_id', $post_id, PDO::PARAM_INT);
      $query-> execute();
-     $count = $query->fetch(PDO::FETCH_ASSOC);
-     return $count['count(id)'];
+     return $query->fetchAll(PDO::FETCH_ASSOC);
  }
 
 /**
@@ -51,7 +50,7 @@ function getComments(PDO $pdo, int $post_id): array {
  */
 
  function getComment(PDO $pdo, int $id) {
-     $query = $pdo-> prepare('SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id=users.id WHERE comments.id=:id;');
+     $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url FROM comments JOIN users ON comments.user_id=users.id WHERE comments.id=:id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }
@@ -70,14 +69,22 @@ function getComments(PDO $pdo, int $post_id): array {
   * @return array/boolean
   */
 
-  function getUserComments(PDO $pdo, int $user_id, int $offset) {
-      $offset = $offset*5;
-      $query = $pdo->prepare('SELECT comments.*, posts.title, posts.user_id AS author, users.username FROM comments JOIN posts ON comments.post_id=posts.id JOIN users ON posts.user_id=users.id WHERE comments.user_id=:user_id ORDER BY comments.timestamp desc LIMIT 5 OFFSET :offset;');
-      if (!$query) {
-          die(var_dump($pdo->errorInfo()));
+  function getUserComments(PDO $pdo, int $user_id, int $limit=null, int $offset=null) {
+      if (isset($limit, $offset)) {
+          $offset = $offset*5;
+          $query = $pdo->prepare('SELECT comments.*, posts.title, posts.user_id AS author, users.username FROM comments JOIN posts ON comments.post_id=posts.id JOIN users ON posts.user_id=users.id WHERE comments.user_id=:user_id ORDER BY comments.timestamp desc LIMIT :limit OFFSET :offset;');
+          if (!$query) {
+              die(var_dump($pdo->errorInfo()));
+          }
+          $query-> bindParam(':limit', $limit, PDO::PARAM_INT);
+          $query-> bindParam(':offset', $offset, PDO::PARAM_INT);
+      } else {
+          $query = $pdo->prepare('SELECT comments.*, posts.title, posts.user_id AS author, users.username FROM comments JOIN posts ON comments.post_id=posts.id JOIN users ON posts.user_id=users.id WHERE comments.user_id=:user_id ORDER BY comments.timestamp desc;');
+          if (!$query) {
+              die(var_dump($pdo->errorInfo()));
+          }
       }
       $query-> bindParam(':user_id', $user_id, PDO::PARAM_INT);
-      $query-> bindParam(':offset', $offset, PDO::PARAM_INT);
       $query-> execute();
       return $query->fetchAll(PDO::FETCH_ASSOC);
   }

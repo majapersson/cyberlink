@@ -6,7 +6,7 @@ if (isset($_POST['search'])) {
     $search = filter_var($_POST['search'], FILTER_SANITIZE_STRING);
     $posts = searchPosts($pdo, $search);
     foreach ($posts as $index => $post) {
-        $posts[$index]['comments'] = countComments($pdo, $post['id']);
+        $posts[$index]['comments'] = count(GetCommentTree($pdo, $post['id']));
     }
     echo json_encode($posts);
     exit;
@@ -27,9 +27,9 @@ if (isset($_POST['user_id'])) {
     $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
     $page = filter_var($_POST['page'], FILTER_SANITIZE_NUMBER_INT);
 
-    $posts = getUserPosts($pdo, $user_id, $page);
+    $posts = getUserPosts($pdo, $user_id, 5, $page);
     foreach ($posts as $index => $post) {
-        $comments = countComments($pdo, $post['id']);
+        $comments = count(getCommentTree($pdo, $post['id']));
         $posts[$index]['comments'] = $comments;
     }
     echo json_encode($posts);
@@ -53,7 +53,7 @@ if (isset($_POST['post'])) {
 }
 
 foreach($posts['data'] as $index => $post) {
-    $comments = countComments($pdo, $post['id']);
+    $comments = count(getCommentTree($pdo, $post['id']));
     $posts['data'][$index]['comments'] = $comments;
 }
 

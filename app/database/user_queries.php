@@ -136,3 +136,21 @@ function updatePassword (PDO $pdo, string $new_password, int $user_id) {
     $query-> bindParam(':id', $user_id, PDO::PARAM_INT);
     $query-> execute();
 }
+
+/**
+* Deletes user from database
+*
+* @param PDO $pdo
+* @param int $user_id
+*
+* @return void
+*/
+
+function deleteUser(PDO $pdo, int $user_id) {
+    $query = $pdo-> prepare('DELETE FROM users WHERE id=:id;');
+    if (!$query) {
+        die(var_dump($pdo->errorInfo()));
+    }
+    $query-> bindParam(':id', $user_id, PDO::PARAM_INT);
+    $query-> execute();
+}
