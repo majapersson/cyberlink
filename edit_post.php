@@ -42,22 +42,26 @@
 
     <button class="btn btn-info" type="submit">Update post</button>
 </form>
-<form action="/app/database/delete_post.php" class="form-inline" method="post">
-    <input type="hidden" name="id" value="<?php echo $post['id'] ?>">
-    <button class="btn btn-danger" type="submit">Delete post</button>
-</form>
-</section>
 
-<script type="text/javascript">
-    // Delete post
-    const post_delete = document.querySelector('.btn-danger');
-    if (post_delete) {
-      post_delete.addEventListener('click', (event) => {
-        const reply = confirm('Are you sure?');
-        if(!reply) {
-          event.preventDefault();
-        }
-      })
-    }
-</script>
+<!-- Modal trigger button -->
+<button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#deletePostModal">Delete post</button>
+
+
+<div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Are you sure you want to delete this post and all its comments?</p>
+            </div>
+            <div class="modal-footer">
+                <form action="/app/database/delete_post.php" method="post">
+                    <input type="hidden" name="id" value="<?php echo $post['id'] ?>">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Delete post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
 <?php require __DIR__.'/views/footer.php'; ?>

@@ -31,5 +31,21 @@ if (isset($_GET['post'])) {
             <!-- End comments -->
         </div>
     </div>
+
+    <div class="modal fade" id="deleteComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this comment?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/app/auth/comment.php" method="post" name="delete_form">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="delete" class="btn btn-danger">Delete comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <?php require __DIR__.'/views/footer.php' ?>

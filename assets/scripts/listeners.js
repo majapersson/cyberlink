@@ -5,10 +5,14 @@ const delete_listener = () => {
   const comment_delete = document.querySelectorAll('.badge-danger');
   comment_delete.forEach((button) => {
     button.addEventListener('click', (event) => {
-      const reply = confirm('Are you sure?');
-      if (!reply) {
-        event.preventDefault();
-      }
+      const comment_id = button.dataset.id;
+      const delete_form = document.querySelector('[name="delete_form"]');
+      const close_button = delete_form.querySelector('button');
+      const input = document.createElement('input');
+      input.setAttribute('type', 'hidden');
+      input.setAttribute('name', 'comment_id');
+      input.setAttribute('value', comment_id);
+      delete_form.insertBefore(input, close_button);
     })
   })
 }

@@ -83,7 +83,7 @@ if (isset($_POST['new_password'], $_POST['old_password']) && $user['id'] === $_S
         </div>
     </form> <!-- /password form -->
 
-    <!-- Button trigger modal -->
+    <!-- Modal trigger button -->
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
         Delete account
     </button>

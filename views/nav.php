@@ -14,8 +14,6 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <?php if (isset($user['image_url'])): ?>
                             <img src="/../assets/avatars/thumbnails/<?php echo $user['image_url']; ?>">
-                        <?php else: ?>
-                            <img src="/../assets/avatars/thumbnails/default.png">
                         <?php endif; ?>
                                 <?php echo $user['username'] ?>
                             </a>

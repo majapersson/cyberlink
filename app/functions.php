@@ -55,10 +55,7 @@ function printComments(PDO $pdo, array $comments, array $post) {
                         // If logged in user is the same as author
                         if (isset($user) && $comment['user_id'] === $user['id']): ?>
                         <button class="btn badge badge-info outline" name="edit" type="submit">Edit</button>
-                        <form class="d-inline" action="/app/auth/comment.php" method="post">
-                            <input type="hidden" name="comment_id" value="<?php echo $comment['id'] ?>">
-                            <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
-                        </form>
+                        <button class="btn badge badge-danger" data-toggle="modal" data-target="#deleteComment" data-id=<?php echo $comment['id'] ?>>Delete</button>
                     <?php endif; ?>
                 </div>
             </div>

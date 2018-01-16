@@ -45,7 +45,9 @@ function getUser(PDO $pdo, int $id): array {
  */
 
 function setUser(PDO $pdo, string $username, string $email, string $password) {
-    $query = $pdo-> prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password);');
+    $filename = 'default.png';
+
+    $query = $pdo-> prepare('INSERT INTO users (username, email, password, image_url) VALUES (:username, :email, :password, :image);');
 
     if(!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -54,6 +56,7 @@ function setUser(PDO $pdo, string $username, string $email, string $password) {
     $query-> bindParam(':username', $username, PDO::PARAM_STR);
     $query-> bindParam(':email', $email, PDO::PARAM_STR);
     $query-> bindParam(':password', $password, PDO::PARAM_STR);
+    $query-> bindParam(':image', $filename, PDO::PARAM_STR);
 
     $query-> execute();
 }
