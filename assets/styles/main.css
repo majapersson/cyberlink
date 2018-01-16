@@ -13,6 +13,7 @@ body {
   background-size: 100%;
   background-repeat: no-repeat;
   font-family: 'Open Sans', sans-serif;
+  hyphens: auto;
 }
 
 h2, h3, h4, h5 {

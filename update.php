@@ -37,7 +37,7 @@ if (isset($_POST['new_password'], $_POST['old_password']) && $user['id'] === $_S
         <?php endif; ?>
 
         <div class="form-group">
-            <input type="file" name="image">
+            <input type="file" name="image" required>
         </div>
 
         <button class="btn btn-info" type="submit">Update image</button>
