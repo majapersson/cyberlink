@@ -11,7 +11,7 @@ body {
   background-color: var(--lighter-gray);
   background-image: url('../images/background.png');
   background-size: 100%;
-  background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: 'Open Sans', sans-serif;
   hyphens: auto;
 }

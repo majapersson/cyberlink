@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__.'/app/autoload.php';
+
     if (isset($_POST['title'], $_POST['post_url'])) {
         $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
         $url = filter_var($_POST['post_url'], FILTER_SANITIZE_URL);
