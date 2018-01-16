@@ -6,6 +6,16 @@ if (isset($_POST['email'], $_POST['bio'])) {
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $bio = filter_var($_POST['bio'], FILTER_SANITIZE_STRING);
 
+    if ($email !== $user['email']) {
+        $users = getUsers($pdo);
+        foreach($users as $loop_user) {
+            if ($loop_user['email'] === $email) {
+                $email_error = 'The email is already registered.';
+            }
+        }
+    }
+
+
     if ($user['id'] === $_SESSION['user']['id']) {
         $user = updateInfo($pdo, $user['id'], $email, $bio);
     }
@@ -50,6 +60,12 @@ if (isset($_POST['new_password'], $_POST['old_password']) && $user['id'] === $_S
             <input class="form-control" type="text" name="username" value="<?php echo $user['username']; ?>" disabled>
         </div>
 
+        <?php if (isset($email_error)): ?>
+            <div class="alert alert-danger">
+                <?php echo $email_error ?>
+            </div>
+        <?php unset($email_error);
+            endif; ?>
         <div class="form-group w-50">
             <label for="email">Email</label>
             <input class="form-control" type="email" name="email" value="<?php echo $user['email']; ?>">
