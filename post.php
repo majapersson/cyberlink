@@ -9,7 +9,7 @@ if (isset($_GET['post'])) {
 }
 
 ?>
-<article>
+<section>
     <div class="card m-2">
         <div class="card-body" id=<?php echo $post_id ?>>
             <?php require __DIR__.'/views/post.php' ?>
@@ -17,7 +17,7 @@ if (isset($_GET['post'])) {
             <!-- Comment button -->
             <?php
             if (isset($user['id'])): ?>
-                <button class="btn btn-primary" type="button" name="comment">Comment</button>
+                <button class="btn btn-info btn-sm" type="button" name="comment">Comment</button>
             <?php endif; ?>
 
             <!-- Start comments -->
@@ -31,5 +31,5 @@ if (isset($_GET['post'])) {
             <!-- End comments -->
         </div>
     </div>
-</article>
+</section>
 <?php require __DIR__.'/views/footer.php' ?>

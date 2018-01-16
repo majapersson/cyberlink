@@ -1,16 +1,5 @@
 'use strict';
 
-// Delete post
-const post_delete = document.querySelector('.btn-danger');
-if (post_delete) {
-  post_delete.addEventListener('click', (event) => {
-    const reply = confirm('Are you sure?');
-    if(!reply) {
-      event.preventDefault();
-    }
-  })
-}
-
 // Delete comment
 const delete_listener = () => {
   const comment_delete = document.querySelectorAll('.badge-danger');
@@ -32,7 +21,7 @@ com_buttons.forEach(button => {
     const post_id = card.getAttribute('id');
     const inner_form = `<input type="hidden" name="post_id" value=${post_id}>
     <textarea class="form-control" name="content" rows="5" cols="80"></textarea>
-    <button type="button" class="btn btn-primary mt-2">Comment</button>`;
+    <button type="button" class="btn btn-info btn-sm mt-2">Comment</button>`;
     const form = document.createElement('form');
     form.innerHTML = inner_form;
     card.insertBefore(form, button);
@@ -82,7 +71,7 @@ const reply_listener = () => {
         const inner_form = `<input type="hidden" name="post_id" value="${post_id}">
         <input type="hidden" name="reply_id" value="${id}">
         <textarea class="form-control" name="content" rows="4" cols="80"></textarea>
-        <button type="button" class="btn btn-primary mt-2">Reply</button>`
+        <button type="button" class="btn btn-info btn-sm mt-2">Reply</button>`
         const form = document.createElement("form");
         form.innerHTML = inner_form;
         card.insertBefore(form, button);
@@ -134,7 +123,7 @@ const edit_listener = () => {
       .then(comment => {
         const inner_form = `<input type="hidden" name="comment_id" value="${comment.id}">
         <textarea class="form-control" name="content" rows="4"  cols="80">${comment.content}</textarea>
-        <button class="btn btn-primary mt-2" type="button">Save</button>`;
+        <button class="btn btn-info btn-sm mt-2" type="button">Save</button>`;
         const form = document.createElement("form");
         form.innerHTML = inner_form;
         const reply = card.querySelector('[name="reply"]');
@@ -263,10 +252,12 @@ if (load_posts) {
   })
 }
 
-const search_bar = document.querySelector('[name="search"]');
-search_bar.addEventListener('keypress', (event) => {
-  if (event.key === 'Enter') {
-    const search_value = search_bar.value;
-    window.location.replace(`/search.php?search=${search_value}`);
-  }
-})
+if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
+  const search_bar = document.querySelector('[name="search"]');
+  search_bar.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      const search_value = search_bar.value;
+      window.location.replace(`/search.php?search=${search_value}`);
+    }
+  })
+}

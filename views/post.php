@@ -6,9 +6,9 @@
             <span><?php echo $post['score'];  ?></span>
             <i class="fas fa-sort-down disabled"></i>
         <?php else: ?>
-            <i class="fas fa-sort-up" data-id=<?php echo $post['id'] ?> data-vote=1></i>
+            <i class="fas fa-sort-up vote" data-id=<?php echo $post['id'] ?> data-vote=1></i>
             <span><?php echo $post['score'];  ?></span>
-            <i class="fas fa-sort-down" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
+            <i class="fas fa-sort-down vote" data-id=<?php echo $post['id'] ?> data-vote=-1></i>
         <?php endif; ?>
         <!-- End vote icons -->
 
@@ -32,7 +32,7 @@
         <?php if (isset($user['id']) && $post['user_id'] === $user['id']): ?>
             <form action="edit_post.php" method="post" class="d-inline">
                 <input type="hidden" name="post_id" value="<?php echo $post['id'] ?>">
-                <button class="btn btn-primary" type="submit">Edit post</button>
+                <button class="btn btn-info btn-sm" type="submit">Edit post</button>
             </form>
         <?php endif; ?>
 

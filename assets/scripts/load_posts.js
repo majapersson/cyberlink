@@ -7,7 +7,7 @@ const printPost = (post, session_id) => {
 
     // HTML
     const article = document.createElement('article');
-    article.classList.add('card', 'my-1');
+    article.classList.add('card', 'mb-2');
     article.setAttribute('id', post.id);
     article.innerHTML += `<div class="card-body">
       <div class="row">
@@ -39,9 +39,9 @@ const printPost = (post, session_id) => {
         <i class="fas fa-sort-down disabled"></i>`;
     } else {
       article.querySelector('.col-1').innerHTML =
-        `<i class="fas fa-sort-up" data-id=${post.id} data-vote=1></i>
+        `<i class="fas fa-sort-up vote" data-id=${post.id} data-vote=1></i>
         <span>${post.score}</span>
-        <i class="fas fa-sort-down" data-id=${post.id} data-vote=-1></i>`;
+        <i class="fas fa-sort-down vote" data-id=${post.id} data-vote=-1></i>`;
     }
 
     // Edit button
@@ -49,7 +49,7 @@ const printPost = (post, session_id) => {
       article.querySelector('.col-2').innerHTML =
           `<form action="edit_post.php" method="post" class="d-inline">
               <input type="hidden" name="post_id" value="${post.id}">
-              <button class="btn btn-primary" type="submit">Edit post</button>
+              <button class="btn btn-outline-info btn-sm" type="submit">Edit post</button>
           </form>`;
     }
 

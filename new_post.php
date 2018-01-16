@@ -15,8 +15,9 @@
         redirect("/?post=$post_id");
     }
 ?>
-
-<form action="new_post.php" method="post">
+<section>
+    <h2>New post</h2>
+    <form action="new_post.php" method="post">
     <div class="form-group">
         <label for="title">Title</label>
         <input class="form-control" type="text" name="title">
@@ -32,8 +33,10 @@
         <textarea class="form-control" name="content" rows="8"></textarea>
     </div>
 
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-info" type="submit">Submit</button>
 
 </form>
+</section>
+
 
 <?php require __DIR__.'/views/footer.php'; ?>

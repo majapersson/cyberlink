@@ -1,7 +1,14 @@
 # Cyberlink
-[<img src="https://media.giphy.com/media/kPVTbiTORIopy/giphy.gif" width="100%" />](https://www.themoviedb.org/movie/251516-kung-fury)
+[<img src="https://media.giphy.com/media/NahAulx1vp6FO/giphy.gif" width="100%" />](https://www.themoviedb.org/tv/57243-doctor-who/season/2/episode/5 "Doctor Who: Rise of the Cybermen")
 
 This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cyberlink) spanning several courses, including Programming, Visual Communication and Databases.
+
+## Getting started
+- Clone repository using [this link](https://github.com/majapersson/cyberlink.git) in GitHub Desktop or
+`$ git clone https://github.com/majapersson/cyberlink.git` in bash
+- Open MAMP of other local web server and choose the repo as starting folder
+- Open start page
+- Note: Resetting password by email probably won't work on your computer
 
 ## Features
 - [x] As a user I should be able to create an account.
@@ -20,9 +27,20 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - [x] As a user I'm able to delete my comments.
 - [x] As a user I'm able to reply to comments.
 - [x] As a user I'm able to reset my password with email.
+- [x] As a user I'm able to delete my account along with all links and comments.
 
-### 2018-01-03
-- Added feature to reset password with email (probably only works on my own computer, though)
+### 2018-01-15
+- Delete user function added
+
+### 2018-01-10
+- Search function added
+
+### 2018-01-09
+- A lot of fetch. Autoload new posts on front page, load more posts and comments on account page.
+
+### 2018-01-04
+- Image compression with Imagick
+- Reset password with email added (probably only works on my own computer, though)
 
 ### 2018-01-02
 - Commenting, replying and editing with fetch functional
@@ -36,22 +54,18 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - Fixed voting with fetch to avoid page reload
 
 ### 2017-12-20
-- Fixed some structure and comments
 - Finalized ability to edit and delete comment
 
 ### 2017-12-19
-- Started on comment editing and deleting
 - Added ability to comment
 - Finalized user voting functionality
 
 ### 2017-12-18
-- Started working on voting
 - Added functionality to edit and delete posts
 - Added ability to see other users profile
 
 ### 2017-12-16
 - Added new post functionality and front page
-- Updated database query functions
 
 ### 2017-12-14
 - Added functionality for updating profile info, image and password

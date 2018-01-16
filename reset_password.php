@@ -1,7 +1,7 @@
 <?php require __DIR__.'/views/header.php'; ?>
 
-<article>
-    <h1>Reset password</h1>
+<section>
+    <h2>Reset password</h2>
     <?php if (isset($_SESSION['reset_success'])): ?>
         <div class="alert alert-success">
             <?php echo $_SESSION['reset_success'] ?>
@@ -16,11 +16,11 @@
     <form action="/app/auth/reset.php" method="post">
         <div class="form-group">
             <label for="email">Email</label>
-            <input class="form-control" type="email" name="email">
+            <input class="form-control w-50" type="email" name="email">
             <small class="form-text text-muted">Please enter the email connected to your account</small>
         </div>
-        <button class="btn btn-primary" type="submit">Reset password</button>
+        <button class="btn btn-info" type="submit">Reset password</button>
     </form>
-</article>
+</section>
 
  <?php require __DIR__.'/views/footer.php'; ?>

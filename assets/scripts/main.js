@@ -26,16 +26,15 @@ const formatDate = (timestamp) => {
 const printComment = ((comment, card, before=null) => {
   const new_reply = document.createElement('div');
   const timestamp = formatDate(comment.timestamp);
-  new_reply.classList.add('card');
-  new_reply.classList.add('mt-2');
+  new_reply.classList.add('card', 'mt-2');
   new_reply.innerHTML = `<div class="card-body p-2" data-id=${comment.id}>
     <div class="row">
       <div class="col-10">
-        <a href="account.php/?id=${comment.user_id}"> ${comment.username}</a>
+        <a href="account.php/?id=${comment.user_id}"><img src="/assets/avatars/thumbnails/${comment.image_url}"> ${comment.username}</a>
         <small>${timestamp}</small>
       </div>
       <div class="col-2 text-right">
-        <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
+        <button class="btn badge badge-info outline" name="edit" type="submit">Edit</button>
         <form class="d-inline" action="/app/auth/comment.php" method="post">
         <input type="hidden" name="comment_id" value="${comment.id}">
         <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
@@ -43,7 +42,7 @@ const printComment = ((comment, card, before=null) => {
       </div>
     </div>
     <p>${comment.content}</p>
-    <button class="btn badge badge-primary" name="reply">Reply</button>
+    <button class="btn badge badge-info" name="reply">Reply</button>
   </div>`;
   if (!before) {
     card.appendChild(new_reply);
@@ -75,7 +74,7 @@ const printUserComment = (comment, link, session_id) => {
     </div>`;
   if (session_id === comment.user_id) {
     comment_card.querySelector('.col-4').innerHTML += `<!-- Buttons -->
-      <button class="btn badge badge-primary" name="edit" type="submit">Edit</button>
+      <button class="btn badge badge-info outline" name="edit" type="submit">Edit</button>
       <form class="d-inline" action="/app/auth/comment.php" method="post">
           <input type="hidden" name="comment_id" value="<?php echo $comment['id'] ?>">
           <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
@@ -107,7 +106,7 @@ const printUserPost = (post, link, session_id) => {
   if (session_id.toString() === post.user_id) {
     post_card.querySelector('.col-3').innerHTML = `<form action="edit_post.php" method="post" class="d-inline">
         <input type="hidden" name="post_id" value="${post.id}">
-        <button class="btn btn-primary" type="submit">Edit post</button>
+        <button class="btn btn-info" type="submit">Edit post</button>
     </form>`;
   }
   link.parentElement.insertBefore(post_card, link);

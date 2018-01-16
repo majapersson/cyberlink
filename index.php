@@ -1,32 +1,28 @@
 <?php
 
-/**
-* TO DO:
-*
-* - Make parameters into arrays (opt)
-*
-* - Send forms with fetch to avoid page reload
-* - Fix comment buttons on new comment
-* - Fix database so that tables correlate
-* - Better styling
-*
-*/
-
 require __DIR__.'/views/header.php';
 
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 }
 ?>
+<main class="d-flex flex-column flex-lg-row col-12">
+    <section class="d-flex flex-column col-12 col-lg-9">
+    </section>
+    <aside class="d-flex flex-column flex-sm-row flex-lg-column col-12 col-lg-3">
+        <div class="input-group mb-3 mb-sm-0 mb-lg-3">
+            <input class="form-control" type="text" name="search" placeholder="Search posts...">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+        </div>
+        <div class="input-group d-flex justify-content-center">
+            <?php if (isset($user)): ?>
+                <a href="new_post.php" class="btn btn-info">Post new link <i class="fas fa-link ml-2"></i></a>
+            <?php endif; ?>
+        </div>
 
-<article class="d-flex flex-row pb-5">
-        <?php if (isset($user)): ?>
-            <a href="new_post.php" class="btn btn-primary">New post</a>
-        <?php endif; ?>
-        <input class="form-control w-25 justify-end" type="text" name="search" placeholder="Search posts...">
-</article>
-<section class="d-flex flex-column">
-</section>
+    </aside>
+</main>
 
-<script type="text/javascript" src="../assets/scripts/load_posts.js"></script>
 <?php require __DIR__.'/views/footer.php'; ?>
