@@ -1,5 +1,4 @@
 <?php
-    require __DIR__.'/views/header.php';
 
     if (isset($_POST['title'], $_POST['post_url'])) {
         $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
@@ -14,6 +13,8 @@
         }
         redirect("/?post=$post_id");
     }
+
+    require __DIR__.'/views/header.php';
 ?>
 <section>
     <h2>New post</h2>

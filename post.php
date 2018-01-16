@@ -1,4 +1,5 @@
 <?php
+require __DIR__.'/views/header.php';
 
 if (isset($_GET['post'])) {
     $post_id = filter_var($_GET['post'], FILTER_SANITIZE_NUMBER_INT);
@@ -7,7 +8,6 @@ if (isset($_GET['post'])) {
     redirect('/');
 }
 
-require __DIR__.'/views/header.php';
 ?>
 <section>
     <div class="card m-2">
