@@ -13,7 +13,7 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 ## Testers
 - Andreas Lundqvist
 - Maria Eidland
-Thank you for helping me improve my project!
+<p>Thank you for helping me improve my project!</p>
 
 ## Features
 - [x] As a user I should be able to create an account.
@@ -33,6 +33,7 @@ Thank you for helping me improve my project!
 - [x] As a user I'm able to reply to comments.
 - [x] As a user I'm able to reset my password with email.
 - [x] As a user I'm able to delete my account along with all links and comments.
+- [x] As a user I'm able to search posts for keywords
 
 ### 2018-01-15
 - Delete user function added
