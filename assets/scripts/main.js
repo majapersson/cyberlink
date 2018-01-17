@@ -35,10 +35,7 @@ const printComment = ((comment, card, before=null) => {
       </div>
       <div class="col-2 text-right">
         <button class="btn badge badge-info outline" name="edit" type="submit">Edit</button>
-        <form class="d-inline" action="/app/auth/comment.php" method="post">
-        <input type="hidden" name="comment_id" value="${comment.id}">
-        <button class="btn badge badge-danger" name="delete" type="submit">Delete</button>
-        </form>
+        <button class="btn badge badge-danger" data-toggle="modal" data-target="#deleteComment" data-id=${comment.id}>Delete</button>
       </div>
     </div>
     <p>${comment.content}</p>
