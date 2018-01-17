@@ -50,7 +50,7 @@ function getComments(PDO $pdo, int $post_id): array {
  */
 
  function getComment(PDO $pdo, int $id) {
-     $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url FROM comments JOIN users ON comments.user_id=users.id WHERE comments.id=:id;');
+     $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url, posts.user_id as post_author FROM comments JOIN users ON comments.user_id=users.id JOIN posts ON comments.post_id=posts.id WHERE comments.id=:id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
      }

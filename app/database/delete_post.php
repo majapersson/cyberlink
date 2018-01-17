@@ -8,7 +8,7 @@ if (isset($_POST['id'])) {
     $post = getPost($pdo, $post_id);
 
     if ($_SESSION['user']['id'] === $post['user_id']) {
-        $comments = getCommentTree($pdo, $post_id);
+        $comments = array_reverse(getCommentTree($pdo, $post_id));
         foreach($comments as $comment) {
             checkDelete($pdo, $comment['id']);
         }

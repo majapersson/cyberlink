@@ -10,6 +10,11 @@ This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cy
 - Open start page
 - Note: Resetting password by email probably won't work on your computer
 
+## Testers
+- Andreas Lundqvist
+- Maria Eidland
+Thank you for helping me improve my project!
+
 ## Features
 - [x] As a user I should be able to create an account.
 - [x] As a user I should be able to login.

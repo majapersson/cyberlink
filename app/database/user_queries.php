@@ -102,6 +102,15 @@ function updateImage (PDO $pdo, array $image, array $user) {
     $file = pathinfo($image['name']);
     $filename = $user['username'].'.'.$file['extension'];
 
+    if (isset($user['image_url'])) {
+        $image_path = __DIR__.'/../../assets/avatars/'.$user['image_url'];
+        $thumb_path = __DIR__.'/../../assets/avatars/thumbnails/'.$user['image_url'];
+        if (file_exists($image_path) && file_exists($thumb_path)) {
+            unlink($image_path);
+            unlink($thumb_path);
+        }
+    }
+
     $thumbnail = new Imagick($image['tmp_name']);
     $thumbnail->thumbnailImage(300, 300, true);
     $thumbnail->writeImage(__DIR__.'/../../assets/avatars/'.$filename);

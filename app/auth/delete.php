@@ -10,7 +10,7 @@ if (isset($_POST['user_id'], $_POST['password'])) {
 
     if (password_verify($password, $user['password'])) {
         $posts = getUserPosts($pdo, $user_id);
-        $comments = getUserComments($pdo, $user_id);
+        $comments = array_reverse(getUserComments($pdo, $user_id));
         foreach($comments as $comment) {
             checkDelete($pdo, $comment['id']);
         }
@@ -19,6 +19,14 @@ if (isset($_POST['user_id'], $_POST['password'])) {
         }
         deleteUserVotes($pdo, $user_id);
         deleteUser($pdo, $user_id);
+
+        $image_path = __DIR__.'/../../assets/avatars/'.$user['image_url'];
+        $thumb_path = __DIR__.'/../../assets/avatars/thumbnails/'.$user['image_url'];
+        if (file_exists($image_path) && file_exists($thumb_path)) {
+            unlink($image_path);
+            unlink($thumb_path);
+        }
+
         unset($_SESSION['user']);
         redirect('/');
     } else {

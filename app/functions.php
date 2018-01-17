@@ -85,7 +85,8 @@ function checkDelete($pdo, $comment_id) {
     if (isset($comment['reply_id'])) {
         $parent = getComment($pdo, (int) $comment['reply_id']);
     }
-    if ($comment['user_id'] === $_SESSION['user']['id'] || $comment['user_id'] === '0') {
+    // Checks if user is the same as comment author, post author (for post deletion) or 0
+    if ($comment['user_id'] === $_SESSION['user']['id'] || $comment['user_id'] === '0' || $comment['post_author'] === $_SESSION['user']['id']) {
         deleteComment($pdo, (int) $comment_id);
     }
     // If parent comment is [deleted], run the function again to remove it and check its parent

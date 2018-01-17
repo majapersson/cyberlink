@@ -6,7 +6,7 @@ if (isset($_POST['search'])) {
     $search = filter_var($_POST['search'], FILTER_SANITIZE_STRING);
     $posts = searchPosts($pdo, $search);
     foreach ($posts as $index => $post) {
-        $posts[$index]['comments'] = count(GetCommentTree($pdo, $post['id']));
+        $posts[$index]['comments'] = count(getCommentTree($pdo, $post['id']));
     }
     echo json_encode($posts);
     exit;

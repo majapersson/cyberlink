@@ -138,6 +138,9 @@ a:hover {
 }
 
 @media screen and (max-width: 991px) {
+  body {
+    background-size: cover;
+  }
   aside.col-12 {
     flex-direction: row;
     height: auto;
