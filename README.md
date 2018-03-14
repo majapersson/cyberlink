@@ -3,6 +3,8 @@
 
 This is an [assignment](https://github.com/yrgo/wu17/tree/master/PHP/18%20-%20Cyberlink) spanning several courses, including Programming, Visual Communication and Databases.
 
+[![StyleCI](https://styleci.io/repos/113291197/shield?branch=master)](https://styleci.io/repos/113291197)
+
 ## Getting started
 - Clone repository using [this link](https://github.com/majapersson/cyberlink.git) in GitHub Desktop or
 `$ git clone https://github.com/majapersson/cyberlink.git` in bash
