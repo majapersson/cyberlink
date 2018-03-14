@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require __DIR__.'/../autoload.php';
 
 if (isset($_POST['user_id'], $_POST['password'])) {
@@ -11,7 +20,7 @@ if (isset($_POST['user_id'], $_POST['password'])) {
     if (password_verify($password, $user['password'])) {
         $posts = getUserPosts($pdo, $user_id);
         $comments = array_reverse(getUserComments($pdo, $user_id));
-        foreach($comments as $comment) {
+        foreach ($comments as $comment) {
             checkDelete($pdo, $comment['id']);
         }
         foreach ($posts as $post) {

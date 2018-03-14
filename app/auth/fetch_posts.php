@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require __DIR__.'/../autoload.php';
 
 if (isset($_POST['search'])) {
@@ -52,7 +61,7 @@ if (isset($_POST['post'])) {
     array_unshift($posts['data'], $post);
 }
 
-foreach($posts['data'] as $index => $post) {
+foreach ($posts['data'] as $index => $post) {
     $comments = count(getCommentTree($pdo, $post['id']));
     $posts['data'][$index]['comments'] = $comments;
 }

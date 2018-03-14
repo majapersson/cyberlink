@@ -28,8 +28,9 @@ if (!function_exists('redirect')) {
 * @return void
 */
 
-function printComments(PDO $pdo, array $comments, array $post) {
-    if (isset($_SESSION['user'])){
+function printComments(PDO $pdo, array $comments, array $post)
+{
+    if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
     }
     foreach ($comments as $comment): ?>
@@ -70,16 +71,17 @@ function printComments(PDO $pdo, array $comments, array $post) {
         <?php
         // If there are replies
         $replies = getReplies($pdo, (int) $comment['id']);
-        if (isset($replies)) {
-            printComments($pdo, $replies, $post);
-        } ?>
+    if (isset($replies)) {
+        printComments($pdo, $replies, $post);
+    } ?>
     </div>
 </div>
 <?php endforeach;
 }
 
 // Check if parent comment should also be deleted
-function checkDelete($pdo, $comment_id) {
+function checkDelete($pdo, $comment_id)
+{
     $comment = getComment($pdo, (int) $comment_id);
     // Check if comment parent is [deleted]
     if (isset($comment['reply_id'])) {

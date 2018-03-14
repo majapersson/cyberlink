@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
     declare(strict_types=1);
 
     require __DIR__.'/../autoload.php';
@@ -16,7 +25,7 @@
         // Loop through user array and compare username and email to user input
         $users = getUsers($pdo);
 
-        forEach($users as $user) {
+        foreach ($users as $user) {
             if (mb_strtolower($username) === mb_strtolower($user['username'])) {
                 $_SESSION['errors']['user'][] = 'The username is already taken.';
             }
@@ -34,7 +43,7 @@
         // Get user info from database
         $query = $pdo-> prepare('SELECT * FROM users WHERE username=:username;');
 
-        if(!$query) {
+        if (!$query) {
             die(var_dump($pdo->errorInfo()));
         }
         $query-> bindParam(':username', $username, PDO::PARAM_STR);

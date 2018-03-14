@@ -4,7 +4,7 @@
     <h2>Sign up</h2>
     <form action="/app/auth/signup.php" method="post">
         <?php if (isset($_SESSION['errors']['user'])): ?>
-            <?php foreach($_SESSION['errors']['user'] as $error): ?>
+            <?php foreach ($_SESSION['errors']['user'] as $error): ?>
                 <div class="alert alert-danger">
                     <?php echo $error; ?>
                 </div>

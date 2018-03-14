@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/views/header.php';
-if (isset($_GET['id'])){
+if (isset($_GET['id'])) {
     $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
     $profile = getUser($pdo, $id);
 } else {

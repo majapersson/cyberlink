@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require __DIR__.'/../autoload.php';
 
 if (isset($_SESSION['user'])) {
-    if (isset($_POST['vote'])){
+    if (isset($_POST['vote'])) {
         $post_id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
         $user_id = $_SESSION['user']['id'];
         $vote = filter_var($_POST['vote'], FILTER_SANITIZE_NUMBER_INT);
@@ -13,7 +22,7 @@ if (isset($_SESSION['user'])) {
         if (!$user_vote) {
             setVote($pdo, $post_id, $user_id, $vote);
         } else {
-            if ($user_vote['vote'] === $vote){
+            if ($user_vote['vote'] === $vote) {
                 updateVote($pdo, $post_id, $user_id, 0);
             } else {
                 updateVote($pdo, $post_id, $user_id, $vote);
@@ -21,7 +30,7 @@ if (isset($_SESSION['user'])) {
         }
 
         echo json_encode(checkVote($pdo, $post_id, $user_id));
-    } else if (isset($_POST['post'])){
+    } elseif (isset($_POST['post'])) {
         $post_id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
 
         echo json_encode(getPost($pdo, $post_id));

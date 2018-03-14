@@ -1,15 +1,16 @@
 <?php
 
-/**
- * Gets comments for specific post
+/*
+ * This file is a part of Cyberlink.
  *
- * @param PDO $pdo
- * @param int $post_id
+ * (c) Maja Persson
  *
- * @return array
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-function getComments(PDO $pdo, int $post_id): array {
+function getComments(PDO $pdo, int $post_id): array
+{
     $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url FROM comments JOIN users ON comments.user_id=users.id WHERE post_id=:post_id AND reply_id is null ORDER BY timestamp desc;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -29,7 +30,8 @@ function getComments(PDO $pdo, int $post_id): array {
  * @return array/boolean
  */
 
- function getCommentTree(PDO $pdo, int $post_id) {
+ function getCommentTree(PDO $pdo, int $post_id)
+ {
      $query = $pdo-> prepare('SELECT * FROM comments WHERE post_id=:post_id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
@@ -49,7 +51,8 @@ function getComments(PDO $pdo, int $post_id): array {
  * @return array/boolean
  */
 
- function getComment(PDO $pdo, int $id) {
+ function getComment(PDO $pdo, int $id)
+ {
      $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url, posts.user_id as post_author FROM comments JOIN users ON comments.user_id=users.id JOIN posts ON comments.post_id=posts.id WHERE comments.id=:id;');
      if (!$query) {
          die(var_dump($pdo->errorInfo()));
@@ -57,7 +60,6 @@ function getComments(PDO $pdo, int $post_id): array {
      $query-> bindParam(':id', $id, PDO::PARAM_INT);
      $query-> execute();
      return $query-> fetch(PDO::FETCH_ASSOC);
-
  }
 
  /**
@@ -69,7 +71,8 @@ function getComments(PDO $pdo, int $post_id): array {
   * @return array/boolean
   */
 
-  function getUserComments(PDO $pdo, int $user_id, int $limit=null, int $offset=null) {
+  function getUserComments(PDO $pdo, int $user_id, int $limit=null, int $offset=null)
+  {
       if (isset($limit, $offset)) {
           $offset = $offset*5;
           $query = $pdo->prepare('SELECT comments.*, posts.title, posts.user_id AS author, users.username FROM comments JOIN posts ON comments.post_id=posts.id JOIN users ON posts.user_id=users.id WHERE comments.user_id=:user_id ORDER BY comments.timestamp desc LIMIT :limit OFFSET :offset;');
@@ -100,7 +103,8 @@ function getComments(PDO $pdo, int $post_id): array {
  * @return void
  */
 
-function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $reply_id = null) {
+function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $reply_id = null)
+{
     $timestamp = time();
 
     $query = $pdo-> prepare('INSERT INTO comments (post_id, user_id, content, timestamp, reply_id) VALUES (:post_id, :user_id, :content, :timestamp, :reply_id);');
@@ -129,7 +133,8 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
  * @return void
  */
 
- function deleteComment(PDO $pdo, int $comment_id) {
+ function deleteComment(PDO $pdo, int $comment_id)
+ {
      $replies = getReplies($pdo, $comment_id);
      // If comment doen't have any replies, delete it completely
      if (empty($replies)) {
@@ -159,8 +164,8 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
   * @return void
   */
 
-  function updateComment(PDO $pdo, int $comment_id, string $content) {
-
+  function updateComment(PDO $pdo, int $comment_id, string $content)
+  {
       $query = $pdo-> prepare('UPDATE comments SET content=:content WHERE id=:comment_id;');
       if (!$query) {
           die(var_dump($pdo->errorInfo()));
@@ -180,7 +185,8 @@ function setComment(PDO $pdo, int $post_id, int $user_id, string $content, int $
    * @return array/boolean
    */
 
-   function getReplies(PDO $pdo, int $id) {
+   function getReplies(PDO $pdo, int $id)
+   {
        $query = $pdo-> prepare('SELECT comments.*, users.username, users.image_url FROM comments JOIN users ON comments.user_id=users.id WHERE reply_id=:id;');
        if (!$query) {
            die(var_dump($pdo->errorInfo()));

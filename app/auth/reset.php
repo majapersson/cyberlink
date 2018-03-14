@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require __DIR__.'/../autoload.php';
 
 if (isset($_POST['email'])) {
@@ -7,7 +16,7 @@ if (isset($_POST['email'])) {
 
     $users = getUsers($pdo);
 
-    foreach($users as $user) {
+    foreach ($users as $user) {
         if ($email === $user['email']) {
             $password = '';
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require __DIR__.'/../autoload.php';
 
 // Get comment by id
@@ -26,7 +35,7 @@ if (!empty($_POST['post_id']) && isset($_POST['content'])) {
     $post_id = filter_var($_POST['post_id'], FILTER_SANITIZE_NUMBER_INT);
     $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
 
-    if (!empty($content)){
+    if (!empty($content)) {
         if (isset($_POST['reply_id'])) {
             $reply_id = filter_var($_POST['reply_id'], FILTER_SANITIZE_NUMBER_INT);
             $comment = setComment($pdo, $post_id, $_SESSION['user']['id'], $content, $reply_id);

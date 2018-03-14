@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is a part of Cyberlink.
+ *
+ * (c) Maja Persson
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require __DIR__.'/../autoload.php';
 
 if (isset($_POST['id'])) {
@@ -9,7 +18,7 @@ if (isset($_POST['id'])) {
 
     if ($_SESSION['user']['id'] === $post['user_id']) {
         $comments = array_reverse(getCommentTree($pdo, $post_id));
-        foreach($comments as $comment) {
+        foreach ($comments as $comment) {
             checkDelete($pdo, $comment['id']);
         }
         deleteVotes($pdo, $post_id);

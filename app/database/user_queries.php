@@ -1,13 +1,16 @@
 <?php
-/**
- * Gets all users from users table
+
+/*
+ * This file is a part of Cyberlink.
  *
- * @param PDO $pdo
+ * (c) Maja Persson
  *
- * @return array
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-function getUsers(PDO $pdo): array {
+function getUsers(PDO $pdo): array
+{
     $query = $pdo-> query('SELECT id, username, email, password FROM users;');
     return $query-> fetchAll(PDO::FETCH_ASSOC);
 }
@@ -22,10 +25,11 @@ function getUsers(PDO $pdo): array {
  * @return array $user
  */
 
-function getUser(PDO $pdo, int $id): array {
+function getUser(PDO $pdo, int $id): array
+{
     // Get user from ID
     $query = $pdo->prepare('SELECT * FROM users WHERE id=:id;');
-    if(!$query){
+    if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
     $query-> bindParam(':id', $id, PDO::PARAM_INT);
@@ -44,12 +48,13 @@ function getUser(PDO $pdo, int $id): array {
  * @return void
  */
 
-function setUser(PDO $pdo, string $username, string $email, string $password) {
+function setUser(PDO $pdo, string $username, string $email, string $password)
+{
     $filename = 'default.png';
 
     $query = $pdo-> prepare('INSERT INTO users (username, email, password, image_url) VALUES (:username, :email, :password, :image);');
 
-    if(!$query) {
+    if (!$query) {
         die(var_dump($pdo->errorInfo()));
     }
 
@@ -72,7 +77,8 @@ function setUser(PDO $pdo, string $username, string $email, string $password) {
  * @return array $user
  */
 
-function updateInfo (PDO $pdo, int $id, string $email, string $bio = null): array {
+function updateInfo(PDO $pdo, int $id, string $email, string $bio = null): array
+{
     $query = $pdo-> prepare('UPDATE users SET email=:email, bio=:bio WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -98,7 +104,8 @@ function updateInfo (PDO $pdo, int $id, string $email, string $bio = null): arra
  * @return void
  */
 
-function updateImage (PDO $pdo, array $image, array $user) {
+function updateImage(PDO $pdo, array $image, array $user)
+{
     $file = pathinfo($image['name']);
     $filename = $user['username'].'.'.$file['extension'];
 
@@ -138,7 +145,8 @@ function updateImage (PDO $pdo, array $image, array $user) {
  * @return void
  */
 
-function updatePassword (PDO $pdo, string $new_password, int $user_id) {
+function updatePassword(PDO $pdo, string $new_password, int $user_id)
+{
     $query = $pdo-> prepare('UPDATE users SET password=:password WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));
@@ -158,7 +166,8 @@ function updatePassword (PDO $pdo, string $new_password, int $user_id) {
 * @return void
 */
 
-function deleteUser(PDO $pdo, int $user_id) {
+function deleteUser(PDO $pdo, int $user_id)
+{
     $query = $pdo-> prepare('DELETE FROM users WHERE id=:id;');
     if (!$query) {
         die(var_dump($pdo->errorInfo()));

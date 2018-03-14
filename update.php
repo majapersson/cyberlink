@@ -8,7 +8,7 @@ if (isset($_POST['email'], $_POST['bio'])) {
 
     if ($email !== $user['email']) {
         $users = getUsers($pdo);
-        foreach($users as $loop_user) {
+        foreach ($users as $loop_user) {
             if ($loop_user['email'] === $email) {
                 $email_error = 'The email is already registered.';
             }
